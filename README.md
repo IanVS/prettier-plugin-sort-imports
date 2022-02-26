@@ -1,12 +1,14 @@
 # Prettier plugin sort imports
 
-A prettier plugin to sort import declarations by provided Regular Expression order.
+A prettier plugin to sort import declarations by provided Regular Expression order.  
 
-**Note: If you are migrating from v2.x.x to v3.x.x, [Please Read Migration Guidelines](./docs/MIGRATION.md)**
+This was forked from https://github.com/trivago/prettier-plugin-sort-imports.  The main difference is that this project will not change the order of your side-effect imports (see [How it works](#how-does-import-sort-work-)), to avoid breaking your styles or your code.  I will try to keep it up-to-date with the Trivago version, but it may drift apart at some point.
 
 ### Input
 
 ```javascript
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 import React, {
     FC,
     useEffect,
@@ -29,6 +31,8 @@ import { createConnection } from '@server/database';
 ### Output
 
 ```javascript
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 import { debounce, reduce } from 'lodash';
 import React, {
     ChangeEvent,
@@ -56,13 +60,13 @@ import { add, filter, repeat } from '../utils';
 npm
 
 ```shell script
-npm install --save-dev @trivago/prettier-plugin-sort-imports
+npm install --save-dev @ianvs/prettier-plugin-sort-imports
 ```
 
 or, using yarn
 
 ```shell script
-yarn add --dev @trivago/prettier-plugin-sort-imports
+yarn add --dev @ianvs/prettier-plugin-sort-imports
 ```
 
 **Note: If you are migrating from v2.x.x to v3.x.x, [Please Read Migration Guidelines](./docs/MIGRATION.md)**
@@ -241,25 +245,12 @@ Having some trouble or an issue ? You can check [FAQ / Troubleshooting section](
 | Vue                    | ⚠️ Soon to be supported. | Any contribution is welcome.                     |
 | Svelte                 | ⚠️ Soon to be supported. | Any contribution is welcome.                     |
 
-### Used by
-
-Want to highlight your project or company ? Adding your project / company name will help plugin to gain attraction and contribution.
-Feel free to make a Pull Request to add your project / company name.
-
--   [trivago](https://company.trivago.com)
--   ADD YOUR PROJECT / COMPANY NAME
 
 ### Contribution
 
 For more information regarding contribution, please check the [Contributing Guidelines](./CONTRIBUTING.md). If you are trying to
 debug some code in the plugin, check [Debugging Guidelines](./docs/DEBUG.md)
 
-### Maintainers
-
-| [Ayush Sharma](https://github.com/ayusharma)                             | [Behrang Yarahmadi](https://github.com/byara)                         |
-| ------------------------------------------------------------------------ | --------------------------------------------------------------------- |
-| ![ayusharma](https://avatars2.githubusercontent.com/u/6918450?s=120&v=4) | ![@byara](https://avatars2.githubusercontent.com/u/6979966?s=120&v=4) |
-| [@ayusharma\_](https://twitter.com/ayusharma_)                           | [@behrang_y](https://twitter.com/behrang_y)                           |
 
 ### Disclaimer
 
