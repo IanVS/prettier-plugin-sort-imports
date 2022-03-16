@@ -26,20 +26,22 @@
     "typescript",
     "javascript"
   ],
-  "contributors": [{
-    "name": "Ayush Sharma",
-    "email": "ayush.sharma@trivago.com",
-    "url": "https://github.com/ayusharma"
-  },
-  {
-    "name": "Behrang Yarahmadi",
-    "url": "https://github.com/byara"
-  },
-  {
-    "name": "Andre Wachsmuth",
-    "email": "sensenmann5@gmail.com",
-    "url": "https://github.com/blutorange"
-  }],
+  "contributors": [
+    {
+      "name": "Ayush Sharma",
+      "email": "ayush.sharma@trivago.com",
+      "url": "https://github.com/ayusharma"
+    },
+    {
+      "name": "Behrang Yarahmadi",
+      "url": "https://github.com/byara"
+    },
+    {
+      "name": "Andre Wachsmuth",
+      "email": "sensenmann5@gmail.com",
+      "url": "https://github.com/blutorange"
+    }
+  ],
   "license": "Apache-2.0",
   "dependencies": {
     "@babel/core": "7.13.10",
