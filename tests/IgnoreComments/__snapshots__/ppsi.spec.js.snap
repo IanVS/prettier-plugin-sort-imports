@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ignore-next-node-comment-on-import.ts - typescript-verify: ignore-next-node-comment-on-import.ts 1`] = `
+// prettier-ignore
+import c from "c";
+import b from "b";
+import a from "a";
+
+// prettier-ignore
+import {h} from "h";
+// prettier-ignore
+import {g} from "g";
+
+import {f} from "f";
+import {d} from "d";
+import {e} from "e";
+
+export const foo = 42;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// prettier-ignore
+import c from "c";
+
+import a from "a";
+import b from "b";
+
+// prettier-ignore
+import { h } from "h";
+// prettier-ignore
+import { g } from "g";
+
+import { d } from "d";
+import { e } from "e";
+import { f } from "f";
+
+export const foo = 42;
+
+`;
