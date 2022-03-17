@@ -19,7 +19,7 @@ import a from 'a';
 
 test('it should remove nodes from the original code', () => {
     const importNodes = getImportNodes(code);
-    const sortedNodes = getSortedNodes(importNodes, {
+    const sortedNodes = getSortedNodes(importNodes,new Set(), {
         importOrder: [],
         importOrderCaseInsensitive: false,
         importOrderSeparation: false,

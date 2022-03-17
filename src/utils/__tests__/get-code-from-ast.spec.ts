@@ -15,7 +15,7 @@ import k from 'k';
 import a from 'a';
 `;
     const importNodes = getImportNodes(code);
-    const sortedNodes = getSortedNodes(importNodes, {
+    const sortedNodes = getSortedNodes(importNodes, new Set(), {
         importOrder: [],
         importOrderCaseInsensitive: false,
         importOrderSeparation: false,

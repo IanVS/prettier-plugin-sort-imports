@@ -1,4 +1,4 @@
-import { ExpressionStatement, ImportDeclaration } from '@babel/types';
+import { CommentBlock, CommentLine, ExpressionStatement, ImportDeclaration } from '@babel/types';
 import { RequiredOptions } from 'prettier';
 
 export interface PrettierOptions extends RequiredOptions {
@@ -21,6 +21,7 @@ export type ImportOrLine = ImportDeclaration | ExpressionStatement;
 
 export type GetSortedNodes = (
     nodes: ImportDeclaration[],
+    rangeIgnoredLines: Set<number>,
     options: Pick<
         PrettierOptions,
         | 'importOrder'
@@ -30,3 +31,24 @@ export type GetSortedNodes = (
         | 'importOrderSortSpecifiers'
     >,
 ) => ImportOrLine[];
+
+export type GetSortedNodesByImportOrder = (
+    nodes: ImportDeclaration[],
+    options: Pick<
+        PrettierOptions,
+        | 'importOrder'
+        | 'importOrderCaseInsensitive'
+        | 'importOrderSeparation'
+        | 'importOrderGroupNamespaceSpecifiers'
+        | 'importOrderSortSpecifiers'
+    >,
+) => ImportOrLine[];
+
+export type GetChunkTypeOfNode = (
+    node: ImportDeclaration,
+    rangeIgnoredLines: Set<number>
+) => string;
+
+export type GetRangeIgnoredLines = (
+    comments: readonly (CommentBlock | CommentLine)[]
+) => Set<number>;

@@ -1,5 +1,6 @@
 import { ImportDeclaration } from "@babel/types";
 import { chunkTypeUnsortable, chunkTypeOther } from "../constants";
+import { GetChunkTypeOfNode } from "../types";
 
 /**
  * Classifies an import declarations according to its properties, the
@@ -15,15 +16,20 @@ import { chunkTypeUnsortable, chunkTypeOther } from "../constants";
  * - Otherwise, if the node is preceded by a comment exactly equal (up to
  * leading and trailing spaces) the string `prettier-ignore`, classify the node
  * as `unsortable`.
+ * - Otherwise, if the node is within a range of lines delimited by the start
+ * comment `prettier-ignore-start` and the end comment `prettier-ignore-end`,
+ * classify the node as `unsortable`.
  * - Otherwise, classify the node as `sortable`.
  * @param node An import declaration node to classify.
+ * @param rangeIgnoredLines Index of lines which are within an ignored range.
  * @returns The type of the chunk into which the node should be put.
  */
-export function getChunkTypeOfNode(node: ImportDeclaration): string {
+export const getChunkTypeOfNode: GetChunkTypeOfNode = (node, rangeIgnoredLines) => {
     const hasIgnoreNextNode = (node.leadingComments ?? [])
         .some(comment => comment.value.trim() === "prettier-ignore");
     const hasNoImportedSymbols = node.specifiers.length === 0;
-    return hasIgnoreNextNode || hasNoImportedSymbols
+    const isWithinIgnoredRange = rangeIgnoredLines.has(node.loc?.start.line ?? -1);
+    return hasIgnoreNextNode || isWithinIgnoredRange || hasNoImportedSymbols 
         ? chunkTypeUnsortable
         : chunkTypeOther
 }

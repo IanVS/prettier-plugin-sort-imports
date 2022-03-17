@@ -21,14 +21,14 @@ import { getSortedNodesByImportOrder } from './get-sorted-nodes-by-import-order'
  * @param nodes All import nodes that should be sorted.
  * @param options Options to influence the behavior of the sorting algorithm.
  */
-export const getSortedNodes: GetSortedNodes = (nodes, options) => {
+export const getSortedNodes: GetSortedNodes = (nodes, rangeIgnoredLines, options) => {
     const { importOrderSeparation } = options;
 
     // Split nodes at each boundary between a side-effect node and a
     // non-side-effect node, keeping both types of nodes together.
     const splitBySideEffectNodes = nodes.reduce<ImportChunk[]>(
         (chunks, node) => {
-            const type = getChunkTypeOfNode(node);
+            const type = getChunkTypeOfNode(node, rangeIgnoredLines);
             const last = chunks[chunks.length - 1];
             if (last === undefined || last.type !== type) {
                 chunks.push({ type, nodes: [node] });

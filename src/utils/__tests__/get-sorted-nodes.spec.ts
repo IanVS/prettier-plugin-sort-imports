@@ -26,7 +26,7 @@ import "se2";
 
 test('it returns all sorted nodes, preserving the order side effect nodes', () => {
     const result = getImportNodes(code);
-    const sorted = getSortedNodes(result, {
+    const sorted = getSortedNodes(result, new Set(), {
         importOrder: [],
         importOrderCaseInsensitive: false,
         importOrderSeparation: false,

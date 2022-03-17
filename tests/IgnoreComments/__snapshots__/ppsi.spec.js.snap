@@ -1,5 +1,35 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`ignore-import-within-ignored-range.ts - typescript-verify: ignore-import-within-ignored-range.ts 1`] = `
+import {b} from "b";
+import {a} from "a";
+// prettier-ignore-start
+import "e";
+import c from "c";
+import {d} from "d";
+// prettier-ignore-end
+import {f} from "f";
+import {g} from "g";
+export const foo = 42;
+export const bar = 48;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import { a } from "a";
+import { b } from "b";
+
+// prettier-ignore-start
+import "e";
+import c from "c";
+import { d } from "d";
+
+// prettier-ignore-end
+import { f } from "f";
+import { g } from "g";
+
+export const foo = 42;
+export const bar = 48;
+
+`;
+
 exports[`ignore-next-node-comment-on-import.ts - typescript-verify: ignore-next-node-comment-on-import.ts 1`] = `
 // prettier-ignore
 import c from "c";
