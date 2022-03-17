@@ -8,7 +8,7 @@ import { getSortedNodes } from '../get-sorted-nodes';
 const getSortedImportNodes = (code: string, options?: ParserOptions) => {
     const importNodes: ImportDeclaration[] = getImportNodes(code, options);
 
-    return getSortedNodes(importNodes, new Set(), {
+    return getSortedNodes(importNodes, {
         importOrder: [],
         importOrderCaseInsensitive: false,
         importOrderSeparation: false,

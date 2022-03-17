@@ -22,7 +22,7 @@ import Xa from 'Xa';
 
 test('it returns all sorted nodes', () => {
     const result = getImportNodes(code);
-    const sorted = getSortedNodes(result, new Set(), {
+    const sorted = getSortedNodes(result, {
         importOrder: [],
         importOrderCaseInsensitive: false,
         importOrderSeparation: false,
@@ -66,7 +66,7 @@ test('it returns all sorted nodes', () => {
 
 test('it returns all sorted nodes case-insensitive', () => {
     const result = getImportNodes(code);
-    const sorted = getSortedNodes(result, new Set(), {
+    const sorted = getSortedNodes(result, {
         importOrder: [],
         importOrderCaseInsensitive: true,
         importOrderSeparation: false,
@@ -110,7 +110,7 @@ test('it returns all sorted nodes case-insensitive', () => {
 
 test('it returns all sorted nodes with sort order', () => {
     const result = getImportNodes(code);
-    const sorted = getSortedNodes(result, new Set(), {
+    const sorted = getSortedNodes(result, {
         importOrder: ['^a$', '^t$', '^k$', '^B'],
         importOrderCaseInsensitive: false,
         importOrderSeparation: false,
@@ -154,7 +154,7 @@ test('it returns all sorted nodes with sort order', () => {
 
 test('it returns all sorted nodes with sort order case-insensitive', () => {
     const result = getImportNodes(code);
-    const sorted = getSortedNodes(result, new Set(), {
+    const sorted = getSortedNodes(result, {
         importOrder: ['^a$', '^t$', '^k$', '^B'],
         importOrderCaseInsensitive: true,
         importOrderSeparation: false,
@@ -197,7 +197,7 @@ test('it returns all sorted nodes with sort order case-insensitive', () => {
 
 test('it returns all sorted import nodes with sorted import specifiers', () => {
     const result = getImportNodes(code);
-    const sorted = getSortedNodes(result, new Set(), {
+    const sorted = getSortedNodes(result, {
         importOrder: ['^a$', '^t$', '^k$', '^B'],
         importOrderCaseInsensitive: false,
         importOrderSeparation: false,
@@ -240,7 +240,7 @@ test('it returns all sorted import nodes with sorted import specifiers', () => {
 
 test('it returns all sorted import nodes with sorted import specifiers with case-insensitive ', () => {
     const result = getImportNodes(code);
-    const sorted = getSortedNodes(result, new Set(), {
+    const sorted = getSortedNodes(result, {
         importOrder: ['^a$', '^t$', '^k$', '^B'],
         importOrderCaseInsensitive: true,
         importOrderSeparation: false,
@@ -283,7 +283,7 @@ test('it returns all sorted import nodes with sorted import specifiers with case
 
 test('it returns all sorted nodes with custom third party modules', () => {
     const result = getImportNodes(code);
-    const sorted = getSortedNodes(result, new Set(), {
+    const sorted = getSortedNodes(result, {
         importOrder: ['^a$', '<THIRD_PARTY_MODULES>', '^t$', '^k$'],
         importOrderSeparation: false,
         importOrderCaseInsensitive: true,
@@ -307,7 +307,7 @@ test('it returns all sorted nodes with custom third party modules', () => {
 
 test('it returns all sorted nodes with namespace specifiers at the top', () => {
     const result = getImportNodes(code);
-    const sorted = getSortedNodes(result, new Set(), {
+    const sorted = getSortedNodes(result, {
         importOrder: [],
         importOrderCaseInsensitive: false,
         importOrderSeparation: false,

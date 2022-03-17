@@ -5,7 +5,6 @@ import { ImportDeclaration, isTSModuleDeclaration } from '@babel/types';
 import { PrettierOptions } from './types';
 import { getCodeFromAst } from './utils/get-code-from-ast';
 import { getExperimentalParserPlugins } from './utils/get-experimental-parser-plugins';
-import { getRangeIgnoredLines } from './utils/get-range-ignored-lines';
 import { getSortedNodes } from './utils/get-sorted-nodes';
 
 export function preprocessor(code: string, options: PrettierOptions) {
@@ -26,7 +25,7 @@ export function preprocessor(code: string, options: PrettierOptions) {
 
     const ast = babelParser(code, parserOptions);
     const interpreter = ast.program.interpreter;
-    
+
     traverse(ast, {
         ImportDeclaration(path: NodePath<ImportDeclaration>) {
             const tsModuleParent = path.findParent((p) =>
@@ -41,9 +40,7 @@ export function preprocessor(code: string, options: PrettierOptions) {
     // short-circuit if there are no import declaration
     if (importNodes.length === 0) return code;
 
-    const rangeIgnoredLines = getRangeIgnoredLines(ast.comments ?? []);
-
-    const allImports = getSortedNodes(importNodes, rangeIgnoredLines, {
+    const allImports = getSortedNodes(importNodes, {
         importOrder,
         importOrderCaseInsensitive,
         importOrderSeparation,
