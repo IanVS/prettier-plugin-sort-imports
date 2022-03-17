@@ -1,8 +1,4 @@
-import {
-    chunkTypeUnsortable,
-    chunkTypeOther,
-    newLineNode,
-} from '../constants';
+import { chunkTypeOther, chunkTypeUnsortable, newLineNode } from '../constants';
 import { GetSortedNodes, ImportChunk, ImportOrLine } from '../types';
 import { adjustCommentsOnSortedNodes } from './adjust-comments-on-sorted-nodes';
 import { getChunkTypeOfNode } from './get-chunk-type-of-node';
@@ -21,7 +17,11 @@ import { getSortedNodesByImportOrder } from './get-sorted-nodes-by-import-order'
  * @param nodes All import nodes that should be sorted.
  * @param options Options to influence the behavior of the sorting algorithm.
  */
-export const getSortedNodes: GetSortedNodes = (nodes, rangeIgnoredLines, options) => {
+export const getSortedNodes: GetSortedNodes = (
+    nodes,
+    rangeIgnoredLines,
+    options,
+) => {
     const { importOrderSeparation } = options;
 
     // Split nodes at each boundary between a side-effect node and a

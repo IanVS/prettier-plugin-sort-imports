@@ -26,7 +26,7 @@ export function preprocessor(code: string, options: PrettierOptions) {
 
     const ast = babelParser(code, parserOptions);
     const interpreter = ast.program.interpreter;
-    
+
     traverse(ast, {
         ImportDeclaration(path: NodePath<ImportDeclaration>) {
             const tsModuleParent = path.findParent((p) =>

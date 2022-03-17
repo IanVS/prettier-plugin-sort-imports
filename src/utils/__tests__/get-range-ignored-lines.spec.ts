@@ -1,11 +1,14 @@
 import { parse as babelParser } from '@babel/parser';
 import { CommentBlock, CommentLine } from '@babel/types';
-import { getRangeIgnoredLines } from "../get-range-ignored-lines";
+
+import { getRangeIgnoredLines } from '../get-range-ignored-lines';
 
 function getComments(code: string): (CommentBlock | CommentLine)[] {
-    return babelParser(code, {
-        sourceType: 'module',
-    }).comments ?? [];
+    return (
+        babelParser(code, {
+            sourceType: 'module',
+        }).comments ?? []
+    );
 }
 
 test('it does not find ranges when there are no ignore ranged', () => {
