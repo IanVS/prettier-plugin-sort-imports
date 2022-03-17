@@ -2,11 +2,7 @@ import { clone } from 'lodash';
 
 import { THIRD_PARTY_MODULES_SPECIAL_WORD, newLineNode } from '../constants';
 import { naturalSort } from '../natural-sort';
-import {
-    GetSortedNodesByImportOrder,
-    ImportGroups,
-    ImportOrLine,
-} from '../types';
+import { GetSortedNodesByImportOrder, ImportGroups, ImportOrLine } from '../types';
 import { getImportNodesMatchedGroup } from './get-import-nodes-matched-group';
 import { getSortedImportSpecifiers } from './get-sorted-import-specifiers';
 import { getSortedNodesGroup } from './get-sorted-nodes-group';
@@ -18,10 +14,7 @@ import { getSortedNodesGroup } from './get-sorted-nodes-group';
  * @param nodes A subset of all import nodes that should be sorted.
  * @param options Options to influence the behavior of the sorting algorithm.
  */
-export const getSortedNodesByImportOrder: GetSortedNodesByImportOrder = (
-    nodes,
-    options,
-) => {
+export const getSortedNodesByImportOrder: GetSortedNodesByImportOrder = (nodes, options) => {
     naturalSort.insensitive = options.importOrderCaseInsensitive;
 
     let { importOrder } = options;
