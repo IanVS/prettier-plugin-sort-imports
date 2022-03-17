@@ -7,6 +7,9 @@ This was forked from https://github.com/trivago/prettier-plugin-sort-imports.  T
 ### Input
 
 ```javascript
+// prettier-ignore
+import { environment } from "./misguided-module-with-side-effects.js";
+
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 import React, {
@@ -31,6 +34,9 @@ import { createConnection } from '@server/database';
 ### Output
 
 ```javascript
+// prettier-ignore
+import { environment } from "./misguided-module-with-side-effects.js";
+
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 import { debounce, reduce } from 'lodash';
@@ -89,6 +95,22 @@ module.exports = {
 ```
 
 ### APIs
+
+### Prevent imports from being sorted
+
+This plugin supports standard prettier ignore comments. By default, side-effect imports (like
+`import "core-js/stable";`) are not sorted, so in most cases things should just work. But if you ever need to, you can
+prevent an import from getting sorted like this:
+
+```javascript
+// prettier-ignore
+import { goods } from "zealand";
+import { cars } from "austria";
+```
+
+This will keep the `zealand` import at the top instead of moving it below the `austria` import. Note that since only
+entire import statements can be ignored, line comments (`// prettier-ignore`) are recommended over inline comments
+(`/* prettier-ignore */`).
 
 #### **`importOrder`**
 
@@ -200,8 +222,8 @@ First, the plugin checks for
 [side effect imports](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#import_a_module_for_its_side_effects_only),
 such as `import 'mock-fs'`. These imports often modify the global scope or apply some patches to the current
 environment, which may affect other imports. To preserve potential side effects, these kind of side effect imports are
-not sorted. They also behave as a barrier that other imports may not cross during the sort. So for example, let's say
-you've got these imports:
+classified as unsortable. They also behave as a barrier that other imports may not cross during the sort. So for
+example, let's say you've got these imports:
 
 ```javascript
 import E from 'e';
@@ -223,6 +245,9 @@ import 'c';
 import A from 'a';
 import B from 'b';
 ```
+
+Additionally, any import statements lines that are preceded by a `// prettier-ignore` comment are also classified as
+unsortable. This can be used for edge-cases, such as when you have a named import with side-effects.
 
 Next, the plugin sorts the _local imports_ and _third party imports_ using [natural sort algorithm](https://en.wikipedia.org/wiki/Natural_sort_order).
 

@@ -1,5 +1,5 @@
-import { ImportDeclaration } from "@babel/types";
 import { chunkTypeUnsortable, chunkTypeOther } from "../constants";
+import { GetChunkTypeOfNode } from "../types";
 
 /**
  * Classifies an import declarations according to its properties, the
@@ -19,7 +19,7 @@ import { chunkTypeUnsortable, chunkTypeOther } from "../constants";
  * @param node An import declaration node to classify.
  * @returns The type of the chunk into which the node should be put.
  */
-export function getChunkTypeOfNode(node: ImportDeclaration): string {
+export const getChunkTypeOfNode: GetChunkTypeOfNode = node => {
     const hasIgnoreNextNode = (node.leadingComments ?? [])
         .some(comment => comment.value.trim() === "prettier-ignore");
     const hasNoImportedSymbols = node.specifiers.length === 0;

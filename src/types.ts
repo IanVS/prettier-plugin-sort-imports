@@ -30,3 +30,5 @@ export type GetSortedNodes = (
         | 'importOrderSortSpecifiers'
     >,
 ) => ImportOrLine[];
+
+export type GetChunkTypeOfNode  = (node: ImportDeclaration) => string;

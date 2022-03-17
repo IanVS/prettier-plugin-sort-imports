@@ -12,4 +12,10 @@ import {f} from "f";
 import {d} from "d";
 import {e} from "e";
 
+// prettier-ignore
+// some other comments
+import z2 from "z2";
+import z3 from "z3";
+import z1 from "z1";
+
 export const foo = 42;
