@@ -31,4 +31,4 @@ export type GetSortedNodes = (
     >,
 ) => ImportOrLine[];
 
-export type GetChunkTypeOfNode  = (node: ImportDeclaration) => string;
+export type GetChunkTypeOfNode = (node: ImportDeclaration) => string;
