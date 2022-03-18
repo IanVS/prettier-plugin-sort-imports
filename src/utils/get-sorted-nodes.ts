@@ -1,10 +1,7 @@
-import {
-    chunkSideEffectNode,
-    chunkSideOtherNode,
-    newLineNode,
-} from '../constants';
+import { chunkTypeOther, chunkTypeUnsortable, newLineNode } from '../constants';
 import { GetSortedNodes, ImportChunk, ImportOrLine } from '../types';
 import { adjustCommentsOnSortedNodes } from './adjust-comments-on-sorted-nodes';
+import { getChunkTypeOfNode } from './get-chunk-type-of-node';
 import { getSortedNodesByImportOrder } from './get-sorted-nodes-by-import-order';
 
 /**
@@ -27,10 +24,7 @@ export const getSortedNodes: GetSortedNodes = (nodes, options) => {
     // non-side-effect node, keeping both types of nodes together.
     const splitBySideEffectNodes = nodes.reduce<ImportChunk[]>(
         (chunks, node) => {
-            const type =
-                node.specifiers.length === 0
-                    ? chunkSideEffectNode
-                    : chunkSideOtherNode;
+            const type = getChunkTypeOfNode(node);
             const last = chunks[chunks.length - 1];
             if (last === undefined || last.type !== type) {
                 chunks.push({ type, nodes: [node] });
@@ -47,7 +41,7 @@ export const getSortedNodes: GetSortedNodes = (nodes, options) => {
     // Sort each chunk of side-effect and non-side-effect nodes, and insert new
     // lines according the importOrderSeparation option.
     for (const chunk of splitBySideEffectNodes) {
-        if (chunk.type === chunkSideEffectNode) {
+        if (chunk.type === chunkTypeUnsortable) {
             // do not sort side effect nodes
             finalNodes.push(...chunk.nodes);
         } else {

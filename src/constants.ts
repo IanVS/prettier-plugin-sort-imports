@@ -7,8 +7,8 @@ export const jsx: ParserPlugin = 'jsx';
 
 export const newLineCharacters = '\n\n';
 
-export const chunkSideEffectNode = 'side-effect-node';
-export const chunkSideOtherNode = 'other-node';
+export const chunkTypeUnsortable = 'unsortable';
+export const chunkTypeOther = 'other';
 
 /*
  * Used to mark the position between RegExps,
