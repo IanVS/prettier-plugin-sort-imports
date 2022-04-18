@@ -63,6 +63,8 @@ function mergeRanges(ranges: Range[]): Range[] {
     // Iterate over all given ranges. If a range overlaps the last item in
     // the result list, replace the last item with the merger between that item
     // and the range. Otherwise, just add the item to the result list.
+    // For comparison, see also
+    // https://www.geeksforgeeks.org/merging-intervals/
     const merged: Range[] = [];
     for (const range of ranges) {
         const currRange = merged[merged.length - 1];

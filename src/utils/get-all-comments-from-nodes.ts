@@ -1,6 +1,6 @@
-import { CommentBlock, CommentLine, Statement } from '@babel/types';
+import { CommentBlock, CommentLine, Directive, Statement } from '@babel/types';
 
-export const getAllCommentsFromNodes = (nodes: Statement[]) =>
+export const getAllCommentsFromNodes = (nodes: (Directive | Statement)[]) =>
     nodes.reduce((acc, node) => {
         if (
             Array.isArray(node.leadingComments) &&

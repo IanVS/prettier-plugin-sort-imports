@@ -22,10 +22,12 @@ export const getCodeFromAst = (
     interpreter?: InterpreterDirective | null,
 ) => {
     const allCommentsFromImports = getAllCommentsFromNodes(nodes);
+    const allCommentsFromDirectives = getAllCommentsFromNodes(directives);
 
     const nodesToRemoveFromCode = [
         ...nodes,
         ...allCommentsFromImports,
+        ...allCommentsFromDirectives,
         ...(interpreter ? [interpreter] : []),
         ...directives,
     ];

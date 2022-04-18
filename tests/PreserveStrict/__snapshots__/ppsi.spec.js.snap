@@ -1,5 +1,37 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`comments-on-directive-are-preserved.ts - typescript-verify: comments-on-directive-are-preserved.ts 1`] = `
+// Comment above
+/* foo
+   bar  */ "use strict" ;
+// Comment below
+"another directive";
+
+import './SetupEnvironment';
+import type { Period } from './Period'
+
+"this is not a directive prologue";
+
+function foo() {
+}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Comment above
+
+/* foo
+   bar  */
+"use strict"; // Comment below
+
+"another directive";
+
+import "./SetupEnvironment";
+
+import type { Period } from "./Period";
+
+("this is not a directive prologue");
+
+function foo() {}
+
+`;
+
 exports[`custom-directive-remains-at-top.ts - typescript-verify: custom-directive-remains-at-top.ts 1`] = `
 // below is a directive prologue
 'use custom'
