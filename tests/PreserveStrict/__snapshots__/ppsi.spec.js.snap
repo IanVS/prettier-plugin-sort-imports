@@ -18,8 +18,6 @@ import "./SetupEnvironment";
 
 import type { Period } from "./Period";
 
-// below is a directive prologue
-
 ("this is not a directive prologue");
 
 function foo() {}
@@ -49,9 +47,6 @@ import "./SetupEnvironment";
 
 import type { Period } from "./Period";
 
-// below is a directive prologue
-/* more directives... */ ("enable typecheck");
-
 ("this is not a directive prologue");
 
 function foo() {}
@@ -75,8 +70,6 @@ function foo() {
 import "./SetupEnvironment";
 
 import type { Period } from "./Period";
-
-// below is a directive prologue
 
 ("this is not a directive prologue");
 

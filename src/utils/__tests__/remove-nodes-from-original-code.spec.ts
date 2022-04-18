@@ -1,3 +1,4 @@
+import { parse as babelParser } from '@babel/parser';
 import { format } from 'prettier';
 
 import { getAllCommentsFromNodes } from '../get-all-comments-from-nodes';
@@ -5,7 +6,7 @@ import { getImportNodes } from '../get-import-nodes';
 import { getSortedNodes } from '../get-sorted-nodes';
 import { removeNodesFromOriginalCode } from '../remove-nodes-from-original-code';
 
-const code = `// first comment
+const code = `"some directive";// first comment
 // second comment
 import z from 'z';
 import c from 'c';
@@ -18,6 +19,7 @@ import a from 'a';
 `;
 
 test('it should remove nodes from the original code', () => {
+    const ast = babelParser(code, { sourceType: 'module' });
     const importNodes = getImportNodes(code);
     const sortedNodes = getSortedNodes(importNodes, {
         importOrder: [],
@@ -31,6 +33,7 @@ test('it should remove nodes from the original code', () => {
     const commentAndImportsToRemoveFromCode = [
         ...sortedNodes,
         ...allCommentsFromImports,
+        ...ast.program.directives,
     ];
     const codeWithoutImportDeclarations = removeNodesFromOriginalCode(
         code,
