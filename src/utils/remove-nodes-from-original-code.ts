@@ -1,6 +1,7 @@
 import {
     CommentBlock,
     CommentLine,
+    Directive,
     ImportDeclaration,
     InterpreterDirective,
     Statement,
@@ -24,6 +25,7 @@ export const removeNodesFromOriginalCode = (
         | CommentLine
         | ImportDeclaration
         | InterpreterDirective
+        | Directive
     )[],
 ) => {
     let text = code;
