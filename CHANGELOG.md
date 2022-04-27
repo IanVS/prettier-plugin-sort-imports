@@ -2,6 +2,8 @@
 
 ---
 
+See [Github Releases](https://github.com/IanVS/prettier-plugin-sort-imports/releases) for newer versions.
+
 ### v3.2.0
 
 #### New features
