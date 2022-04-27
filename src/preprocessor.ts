@@ -7,7 +7,7 @@ import { getCodeFromAst } from './utils/get-code-from-ast';
 import { getExperimentalParserPlugins } from './utils/get-experimental-parser-plugins';
 import { getSortedNodes } from './utils/get-sorted-nodes';
 
-export function preprocessor(code: string, options: PrettierOptions) {
+export function preprocessor(code: string, options: PrettierOptions): string {
     const {
         importOrderParserPlugins,
         importOrder,
@@ -24,6 +24,8 @@ export function preprocessor(code: string, options: PrettierOptions) {
     };
 
     const ast = babelParser(code, parserOptions);
+
+    const directives = ast.program.directives;
     const interpreter = ast.program.interpreter;
 
     traverse(ast, {
@@ -38,7 +40,9 @@ export function preprocessor(code: string, options: PrettierOptions) {
     });
 
     // short-circuit if there are no import declaration
-    if (importNodes.length === 0) return code;
+    if (importNodes.length === 0) {
+        return code;
+    }
 
     const allImports = getSortedNodes(importNodes, {
         importOrder,
@@ -48,5 +52,5 @@ export function preprocessor(code: string, options: PrettierOptions) {
         importOrderSortSpecifiers,
     });
 
-    return getCodeFromAst(allImports, code, interpreter);
+    return getCodeFromAst(allImports, code, directives, interpreter);
 }
