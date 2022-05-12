@@ -1,4 +1,4 @@
-import { chunkTypeOther, chunkTypeUnsortable, newLineNode } from '../constants';
+import { chunkTypeUnsortable, newLineNode } from '../constants';
 import { GetSortedNodes, ImportChunk, ImportOrLine } from '../types';
 import { adjustCommentsOnSortedNodes } from './adjust-comments-on-sorted-nodes';
 import { getChunkTypeOfNode } from './get-chunk-type-of-node';

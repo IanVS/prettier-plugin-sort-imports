@@ -60,34 +60,6 @@ function run_spec(dirname, parsers, options) {
 }
 global.run_spec = run_spec;
 
-function stripLocation(ast) {
-    if (Array.isArray(ast)) {
-        return ast.map((e) => stripLocation(e));
-    }
-    if (typeof ast === 'object') {
-        const newObj = {};
-        for (const key in ast) {
-            if (
-                key === 'loc' ||
-                key === 'range' ||
-                key === 'raw' ||
-                key === 'comments' ||
-                key === 'parent' ||
-                key === 'prev'
-            ) {
-                continue;
-            }
-            newObj[key] = stripLocation(ast[key]);
-        }
-        return newObj;
-    }
-    return ast;
-}
-
-function parse(string, opts) {
-    return stripLocation(prettier.__debug.parse(string, opts));
-}
-
 function prettyprint(src, filename, options) {
     return prettier.format(
         src,
