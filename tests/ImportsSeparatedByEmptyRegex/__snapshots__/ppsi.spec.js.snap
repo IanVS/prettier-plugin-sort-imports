@@ -98,9 +98,8 @@ function add(a:number,b:number) {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // I am top level comment in this file.
 // I am second line of top level comment in this file.
-import React from "react";
-
 import "./commands";
+import React from "react";
 
 // Comment
 // Comment
@@ -242,6 +241,7 @@ import fourLevelRelativePath from "../../../../fourLevelRelativePath";
 import something from "@server/something";
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // I am top level comment
+
 import abc from "@core/abc";
 import otherthing from "@core/otherthing";
 import something from "@server/something";
@@ -300,6 +300,7 @@ import './commands';
 // ***********************************************************
 // Import commands.js using ES2015 syntax:
 import "./commands";
+// I am top level comment
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
