@@ -41,26 +41,39 @@ export const getSortedNodesByImportOrder: GetSortedNodes = (nodes, options) => {
     }
 
     const importOrderGroups = importOrder.reduce<ImportGroups>(
-        (groups, regexp) => ({
-            ...groups,
-            [regexp]: [],
-        }),
+        (groups, regexp) =>
+            // Don't create a new group for explicit import separators
+            isCustomGroupSeparator(regexp)
+                ? groups
+                : {
+                      ...groups,
+                      [regexp]: [],
+                  },
         {},
     );
 
-    const importOrderWithOutThirdPartyPlaceholder = importOrder.filter(
-        (group) => group !== THIRD_PARTY_MODULES_SPECIAL_WORD,
+    const sanitizedImportOrder = importOrder.filter(
+        (group) =>
+            !isCustomGroupSeparator(group) &&
+            group !== THIRD_PARTY_MODULES_SPECIAL_WORD,
     );
 
+    // Assign import nodes into import order groups
     for (const node of originalNodes) {
         const matchedGroup = getImportNodesMatchedGroup(
             node,
-            importOrderWithOutThirdPartyPlaceholder,
+            sanitizedImportOrder,
         );
         importOrderGroups[matchedGroup].push(node);
     }
 
     for (const group of importOrder) {
+        // If it's a custom separator, all we need to do is add a newline
+        if (isCustomGroupSeparator(group)) {
+            finalNodes.push(newLineNode);
+            continue;
+        }
+
         const groupNodes = importOrderGroups[group];
 
         if (groupNodes.length === 0) continue;
@@ -85,3 +98,11 @@ export const getSortedNodesByImportOrder: GetSortedNodes = (nodes, options) => {
 
     return finalNodes;
 };
+
+/**
+ * isCustomGroupSeparator checks if the provided pattern is intended to be used
+ * as an import separator, rather than an actual group of imports.
+ */
+function isCustomGroupSeparator(pattern: string) {
+    return pattern.trim() === '';
+}

@@ -488,3 +488,82 @@ test('it adds newlines when importOrderSeparation is true', () => {
         '',
     ]);
 });
+
+test('it returns all sorted nodes with custom separation', () => {
+    const result = getImportNodes(code);
+    const sorted = getSortedNodesByImportOrder(result, {
+        importOrder: [
+            '^a$',
+            '<THIRD_PARTY_MODULES>',
+            '^t$',
+            '',
+            '^k$',
+            '^[./]',
+        ],
+        importOrderSeparation: false,
+        importOrderCaseInsensitive: true,
+        importOrderGroupNamespaceSpecifiers: false,
+        importOrderSortSpecifiers: false,
+        importOrderBuiltinModulesToTop: false,
+    }) as ImportDeclaration[];
+    expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
+        'a',
+        'Ba',
+        'BY',
+        'c',
+        'g',
+        'node:fs/promises',
+        'node:url',
+        'path',
+        'x',
+        'Xa',
+        'XY',
+        'z',
+        't',
+        '',
+        'k',
+        './local',
+    ]);
+});
+
+test('it allows both importOrderSeparation and custom separation (but why?)', () => {
+    const result = getImportNodes(code);
+    const sorted = getSortedNodesByImportOrder(result, {
+        importOrder: [
+            '^a$',
+            '<THIRD_PARTY_MODULES>',
+            '^t$',
+            '',
+            '^k$',
+            '^[./]',
+        ],
+        importOrderSeparation: true,
+        importOrderCaseInsensitive: true,
+        importOrderGroupNamespaceSpecifiers: false,
+        importOrderSortSpecifiers: false,
+        importOrderBuiltinModulesToTop: false,
+    }) as ImportDeclaration[];
+    expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
+        'a',
+        '',
+        'Ba',
+        'BY',
+        'c',
+        'g',
+        'node:fs/promises',
+        'node:url',
+        'path',
+        'x',
+        'Xa',
+        'XY',
+        'z',
+        '',
+        't',
+        '',
+        '',
+        'k',
+        '',
+        './local',
+        '',
+    ]);
+});
