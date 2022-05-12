@@ -3,7 +3,7 @@ import { ImportDeclaration } from '@babel/types';
 import { getImportNodes } from '../get-import-nodes';
 import { getSortedNodes } from '../get-sorted-nodes';
 import { getSortedNodesModulesNames } from '../get-sorted-nodes-modules-names';
-import { getSortedNodesNames } from '../get-sorted-nodes-names';
+import { getSortedNodesNamesAndNewlines } from '../get-sorted-nodes-names-and-newlines';
 
 const code = `// first comment
 // second comment
@@ -36,7 +36,7 @@ test('it returns all sorted nodes, preserving the order side effect nodes', () =
         importOrderBuiltinModulesToTop: false,
     }) as ImportDeclaration[];
 
-    expect(getSortedNodesNames(sorted)).toEqual([
+    expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
         'se3',
         'c',
         'g',
@@ -53,6 +53,7 @@ test('it returns all sorted nodes, preserving the order side effect nodes', () =
         'path',
         'x',
         'se2',
+        '',
     ]);
     expect(
         sorted
