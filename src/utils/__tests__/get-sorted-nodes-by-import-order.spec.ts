@@ -16,6 +16,7 @@ import * as a from 'a';
 import * as x from 'x';
 import path from 'path';
 import url from 'node:url';
+import * as fs from "node:fs/promises"
 import BY from 'BY';
 import Ba from 'Ba';
 import XY from 'XY';
@@ -42,6 +43,7 @@ test('it returns all sorted nodes', () => {
         'c',
         'g',
         'k',
+        'node:fs/promises',
         'node:url',
         'path',
         't',
@@ -63,6 +65,7 @@ test('it returns all sorted nodes', () => {
         ['c', 'cD'],
         ['g'],
         ['k', 'kE', 'kB'],
+        ['fs'],
         ['url'],
         ['path'],
         ['tC', 'tA', 'tB'],
@@ -89,6 +92,7 @@ test('it returns all sorted nodes case-insensitive', () => {
         'c',
         'g',
         'k',
+        'node:fs/promises',
         'node:url',
         'path',
         't',
@@ -110,6 +114,7 @@ test('it returns all sorted nodes case-insensitive', () => {
         ['c', 'cD'],
         ['g'],
         ['k', 'kE', 'kB'],
+        ['fs'],
         ['url'],
         ['path'],
         ['tC', 'tA', 'tB'],
@@ -136,6 +141,7 @@ test('it returns all sorted nodes with sort order', () => {
         'Xa',
         'c',
         'g',
+        'node:fs/promises',
         'node:url',
         'path',
         'x',
@@ -157,6 +163,7 @@ test('it returns all sorted nodes with sort order', () => {
         ['Xa'],
         ['c', 'cD'],
         ['g'],
+        ['fs'],
         ['url'],
         ['path'],
         ['x'],
@@ -182,6 +189,7 @@ test('it returns all sorted nodes with sort order case-insensitive', () => {
     expect(getSortedNodesNames(sorted)).toEqual([
         'c',
         'g',
+        'node:fs/promises',
         'node:url',
         'path',
         'x',
@@ -203,6 +211,7 @@ test('it returns all sorted nodes with sort order case-insensitive', () => {
     ).toEqual([
         ['c', 'cD'],
         ['g'],
+        ['fs'],
         ['url'],
         ['path'],
         ['x'],
@@ -232,6 +241,7 @@ test('it returns all sorted import nodes with sorted import specifiers', () => {
         'Xa',
         'c',
         'g',
+        'node:fs/promises',
         'node:url',
         'path',
         'x',
@@ -253,6 +263,7 @@ test('it returns all sorted import nodes with sorted import specifiers', () => {
         ['Xa'],
         ['c', 'cD'],
         ['g'],
+        ['fs'],
         ['url'],
         ['path'],
         ['x'],
@@ -278,6 +289,7 @@ test('it returns all sorted import nodes with sorted import specifiers with case
     expect(getSortedNodesNames(sorted)).toEqual([
         'c',
         'g',
+        'node:fs/promises',
         'node:url',
         'path',
         'x',
@@ -299,6 +311,7 @@ test('it returns all sorted import nodes with sorted import specifiers with case
     ).toEqual([
         ['c', 'cD'],
         ['g'],
+        ['fs'],
         ['url'],
         ['path'],
         ['x'],
@@ -329,6 +342,7 @@ test('it returns all sorted nodes with custom third party modules', () => {
         'BY',
         'c',
         'g',
+        'node:fs/promises',
         'node:url',
         'path',
         'x',
@@ -353,6 +367,7 @@ test('it returns all sorted nodes with namespace specifiers at the top', () => {
 
     expect(getSortedNodesNames(sorted)).toEqual([
         'a',
+        'node:fs/promises',
         'x',
         'BY',
         'Ba',
@@ -380,6 +395,7 @@ test('it returns all sorted nodes with builtin specifiers at the top, ', () => {
     }) as ImportDeclaration[];
 
     expect(getSortedNodesNames(sorted)).toEqual([
+        'node:fs/promises',
         'node:url',
         'path',
         'BY',
@@ -407,6 +423,7 @@ test('it returns all sorted nodes with custom third party modules and builtins a
         importOrderBuiltinModulesToTop: true,
     }) as ImportDeclaration[];
     expect(getSortedNodesNames(sorted)).toEqual([
+        'node:fs/promises',
         'node:url',
         'path',
         'a',
