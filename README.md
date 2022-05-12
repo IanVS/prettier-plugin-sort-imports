@@ -129,7 +129,11 @@ A collection of Regular expressions in string format.
 "importOrder": ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
 ```
 
-_Default behavior:_ The plugin moves the third party imports to the top which are not part of the `importOrder` list.
+_Default:_ `[]`
+
+By default, this plugin will not move any imports. To separate third party from relative imports, use `["^[./]"]`. This will become the default in the next major version.
+
+The plugin moves the third party imports to the top which are not part of the `importOrder` list.
 To move the third party imports at desired place, you can use `<THIRD_PARTY_MODULES>` to assign third party imports to the appropriate position:
 
 ```json
@@ -147,6 +151,18 @@ between sorted import declarations group. The separation takes place according t
 
 ```json
 "importOrderSeparation": true,
+```
+
+_Note:_ If you want greater control over which groups are separated from others, you can add an empty string to your `importOrder` array to signify newlines. For example:
+
+```js
+"importOrderSeparation": false,
+"importOrder": [
+   "^react", // React will be placed at the top of third-party modules
+    "<THIRD_PARTY_MODULES>",
+    "",  // use empty strings to separate groups with empty lines
+    "^[./]"
+],
 ```
 
 #### `importOrderSortSpecifiers`
