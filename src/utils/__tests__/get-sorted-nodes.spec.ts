@@ -17,6 +17,7 @@ import "se4";
 import "se1";
 import * as a from 'a';
 import * as x from 'x';
+import path from 'path';
 import BY from 'BY';
 import Ba from 'Ba';
 import XY from 'XY';
@@ -32,6 +33,7 @@ test('it returns all sorted nodes, preserving the order side effect nodes', () =
         importOrderSeparation: false,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderSortSpecifiers: false,
+        importOrderBuiltinModulesToTop: false,
     }) as ImportDeclaration[];
 
     expect(getSortedNodesNames(sorted)).toEqual([
@@ -48,6 +50,7 @@ test('it returns all sorted nodes, preserving the order side effect nodes', () =
         'XY',
         'Xa',
         'a',
+        'path',
         'x',
         'se2',
     ]);
@@ -71,6 +74,7 @@ test('it returns all sorted nodes, preserving the order side effect nodes', () =
         ['XY'],
         ['Xa'],
         ['a'],
+        ['path'],
         ['x'],
         [],
     ]);
