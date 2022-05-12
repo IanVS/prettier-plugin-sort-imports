@@ -395,3 +395,30 @@ test('it returns all sorted nodes with builtin specifiers at the top, ', () => {
         'z',
     ]);
 });
+
+test('it returns all sorted nodes with custom third party modules and builtins at top', () => {
+    const result = getImportNodes(code);
+    const sorted = getSortedNodes(result, {
+        importOrder: ['^a$', '<THIRD_PARTY_MODULES>', '^t$', '^k$'],
+        importOrderSeparation: false,
+        importOrderCaseInsensitive: true,
+        importOrderGroupNamespaceSpecifiers: false,
+        importOrderSortSpecifiers: false,
+        importOrderBuiltinModulesToTop: true,
+    }) as ImportDeclaration[];
+    expect(getSortedNodesNames(sorted)).toEqual([
+        'node:url',
+        'path',
+        'a',
+        'Ba',
+        'BY',
+        'c',
+        'g',
+        'x',
+        'Xa',
+        'XY',
+        'z',
+        't',
+        'k',
+    ]);
+});
