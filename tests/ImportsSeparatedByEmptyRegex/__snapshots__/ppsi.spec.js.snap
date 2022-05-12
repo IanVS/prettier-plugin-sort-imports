@@ -300,7 +300,6 @@ import './commands';
 // ***********************************************************
 // Import commands.js using ES2015 syntax:
 import "./commands";
-// I am top level comment
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')

@@ -9,31 +9,30 @@ import { ImportOrLine } from '../types';
  * they were in the original nodes.
  * @param nodes A list of nodes in the order as they were originally.
  * @param finalNodes The same set of nodes, but in the final sorting order.
+ * @returns A copied and adjusted set of nodes, containing comments
  */
 export const adjustCommentsOnSortedNodes = (
     nodes: ImportDeclaration[],
     finalNodes: ImportOrLine[],
 ) => {
-    // maintain a copy of the nodes to extract comments from
+    // We will mutate a copy of the finalNodes, and extract comments from the original
     const finalNodesClone = finalNodes.map(clone);
 
     const firstNodesComments = nodes[0].leadingComments;
 
     // Remove all comments from sorted nodes
-    finalNodes.forEach(removeComments);
+    finalNodesClone.forEach(removeComments);
 
     // insert comments other than the first comments
-    finalNodes.forEach((node, index) => {
+    finalNodesClone.forEach((node, index) => {
         if (isEqual(nodes[0].loc, node.loc)) return;
 
-        addComments(
-            node,
-            'leading',
-            finalNodesClone[index].leadingComments || [],
-        );
+        addComments(node, 'leading', finalNodes[index].leadingComments || []);
     });
 
     if (firstNodesComments) {
-        addComments(finalNodes[0], 'leading', firstNodesComments);
+        addComments(finalNodesClone[0], 'leading', firstNodesComments);
     }
+
+    return finalNodesClone;
 };

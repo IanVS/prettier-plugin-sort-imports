@@ -62,7 +62,5 @@ export const getSortedNodes: GetSortedNodes = (
     }
 
     // Adjust the comments on the sorted nodes to match the original comments
-    adjustCommentsOnSortedNodes(nodes, finalNodes);
-
-    return finalNodes;
+    return adjustCommentsOnSortedNodes(nodes, finalNodes);
 };
