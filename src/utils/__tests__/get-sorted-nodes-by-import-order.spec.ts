@@ -15,6 +15,7 @@ import k, { kE, kB } from 'k';
 import * as a from 'a';
 import * as x from 'x';
 import path from 'path';
+import url from 'node:url';
 import BY from 'BY';
 import Ba from 'Ba';
 import XY from 'XY';
@@ -41,6 +42,7 @@ test('it returns all sorted nodes', () => {
         'c',
         'g',
         'k',
+        'node:url',
         'path',
         't',
         'x',
@@ -61,6 +63,7 @@ test('it returns all sorted nodes', () => {
         ['c', 'cD'],
         ['g'],
         ['k', 'kE', 'kB'],
+        ['url'],
         ['path'],
         ['tC', 'tA', 'tB'],
         ['x'],
@@ -86,6 +89,7 @@ test('it returns all sorted nodes case-insensitive', () => {
         'c',
         'g',
         'k',
+        'node:url',
         'path',
         't',
         'x',
@@ -106,6 +110,7 @@ test('it returns all sorted nodes case-insensitive', () => {
         ['c', 'cD'],
         ['g'],
         ['k', 'kE', 'kB'],
+        ['url'],
         ['path'],
         ['tC', 'tA', 'tB'],
         ['x'],
@@ -131,6 +136,7 @@ test('it returns all sorted nodes with sort order', () => {
         'Xa',
         'c',
         'g',
+        'node:url',
         'path',
         'x',
         'z',
@@ -151,6 +157,7 @@ test('it returns all sorted nodes with sort order', () => {
         ['Xa'],
         ['c', 'cD'],
         ['g'],
+        ['url'],
         ['path'],
         ['x'],
         ['z'],
@@ -175,6 +182,7 @@ test('it returns all sorted nodes with sort order case-insensitive', () => {
     expect(getSortedNodesNames(sorted)).toEqual([
         'c',
         'g',
+        'node:url',
         'path',
         'x',
         'Xa',
@@ -195,6 +203,7 @@ test('it returns all sorted nodes with sort order case-insensitive', () => {
     ).toEqual([
         ['c', 'cD'],
         ['g'],
+        ['url'],
         ['path'],
         ['x'],
         ['Xa'],
@@ -223,6 +232,7 @@ test('it returns all sorted import nodes with sorted import specifiers', () => {
         'Xa',
         'c',
         'g',
+        'node:url',
         'path',
         'x',
         'z',
@@ -243,6 +253,7 @@ test('it returns all sorted import nodes with sorted import specifiers', () => {
         ['Xa'],
         ['c', 'cD'],
         ['g'],
+        ['url'],
         ['path'],
         ['x'],
         ['z'],
@@ -267,6 +278,7 @@ test('it returns all sorted import nodes with sorted import specifiers with case
     expect(getSortedNodesNames(sorted)).toEqual([
         'c',
         'g',
+        'node:url',
         'path',
         'x',
         'Xa',
@@ -287,6 +299,7 @@ test('it returns all sorted import nodes with sorted import specifiers with case
     ).toEqual([
         ['c', 'cD'],
         ['g'],
+        ['url'],
         ['path'],
         ['x'],
         ['Xa'],
@@ -316,6 +329,7 @@ test('it returns all sorted nodes with custom third party modules', () => {
         'BY',
         'c',
         'g',
+        'node:url',
         'path',
         'x',
         'Xa',
@@ -347,6 +361,7 @@ test('it returns all sorted nodes with namespace specifiers at the top', () => {
         'c',
         'g',
         'k',
+        'node:url',
         'path',
         't',
         'z',
@@ -365,6 +380,7 @@ test('it returns all sorted nodes with builtin specifiers at the top, ', () => {
     }) as ImportDeclaration[];
 
     expect(getSortedNodesNames(sorted)).toEqual([
+        'node:url',
         'path',
         'BY',
         'Ba',
