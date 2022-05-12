@@ -70,6 +70,10 @@ export const getSortedNodesByImportOrder: GetSortedNodes = (nodes, options) => {
     for (const group of importOrder) {
         // If it's a custom separator, all we need to do is add a newline
         if (isCustomGroupSeparator(group)) {
+            // Don't add multiple newlines
+            if (isLastNodeANewline(finalNodes)) {
+                continue;
+            }
             finalNodes.push(newLineNode);
             continue;
         }
@@ -105,4 +109,9 @@ export const getSortedNodesByImportOrder: GetSortedNodes = (nodes, options) => {
  */
 function isCustomGroupSeparator(pattern: string) {
     return pattern.trim() === '';
+}
+
+function isLastNodeANewline(nodes: ImportOrLine[]) {
+    const lastNode = nodes[nodes.length - 1];
+    return lastNode?.type === 'ExpressionStatement';
 }

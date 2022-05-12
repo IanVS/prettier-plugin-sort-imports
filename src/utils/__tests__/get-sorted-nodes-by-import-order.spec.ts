@@ -560,10 +560,48 @@ test('it allows both importOrderSeparation and custom separation (but why?)', ()
         '',
         't',
         '',
-        '',
         'k',
         '',
         './local',
         '',
+    ]);
+});
+
+test('it does not add multiple custom import separators', () => {
+    const result = getImportNodes(code);
+    const sorted = getSortedNodesByImportOrder(result, {
+        importOrder: [
+            '^a$',
+            '<THIRD_PARTY_MODULES>',
+            '^t$',
+            '',
+            'notfound',
+            '',
+            '^k$',
+            '^[./]',
+        ],
+        importOrderSeparation: false,
+        importOrderCaseInsensitive: true,
+        importOrderGroupNamespaceSpecifiers: false,
+        importOrderSortSpecifiers: false,
+        importOrderBuiltinModulesToTop: false,
+    }) as ImportDeclaration[];
+    expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
+        'a',
+        'Ba',
+        'BY',
+        'c',
+        'g',
+        'node:fs/promises',
+        'node:url',
+        'path',
+        'x',
+        'Xa',
+        'XY',
+        'z',
+        't',
+        '',
+        'k',
+        './local',
     ]);
 });
