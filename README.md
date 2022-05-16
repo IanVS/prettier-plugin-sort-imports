@@ -228,7 +228,7 @@ importOrderParserPlugins: []
 
 A boolean value to enable sorting of [`node builtins`](https://nodejs.org/api/module.html#modulebuiltinmodules) to the top of all import groups.
 
-### How does import sort work ?
+### How does import sort work?
 
 The plugin extracts the imports which are defined in `importOrder`. These imports are considered as _local imports_.
 The imports which are not part of the `importOrder` is considered as _third party imports_.
@@ -272,7 +272,7 @@ The _third party imports_ position (it's top by default) can be overridden using
 
 ## FAQ / Troubleshooting
 
-Having some trouble or an issue ? You can check [FAQ / Troubleshooting section](./docs/TROUBLESHOOTING.md).
+Having some trouble or an issue? You can check [FAQ / Troubleshooting section](./docs/TROUBLESHOOTING.md).
 
 ## Compatibility
 
