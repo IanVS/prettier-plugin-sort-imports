@@ -217,7 +217,7 @@ with options as a JSON string of the plugin array:
 **To disable default plugins for babel parser, pass an empty array**:
 
 ```json
-importOrderParserPlugins: []
+"importOrderParserPlugins": []
 ```
 
 #### `importOrderBuiltinModulesToTop`
