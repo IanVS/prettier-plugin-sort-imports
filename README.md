@@ -118,14 +118,14 @@ entire import statements can be ignored, line comments (`// prettier-ignore`) ar
 
 A collection of Regular expressions in string format.
 
-```
+```json
 "importOrder": ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
 ```
 
 _Default behavior:_ The plugin moves the third party imports to the top which are not part of the `importOrder` list.
 To move the third party imports at desired place, you can use `<THIRD_PARTY_MODULES>` to assign third party imports to the appropriate position:
 
-```
+```json
 "importOrder": ["^@core/(.*)$", "<THIRD_PARTY_MODULES>", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
 ```
 
@@ -138,7 +138,7 @@ To move the third party imports at desired place, you can use `<THIRD_PARTY_MODU
 A boolean value to enable or disable the new line separation
 between sorted import declarations group. The separation takes place according to the `importOrder`.
 
-```
+```json
 "importOrderSeparation": true,
 ```
 
@@ -169,14 +169,14 @@ used to order imports within each match group.
 
 For example, when false (or not specified):
 
-```ecmascript 6
+```javascript
 import ExampleView from './ExampleView';
 import ExamplesList from './ExamplesList';
 ```
 
 compared with `"importOrderCaseInsensitive": true`:
 
-```ecmascript 6
+```javascript
 import ExamplesList from './ExamplesList';
 import ExampleView from './ExampleView';
 ```
@@ -195,7 +195,7 @@ you can use this field to enforce the usage of the plugins' babel parser needs.
 
 **To pass the plugins to babel parser**:
 
-```
+```json
   "importOrderParserPlugins" : ["classProperties", "decorators-legacy"]
 ```
 
@@ -203,13 +203,13 @@ you can use this field to enforce the usage of the plugins' babel parser needs.
 with options as a JSON string of the plugin array:
 `"[\"plugin-name\", { \"pluginOption\": true }]"`.
 
-```
+```json
   "importOrderParserPlugins" : ["classProperties", "[\"decorators\", { \"decoratorsBeforeExport\": true }]"]
 ```
 
 **To disable default plugins for babel parser, pass an empty array**:
 
-```
+```json
 importOrderParserPlugins: []
 ```
 
