@@ -1,8 +1,16 @@
 # Prettier plugin sort imports
 
-A prettier plugin to sort import declarations by provided Regular Expression order.  
+A prettier plugin to sort import declarations by provided Regular Expression order.
 
-This was forked from https://github.com/trivago/prettier-plugin-sort-imports.  The main difference is that this project will not change the order of your side-effect imports (see [How it works](#how-does-import-sort-work-)), to avoid breaking your styles or your code.  I will try to keep it up-to-date with the Trivago version, but it may drift apart at some point.
+This was forked from [@trivago/prettier-plugin-sort-imports](https://github.com/trivago/prettier-plugin-sort-imports).
+
+The first change was preserving the order of [side-effect imports](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#import_a_module_for_its_side_effects_only) to avoid breaking situations where import-order has correctness implications (such as styles).
+
+Since then more critical features & fixes have been added. As a result, this repo intends to stay compatible with the upstream, but may continue to gain features not present in the original version of the plugin.
+
+[We welcome contributions!](./CONTRIBUTING.md)
+
+## Sample
 
 ### Input
 
@@ -29,7 +37,6 @@ import { initializeApp } from '@core/app';
 import { Popup } from '@ui/Popup';
 import { createConnection } from '@server/database';
 ```
-
 
 ### Output
 
@@ -61,7 +68,7 @@ import { Message } from '../Message';
 import { add, filter, repeat } from '../utils';
 ```
 
-### Install
+## Install
 
 npm
 
@@ -77,7 +84,7 @@ yarn add --dev @ianvs/prettier-plugin-sort-imports
 
 **Note: If you are migrating from v2.x.x to v3.x.x, [Please Read Migration Guidelines](./docs/MIGRATION.md)**
 
-### Usage
+## Usage
 
 Add an order in prettier config file.
 
@@ -96,7 +103,7 @@ module.exports = {
 
 ### APIs
 
-### Prevent imports from being sorted
+#### Prevent imports from being sorted
 
 This plugin supports standard prettier ignore comments. By default, side-effect imports (like
 `import "core-js/stable";`) are not sorted, so in most cases things should just work. But if you ever need to, you can
@@ -118,14 +125,14 @@ entire import statements can be ignored, line comments (`// prettier-ignore`) ar
 
 A collection of Regular expressions in string format.
 
-```
+```json
 "importOrder": ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
 ```
 
 _Default behavior:_ The plugin moves the third party imports to the top which are not part of the `importOrder` list.
 To move the third party imports at desired place, you can use `<THIRD_PARTY_MODULES>` to assign third party imports to the appropriate position:
 
-```
+```json
 "importOrder": ["^@core/(.*)$", "<THIRD_PARTY_MODULES>", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
 ```
 
@@ -138,7 +145,7 @@ To move the third party imports at desired place, you can use `<THIRD_PARTY_MODU
 A boolean value to enable or disable the new line separation
 between sorted import declarations group. The separation takes place according to the `importOrder`.
 
-```
+```json
 "importOrderSeparation": true,
 ```
 
@@ -169,14 +176,14 @@ used to order imports within each match group.
 
 For example, when false (or not specified):
 
-```ecmascript 6
+```javascript
 import ExampleView from './ExampleView';
 import ExamplesList from './ExamplesList';
 ```
 
 compared with `"importOrderCaseInsensitive": true`:
 
-```ecmascript 6
+```javascript
 import ExamplesList from './ExamplesList';
 import ExampleView from './ExampleView';
 ```
@@ -195,7 +202,7 @@ you can use this field to enforce the usage of the plugins' babel parser needs.
 
 **To pass the plugins to babel parser**:
 
-```
+```json
   "importOrderParserPlugins" : ["classProperties", "decorators-legacy"]
 ```
 
@@ -203,16 +210,15 @@ you can use this field to enforce the usage of the plugins' babel parser needs.
 with options as a JSON string of the plugin array:
 `"[\"plugin-name\", { \"pluginOption\": true }]"`.
 
-```
+```json
   "importOrderParserPlugins" : ["classProperties", "[\"decorators\", { \"decoratorsBeforeExport\": true }]"]
 ```
 
 **To disable default plugins for babel parser, pass an empty array**:
 
+```json
+"importOrderParserPlugins": []
 ```
-importOrderParserPlugins: []
-```
-
 
 #### `importOrderBuiltinModulesToTop`
 
@@ -220,10 +226,9 @@ importOrderParserPlugins: []
 
 **default value:** `false`
 
-A boolean value to enable sorting of builtins to the top of all import groups.
+A boolean value to enable sorting of [`node builtins`](https://nodejs.org/api/module.html#modulebuiltinmodules) to the top of all import groups.
 
-
-### How does import sort work ?
+### How does import sort work?
 
 The plugin extracts the imports which are defined in `importOrder`. These imports are considered as _local imports_.
 The imports which are not part of the `importOrder` is considered as _third party imports_.
@@ -265,11 +270,11 @@ In the end, the plugin returns final imports with _third party imports_ on top a
 
 The _third party imports_ position (it's top by default) can be overridden using the `<THIRD_PARTY_MODULES>` special word in the `importOrder`.
 
-### FAQ / Troubleshooting
+## FAQ / Troubleshooting
 
-Having some trouble or an issue ? You can check [FAQ / Troubleshooting section](./docs/TROUBLESHOOTING.md).
+Having some trouble or an issue? You can check [FAQ / Troubleshooting section](./docs/TROUBLESHOOTING.md).
 
-### Compatibility
+## Compatibility
 
 | Framework              | Supported                | Note                                             |
 | ---------------------- | ------------------------ | ------------------------------------------------ |
@@ -280,13 +285,11 @@ Having some trouble or an issue ? You can check [FAQ / Troubleshooting section](
 | Vue                    | ⚠️ Soon to be supported. | Any contribution is welcome.                     |
 | Svelte                 | ⚠️ Soon to be supported. | Any contribution is welcome.                     |
 
-
-### Contribution
+## Contribution
 
 For more information regarding contribution, please check the [Contributing Guidelines](./CONTRIBUTING.md). If you are trying to
 debug some code in the plugin, check [Debugging Guidelines](./docs/DEBUG.md)
 
-
-### Disclaimer
+## Disclaimer
 
 This plugin modifies the AST which is against the rules of prettier.
