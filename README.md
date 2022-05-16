@@ -1,6 +1,6 @@
 # Prettier plugin sort imports
 
-A prettier plugin to sort import declarations by provided Regular Expression order.  
+A prettier plugin to sort import declarations by provided Regular Expression order.
 
 This was forked from https://github.com/trivago/prettier-plugin-sort-imports.  The main difference is that this project will not change the order of your side-effect imports (see [How it works](#how-does-import-sort-work-)), to avoid breaking your styles or your code.  I will try to keep it up-to-date with the Trivago version, but it may drift apart at some point.
 
@@ -31,7 +31,6 @@ import { initializeApp } from '@core/app';
 import { Popup } from '@ui/Popup';
 import { createConnection } from '@server/database';
 ```
-
 
 ### Output
 
@@ -215,15 +214,13 @@ with options as a JSON string of the plugin array:
 importOrderParserPlugins: []
 ```
 
-
 #### `importOrderBuiltinModulesToTop`
 
 **type**: `boolean`
 
 **default value:** `false`
 
-A boolean value to enable sorting of builtins to the top of all import groups.
-
+A boolean value to enable sorting of [`node builtins`](https://nodejs.org/api/module.html#modulebuiltinmodules) to the top of all import groups.
 
 ### How does import sort work ?
 
