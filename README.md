@@ -2,7 +2,13 @@
 
 A prettier plugin to sort import declarations by provided Regular Expression order.
 
-This was forked from https://github.com/trivago/prettier-plugin-sort-imports.  The main difference is that this project will not change the order of your side-effect imports (see [How it works](#how-does-import-sort-work-)), to avoid breaking your styles or your code.  I will try to keep it up-to-date with the Trivago version, but it may drift apart at some point.
+This was forked from [@trivago/prettier-plugin-sort-imports](https://github.com/trivago/prettier-plugin-sort-imports).
+
+The first change was preserving the order of [side-effect imports](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#import_a_module_for_its_side_effects_only) to avoid breaking situations where import-order has correctness implications (such as styles).
+
+Since then more critical features & fixes have been added. As a result, this repo intends to stay compatible with the upstream, but may continue to gain features not present in the original version of the plugin.
+
+[We welcome contributions!](./CONTRIBUTING.md)
 
 ## Sample
 
