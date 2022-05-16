@@ -4,6 +4,8 @@ A prettier plugin to sort import declarations by provided Regular Expression ord
 
 This was forked from https://github.com/trivago/prettier-plugin-sort-imports.  The main difference is that this project will not change the order of your side-effect imports (see [How it works](#how-does-import-sort-work-)), to avoid breaking your styles or your code.  I will try to keep it up-to-date with the Trivago version, but it may drift apart at some point.
 
+## Sample
+
 ### Input
 
 ```javascript
@@ -61,7 +63,7 @@ import { Message } from '../Message';
 import { add, filter, repeat } from '../utils';
 ```
 
-### Install
+## Install
 
 npm
 
@@ -77,7 +79,7 @@ yarn add --dev @ianvs/prettier-plugin-sort-imports
 
 **Note: If you are migrating from v2.x.x to v3.x.x, [Please Read Migration Guidelines](./docs/MIGRATION.md)**
 
-### Usage
+## Usage
 
 Add an order in prettier config file.
 
@@ -96,7 +98,7 @@ module.exports = {
 
 ### APIs
 
-### Prevent imports from being sorted
+#### Prevent imports from being sorted
 
 This plugin supports standard prettier ignore comments. By default, side-effect imports (like
 `import "core-js/stable";`) are not sorted, so in most cases things should just work. But if you ever need to, you can
@@ -265,11 +267,11 @@ In the end, the plugin returns final imports with _third party imports_ on top a
 
 The _third party imports_ position (it's top by default) can be overridden using the `<THIRD_PARTY_MODULES>` special word in the `importOrder`.
 
-### FAQ / Troubleshooting
+## FAQ / Troubleshooting
 
 Having some trouble or an issue ? You can check [FAQ / Troubleshooting section](./docs/TROUBLESHOOTING.md).
 
-### Compatibility
+## Compatibility
 
 | Framework              | Supported                | Note                                             |
 | ---------------------- | ------------------------ | ------------------------------------------------ |
@@ -280,13 +282,11 @@ Having some trouble or an issue ? You can check [FAQ / Troubleshooting section](
 | Vue                    | ⚠️ Soon to be supported. | Any contribution is welcome.                     |
 | Svelte                 | ⚠️ Soon to be supported. | Any contribution is welcome.                     |
 
-
-### Contribution
+## Contribution
 
 For more information regarding contribution, please check the [Contributing Guidelines](./CONTRIBUTING.md). If you are trying to
 debug some code in the plugin, check [Debugging Guidelines](./docs/DEBUG.md)
 
-
-### Disclaimer
+## Disclaimer
 
 This plugin modifies the AST which is against the rules of prettier.
