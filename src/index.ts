@@ -46,6 +46,12 @@ const options = {
         default: false,
         description: 'Should specifiers be sorted?',
     },
+    importOrderBuiltinModulesToTop: {
+        type: 'boolean',
+        category: 'Global',
+        default: false,
+        description: 'Should node-builtins be hoisted to the top?',
+    },
 };
 
 module.exports = {
