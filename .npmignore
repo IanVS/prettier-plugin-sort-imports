@@ -2,6 +2,7 @@
 src/
 tests/
 test-setup/
+lib/src/utils/__tests__
 examples/
 docs/
 public/
