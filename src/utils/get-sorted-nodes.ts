@@ -1,4 +1,4 @@
-import { chunkTypeOther, chunkTypeUnsortable, newLineNode } from '../constants';
+import { chunkTypeUnsortable, newLineNode } from '../constants';
 import { GetSortedNodes, ImportChunk, ImportOrLine } from '../types';
 import { adjustCommentsOnSortedNodes } from './adjust-comments-on-sorted-nodes';
 import { getChunkTypeOfNode } from './get-chunk-type-of-node';
@@ -62,7 +62,5 @@ export const getSortedNodes: GetSortedNodes = (
     }
 
     // Adjust the comments on the sorted nodes to match the original comments
-    adjustCommentsOnSortedNodes(nodes, finalNodes);
-
-    return finalNodes;
+    return adjustCommentsOnSortedNodes(nodes, finalNodes);
 };

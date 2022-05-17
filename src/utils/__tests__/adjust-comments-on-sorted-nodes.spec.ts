@@ -1,13 +1,12 @@
-import { ImportDeclaration } from '@babel/types';
-
+import type { ImportOrLine } from '../../types';
 import { adjustCommentsOnSortedNodes } from '../adjust-comments-on-sorted-nodes';
 import { getImportNodes } from '../get-import-nodes';
 
-function leadingComments(node: ImportDeclaration): string[] {
+function leadingComments(node: ImportOrLine): string[] {
     return node.leadingComments?.map((c) => c.value) ?? [];
 }
 
-function trailingComments(node: ImportDeclaration): string[] {
+function trailingComments(node: ImportOrLine): string[] {
     return node.trailingComments?.map((c) => c.value) ?? [];
 }
 
@@ -21,14 +20,14 @@ test('it preserves the single leading comment for each import declaration', () =
     `);
     expect(importNodes).toHaveLength(3);
     const finalNodes = [importNodes[2], importNodes[1], importNodes[0]];
-    adjustCommentsOnSortedNodes(importNodes, finalNodes);
-    expect(finalNodes).toHaveLength(3);
-    expect(leadingComments(finalNodes[0])).toEqual([' comment a']);
-    expect(trailingComments(finalNodes[0])).toEqual([]);
-    expect(leadingComments(finalNodes[1])).toEqual([' comment b']);
-    expect(trailingComments(finalNodes[1])).toEqual([]);
-    expect(leadingComments(finalNodes[2])).toEqual([]);
-    expect(trailingComments(finalNodes[2])).toEqual([]);
+    const adjustedNodes = adjustCommentsOnSortedNodes(importNodes, finalNodes);
+    expect(adjustedNodes).toHaveLength(3);
+    expect(leadingComments(adjustedNodes[0])).toEqual([' comment a']);
+    expect(trailingComments(adjustedNodes[0])).toEqual([]);
+    expect(leadingComments(adjustedNodes[1])).toEqual([' comment b']);
+    expect(trailingComments(adjustedNodes[1])).toEqual([]);
+    expect(leadingComments(adjustedNodes[2])).toEqual([]);
+    expect(trailingComments(adjustedNodes[2])).toEqual([]);
 });
 
 test('it preserves multiple leading comments for each import declaration', () => {
@@ -45,22 +44,22 @@ test('it preserves multiple leading comments for each import declaration', () =>
     `);
     expect(importNodes).toHaveLength(3);
     const finalNodes = [importNodes[2], importNodes[1], importNodes[0]];
-    adjustCommentsOnSortedNodes(importNodes, finalNodes);
-    expect(finalNodes).toHaveLength(3);
-    expect(leadingComments(finalNodes[0])).toEqual([
+    const adjustedNodes = adjustCommentsOnSortedNodes(importNodes, finalNodes);
+    expect(adjustedNodes).toHaveLength(3);
+    expect(leadingComments(adjustedNodes[0])).toEqual([
         ' comment a1',
         ' comment a2',
         ' comment a3',
     ]);
-    expect(trailingComments(finalNodes[0])).toEqual([]);
-    expect(leadingComments(finalNodes[1])).toEqual([
+    expect(trailingComments(adjustedNodes[0])).toEqual([]);
+    expect(leadingComments(adjustedNodes[1])).toEqual([
         ' comment b1',
         ' comment b2',
         ' comment b3',
     ]);
-    expect(trailingComments(finalNodes[1])).toEqual([]);
-    expect(leadingComments(finalNodes[2])).toEqual([]);
-    expect(trailingComments(finalNodes[2])).toEqual([]);
+    expect(trailingComments(adjustedNodes[1])).toEqual([]);
+    expect(leadingComments(adjustedNodes[2])).toEqual([]);
+    expect(trailingComments(adjustedNodes[2])).toEqual([]);
 });
 
 test('it does not move comments at before all import declarations', () => {
@@ -73,17 +72,17 @@ test('it does not move comments at before all import declarations', () => {
     `);
     expect(importNodes).toHaveLength(3);
     const finalNodes = [importNodes[2], importNodes[1], importNodes[0]];
-    adjustCommentsOnSortedNodes(importNodes, finalNodes);
-    expect(finalNodes).toHaveLength(3);
-    expect(leadingComments(finalNodes[0])).toEqual([
+    const adjustedNodes = adjustCommentsOnSortedNodes(importNodes, finalNodes);
+    expect(adjustedNodes).toHaveLength(3);
+    expect(leadingComments(adjustedNodes[0])).toEqual([
         ' comment c1',
         ' comment c2',
     ]);
-    expect(trailingComments(finalNodes[0])).toEqual([]);
-    expect(leadingComments(finalNodes[1])).toEqual([]);
-    expect(trailingComments(finalNodes[1])).toEqual([]);
-    expect(leadingComments(finalNodes[2])).toEqual([]);
-    expect(trailingComments(finalNodes[2])).toEqual([]);
+    expect(trailingComments(adjustedNodes[0])).toEqual([]);
+    expect(leadingComments(adjustedNodes[1])).toEqual([]);
+    expect(trailingComments(adjustedNodes[1])).toEqual([]);
+    expect(leadingComments(adjustedNodes[2])).toEqual([]);
+    expect(trailingComments(adjustedNodes[2])).toEqual([]);
 });
 
 test('it does not affect comments after all import declarations', () => {
@@ -96,12 +95,12 @@ test('it does not affect comments after all import declarations', () => {
     `);
     expect(importNodes).toHaveLength(3);
     const finalNodes = [importNodes[2], importNodes[1], importNodes[0]];
-    adjustCommentsOnSortedNodes(importNodes, finalNodes);
-    expect(finalNodes).toHaveLength(3);
-    expect(leadingComments(finalNodes[0])).toEqual([]);
-    expect(trailingComments(finalNodes[0])).toEqual([]);
-    expect(leadingComments(finalNodes[1])).toEqual([]);
-    expect(trailingComments(finalNodes[1])).toEqual([]);
-    expect(leadingComments(finalNodes[2])).toEqual([]);
-    expect(trailingComments(finalNodes[2])).toEqual([]);
+    const adjustedNodes = adjustCommentsOnSortedNodes(importNodes, finalNodes);
+    expect(adjustedNodes).toHaveLength(3);
+    expect(leadingComments(adjustedNodes[0])).toEqual([]);
+    expect(trailingComments(adjustedNodes[0])).toEqual([]);
+    expect(leadingComments(adjustedNodes[1])).toEqual([]);
+    expect(trailingComments(adjustedNodes[1])).toEqual([]);
+    expect(leadingComments(adjustedNodes[2])).toEqual([]);
+    expect(trailingComments(adjustedNodes[2])).toEqual([]);
 });
