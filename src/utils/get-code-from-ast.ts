@@ -9,23 +9,32 @@ import { removeNodesFromOriginalCode } from './remove-nodes-from-original-code';
  * This function generate a code string from the passed nodes.
  * @param nodes All imports, in the sorted order in which they should appear in
  * the generated code.
+ * @param importNodes All nodes that were originally relevant. (This includes nodes that need to be deleted!)
  * @param originalCode The original input code that was passed to this plugin.
  * @param directives All directive prologues from the original code (e.g.
  * `"use strict";`).
  * @param interpreter Optional interpreter directives, if present (e.g.
  * `#!/bin/node`).
  */
-export const getCodeFromAst = (
-    nodes: Statement[],
-    originalCode: string,
-    directives: Directive[],
-    interpreter?: InterpreterDirective | null,
-) => {
+export const getCodeFromAst = ({
+    nodes,
+    importNodes = nodes,
+    originalCode,
+    directives,
+    interpreter,
+}: {
+    nodes: Statement[];
+    importNodes?: Statement[];
+    originalCode: string;
+    directives: Directive[];
+    interpreter?: InterpreterDirective | null;
+}) => {
     const allCommentsFromImports = getAllCommentsFromNodes(nodes);
     const allCommentsFromDirectives = getAllCommentsFromNodes(directives);
 
     const nodesToRemoveFromCode = [
         ...nodes,
+        ...importNodes,
         ...allCommentsFromImports,
         ...allCommentsFromDirectives,
         ...(interpreter ? [interpreter] : []),

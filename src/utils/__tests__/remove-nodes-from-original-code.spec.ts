@@ -23,11 +23,11 @@ test('it should remove nodes from the original code', () => {
     const importNodes = getImportNodes(code);
     const sortedNodes = getSortedNodes(importNodes, {
         importOrder: [],
-        importOrderCaseInsensitive: false,
-        importOrderSeparation: false,
-        importOrderGroupNamespaceSpecifiers: false,
-        importOrderSortSpecifiers: false,
         importOrderBuiltinModulesToTop: false,
+        importOrderCaseInsensitive: false,
+        importOrderGroupNamespaceSpecifiers: false,
+        importOrderSeparation: false,
+        importOrderSortSpecifiers: false,
     });
     const allCommentsFromImports = getAllCommentsFromNodes(sortedNodes);
 

@@ -11,11 +11,11 @@ export function preprocessor(code: string, options: PrettierOptions): string {
     const {
         importOrderParserPlugins,
         importOrder,
-        importOrderCaseInsensitive,
-        importOrderSeparation,
-        importOrderGroupNamespaceSpecifiers,
-        importOrderSortSpecifiers,
         importOrderBuiltinModulesToTop,
+        importOrderCaseInsensitive,
+        importOrderGroupNamespaceSpecifiers,
+        importOrderSeparation,
+        importOrderSortSpecifiers,
     } = options;
 
     const importNodes: ImportDeclaration[] = [];
@@ -40,19 +40,25 @@ export function preprocessor(code: string, options: PrettierOptions): string {
         },
     });
 
-    // short-circuit if there are no import declaration
+    // short-circuit if there are no import declarations
     if (importNodes.length === 0) {
         return code;
     }
 
-    const allImports = getSortedNodes(importNodes, {
+    const remainingImports = getSortedNodes(importNodes, {
         importOrder,
-        importOrderCaseInsensitive,
-        importOrderSeparation,
-        importOrderGroupNamespaceSpecifiers,
-        importOrderSortSpecifiers,
         importOrderBuiltinModulesToTop,
+        importOrderCaseInsensitive,
+        importOrderGroupNamespaceSpecifiers,
+        importOrderSeparation,
+        importOrderSortSpecifiers,
     });
 
-    return getCodeFromAst(allImports, code, directives, interpreter);
+    return getCodeFromAst({
+        nodes: remainingImports,
+        importNodes,
+        originalCode: code,
+        directives,
+        interpreter,
+    });
 }
