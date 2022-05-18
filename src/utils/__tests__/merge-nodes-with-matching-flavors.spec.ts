@@ -41,6 +41,7 @@ it('should merge duplicate imports within a given chunk', () => {
         importOrderCaseInsensitive: false,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: true,
+        importOrderMergeTypeImportsIntoRegular: false,
         importOrderSeparation: true,
         importOrderSortSpecifiers: true,
     });
@@ -80,6 +81,53 @@ it('should merge duplicate imports within a given chunk', () => {
         "
     `);
 });
+it('should type imports into regular imports if desired', () => {
+    const code = `
+    // Preserves 'import type'
+    import type { A1 } from 'a';
+    import type { A2 } from 'a';
+    // Preserves 'import value'
+    import { B1 } from 'b';
+    import { B2 } from 'b';
+    // Converts 'import type' to 'import value' if first
+    import type { C1 } from 'c';
+    import { C2 } from 'c';
+    // Converts 'import type' to 'import value' if last
+    import { D1 } from 'd';
+    import type { D2 } from 'd';
+    `;
+    const importNodes = getImportNodes(code, { plugins: ['typescript'] });
+
+    const sortedNodes = getSortedNodes(importNodes, {
+        importOrder: [],
+        importOrderBuiltinModulesToTop: false,
+        importOrderCaseInsensitive: false,
+        importOrderGroupNamespaceSpecifiers: false,
+        importOrderMergeDuplicateImports: true,
+        importOrderMergeTypeImportsIntoRegular: true,
+        importOrderSeparation: true,
+        importOrderSortSpecifiers: true,
+    });
+    const formatted = getCodeFromAst({
+        nodes: sortedNodes,
+        importNodes,
+        originalCode: code,
+        directives: [],
+    });
+
+    expect(format(formatted, { parser: 'babel' })).toMatchInlineSnapshot(`
+        "// Preserves 'import type'
+        import type { A1, A2 } from \\"a\\";
+        // Preserves 'import value'
+        import { B1, B2 } from \\"b\\";
+        // Converts 'import type' to 'import value' if first
+        import { type C1, C2 } from \\"c\\";
+        // Converts 'import type' to 'import value' if last
+        import { D1, type D2 } from \\"d\\";
+        "
+    `);
+});
+
 it("doesn't merge duplicate imports if option disabled", () => {
     const code = `
     import type { A } from 'a';
@@ -117,6 +165,7 @@ it("doesn't merge duplicate imports if option disabled", () => {
         importOrderCaseInsensitive: false,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
+        importOrderMergeTypeImportsIntoRegular: false,
         importOrderSeparation: true,
         importOrderSortSpecifiers: true,
     });

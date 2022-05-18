@@ -5,6 +5,7 @@ import type {
     ImportNamespaceSpecifier,
     ImportSpecifier,
 } from '@babel/types';
+import assert from 'assert';
 
 import {
     importFlavorRegular,
@@ -51,6 +52,25 @@ function nodeIsImportDefaultSpecifier(
 ): node is ImportDefaultSpecifier {
     return node.type === 'ImportDefaultSpecifier';
 }
+function nodeIsImportSpecifier(
+    node: ImportSpecifier | ImportDefaultSpecifier | ImportNamespaceSpecifier,
+): node is ImportSpecifier {
+    return node.type === 'ImportSpecifier';
+}
+
+function convertImportSpecifierType(node: ImportSpecifier) {
+    assert(node.importKind === 'value' || node.importKind === 'type');
+    node.importKind = 'type';
+}
+
+/** Pushes an `import type` expression into `import { type …}` */
+function convertTypeImportToValueImport(node: ImportDeclaration) {
+    assert(node.importKind === 'type');
+    node.importKind = 'value';
+    node.specifiers
+        .filter(nodeIsImportSpecifier)
+        .forEach(convertImportSpecifierType);
+}
 
 /** Return false if the merge will produce an invalid result */
 function mergeIsSafe(
@@ -89,6 +109,18 @@ function mergeNodes(
 ) {
     if (!mergeIsSafe(nodeToKeep, nodeToForget)) {
         return false;
+    }
+
+    if (
+        nodeToKeep.importKind === 'type' &&
+        nodeToForget.importKind === 'value'
+    ) {
+        convertTypeImportToValueImport(nodeToKeep);
+    } else if (
+        nodeToKeep.importKind === 'value' &&
+        nodeToForget.importKind === 'type'
+    ) {
+        convertTypeImportToValueImport(nodeToForget);
     }
 
     nodeToKeep.specifiers.push(...nodeToForget.specifiers);
@@ -144,14 +176,17 @@ function mutateContextAndMerge({
  * `import type {Foo}` expressions won't be converted into `import {type Foo}` or vice versa
  */
 export const mergeNodesWithMatchingImportFlavors: MergeNodesWithMatchingImportFlavors =
-    (input) => {
+    (input, { importOrderMergeTypeImportsIntoRegular }) => {
         const nodesToDelete: ImportDeclaration[] = [];
 
-        for (const group of Object.values(
-            selectMergeableNodesByImportFlavor(input),
-        )) {
-            // Defined in loop to reset so we don't merge across groups
-            const context: Record<string, ImportDeclaration> = {};
+        let context: Record<string, ImportDeclaration> = {};
+        const groups = selectMergeableNodesByImportFlavor(input);
+        for (const groupKey of mergeableImportFlavors) {
+            if (!importOrderMergeTypeImportsIntoRegular) {
+                // Reset in loop to avoid unintended merge across variants
+                context = {};
+            }
+            const group = groups[groupKey as keyof typeof groups];
 
             for (const insertableNode of group) {
                 mutateContextAndMerge({

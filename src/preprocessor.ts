@@ -15,9 +15,19 @@ export function preprocessor(code: string, options: PrettierOptions): string {
         importOrderCaseInsensitive,
         importOrderGroupNamespaceSpecifiers,
         importOrderMergeDuplicateImports,
+        importOrderMergeTypeImportsIntoRegular,
         importOrderSeparation,
         importOrderSortSpecifiers,
     } = options;
+
+    if (
+        importOrderMergeTypeImportsIntoRegular &&
+        !importOrderMergeDuplicateImports
+    ) {
+        console.warn(
+            "[@ianvs/prettier-plugin-sort-imports]: Option combination of both importOrderMergeTypeImportsIntoRegular: true and importOrderMergeDuplicateImports: false is not won't do anything!",
+        );
+    }
 
     const importNodes: ImportDeclaration[] = [];
     const parserOptions: ParserOptions = {
@@ -52,6 +62,7 @@ export function preprocessor(code: string, options: PrettierOptions): string {
         importOrderCaseInsensitive,
         importOrderGroupNamespaceSpecifiers,
         importOrderMergeDuplicateImports,
+        importOrderMergeTypeImportsIntoRegular,
         importOrderSeparation,
         importOrderSortSpecifiers,
     });

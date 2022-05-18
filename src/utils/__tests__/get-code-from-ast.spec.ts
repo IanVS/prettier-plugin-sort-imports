@@ -21,6 +21,7 @@ import a from 'a';
         importOrderCaseInsensitive: false,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
+        importOrderMergeTypeImportsIntoRegular: false,
         importOrderSeparation: false,
         importOrderSortSpecifiers: false,
     });
@@ -60,6 +61,7 @@ import {b} from 'a';
         importOrderCaseInsensitive: false,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: true,
+        importOrderMergeTypeImportsIntoRegular: false,
         importOrderSeparation: false,
         importOrderSortSpecifiers: false,
     });

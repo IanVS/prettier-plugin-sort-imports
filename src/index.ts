@@ -72,6 +72,13 @@ const options: Record<
         default: false,
         description: 'Should duplicate imports be merged?',
     },
+    importOrderMergeTypeImportsIntoRegular: {
+        type: 'boolean',
+        category: 'Global',
+        default: false,
+        description:
+            'Should import-type expressions be merged into import-value expressions?',
+    },
 };
 
 module.exports = {

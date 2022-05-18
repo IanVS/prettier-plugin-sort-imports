@@ -14,6 +14,7 @@ const getSortedImportNodes = (code: string, options?: ParserOptions) => {
         importOrderCaseInsensitive: false,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
+        importOrderMergeTypeImportsIntoRegular: false,
         importOrderSeparation: false,
         importOrderSortSpecifiers: false,
     });

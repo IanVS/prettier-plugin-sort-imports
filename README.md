@@ -100,6 +100,7 @@ module.exports = {
   "importOrderCaseInsensitive": true,
   "importOrderParserPlugins": ["typescript", "jsx", "decorators-legacy"],
   "importOrderMergeDuplicateImports": true,
+  "importOrderMergeTypeImportsIntoRegular": true,
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,
 }
@@ -216,7 +217,29 @@ import ExampleView from './ExampleView';
 
 **default value:** `false`
 
-A boolean value to enable or disable multiple import statements referencing the same source. Not all patterns can be merged! Notably: `import type …` will not be converted to `import {type …` or vice-versa.
+A boolean value to enable or disable multiple import statements referencing the same source. Not all patterns can be merged! See also [`importOrderMergeTypeImportsIntoRegular`](#importordermergetypeimportsintoregular)
+
+#### `importOrderMergeTypeImportsIntoRegular`
+
+**type**: `boolean`
+
+**default value:** `false`
+
+A boolean value to control merging `import type` expressions into `import {…}`.
+
+```diff
+- import type { C1 } from 'c';
+- import { C2 } from 'c';
++ import { type C1, C2 } from "c";
+
+- import { D1 } from 'd';
+- import type { D2 } from 'd';
++ import { D1, type D2 } from "d";
+
+- import type { A1 } from 'a';
+- import type { A2 } from 'a';
++ import type { A1, A2 } from "a";
+```
 
 #### `importOrderParserPlugins`
 
