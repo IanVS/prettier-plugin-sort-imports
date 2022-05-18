@@ -4,6 +4,17 @@ import { getCodeFromAst } from '../get-code-from-ast';
 import { getImportNodes } from '../get-import-nodes';
 import { getSortedNodes } from '../get-sorted-nodes';
 
+const defaultOptions = {
+    importOrder: [],
+    importOrderBuiltinModulesToTop: false,
+    importOrderCaseInsensitive: false,
+    importOrderGroupNamespaceSpecifiers: false,
+    importOrderMergeDuplicateImports: false,
+    importOrderMergeTypeImportsIntoRegular: false,
+    importOrderSeparation: true,
+    importOrderSortSpecifiers: true,
+};
+
 it('should merge duplicate imports within a given chunk', () => {
     const code = `
     import type { A } from 'a';
@@ -36,14 +47,9 @@ it('should merge duplicate imports within a given chunk', () => {
     const importNodes = getImportNodes(code, { plugins: ['typescript'] });
 
     const sortedNodes = getSortedNodes(importNodes, {
-        importOrder: [],
-        importOrderBuiltinModulesToTop: false,
-        importOrderCaseInsensitive: false,
-        importOrderGroupNamespaceSpecifiers: false,
+        ...defaultOptions,
         importOrderMergeDuplicateImports: true,
         importOrderMergeTypeImportsIntoRegular: false,
-        importOrderSeparation: true,
-        importOrderSortSpecifiers: true,
     });
     const formatted = getCodeFromAst({
         nodes: sortedNodes,
@@ -81,7 +87,7 @@ it('should merge duplicate imports within a given chunk', () => {
         "
     `);
 });
-it('should type imports into regular imports if desired', () => {
+it('should merge type imports into regular imports', () => {
     const code = `
     // Preserves 'import type'
     import type { A1 } from 'a';
@@ -99,14 +105,9 @@ it('should type imports into regular imports if desired', () => {
     const importNodes = getImportNodes(code, { plugins: ['typescript'] });
 
     const sortedNodes = getSortedNodes(importNodes, {
-        importOrder: [],
-        importOrderBuiltinModulesToTop: false,
-        importOrderCaseInsensitive: false,
-        importOrderGroupNamespaceSpecifiers: false,
+        ...defaultOptions,
         importOrderMergeDuplicateImports: true,
         importOrderMergeTypeImportsIntoRegular: true,
-        importOrderSeparation: true,
-        importOrderSortSpecifiers: true,
     });
     const formatted = getCodeFromAst({
         nodes: sortedNodes,
@@ -156,19 +157,10 @@ it("doesn't merge duplicate imports if option disabled", () => {
     import { default as Def1 } from 'd';
     import Foo1 from 'e';
     import Foo2 from 'e';
-    `;
+`;
     const importNodes = getImportNodes(code, { plugins: ['typescript'] });
 
-    const sortedNodes = getSortedNodes(importNodes, {
-        importOrder: [],
-        importOrderBuiltinModulesToTop: false,
-        importOrderCaseInsensitive: false,
-        importOrderGroupNamespaceSpecifiers: false,
-        importOrderMergeDuplicateImports: false,
-        importOrderMergeTypeImportsIntoRegular: false,
-        importOrderSeparation: true,
-        importOrderSortSpecifiers: true,
-    });
+    const sortedNodes = getSortedNodes(importNodes, defaultOptions);
     const formatted = getCodeFromAst({
         nodes: sortedNodes,
         importNodes,
