@@ -88,7 +88,7 @@ yarn add --dev @ianvs/prettier-plugin-sort-imports
 
 Add an order in prettier config file.
 
-```ecmascript 6
+```javascript
 module.exports = {
   "printWidth": 80,
   "tabWidth": 4,
