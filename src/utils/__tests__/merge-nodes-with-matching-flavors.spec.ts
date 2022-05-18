@@ -128,6 +128,184 @@ it('should merge type imports into regular imports', () => {
         "
     `);
 });
+it('should combine type import and default import', () => {
+    const code = `
+import type {MyType} from './source';
+import defaultValue from './source';
+`;
+    const importNodes = getImportNodes(code, { plugins: ['typescript'] });
+
+    const sortedNodes = getSortedNodes(importNodes, {
+        ...defaultOptions,
+        importOrderMergeDuplicateImports: true,
+        importOrderMergeTypeImportsIntoRegular: true,
+    });
+    const formatted = getCodeFromAst({
+        nodes: sortedNodes,
+        importNodes,
+        originalCode: code,
+        directives: [],
+    });
+
+    expect(format(formatted, { parser: 'babel' })).toMatchInlineSnapshot(`
+        "import defaultValue, { type MyType } from \\"./source\\";
+        "
+    `);
+});
+it('should not combine type import and namespace import', () => {
+    const code = `
+import type {MyType} from './source';
+import * as Namespace from './source';
+`;
+    const importNodes = getImportNodes(code, { plugins: ['typescript'] });
+
+    const sortedNodes = getSortedNodes(importNodes, {
+        ...defaultOptions,
+        importOrderMergeDuplicateImports: true,
+        importOrderMergeTypeImportsIntoRegular: true,
+    });
+    const formatted = getCodeFromAst({
+        nodes: sortedNodes,
+        importNodes,
+        originalCode: code,
+        directives: [],
+    });
+
+    expect(format(formatted, { parser: 'babel' })).toMatchInlineSnapshot(`
+        "import type { MyType } from \\"./source\\";
+        import * as Namespace from \\"./source\\";
+        "
+    `);
+});
+it('should support aliased named imports', () => {
+    const code = `
+import type {MyType} from './source';
+import {value as alias} from './source';
+`;
+    const importNodes = getImportNodes(code, { plugins: ['typescript'] });
+
+    const sortedNodes = getSortedNodes(importNodes, {
+        ...defaultOptions,
+        importOrderMergeDuplicateImports: true,
+        importOrderMergeTypeImportsIntoRegular: true,
+    });
+    const formatted = getCodeFromAst({
+        nodes: sortedNodes,
+        importNodes,
+        originalCode: code,
+        directives: [],
+    });
+
+    expect(format(formatted, { parser: 'babel' })).toMatchInlineSnapshot(`
+        "import { type MyType, value as alias } from \\"./source\\";
+        "
+    `);
+});
+it('should combine multiple imports from the same source', () => {
+    const code = `
+import type {MyType, SecondType} from './source';
+import {value, SecondValue} from './source';
+`;
+    const importNodes = getImportNodes(code, { plugins: ['typescript'] });
+
+    const sortedNodes = getSortedNodes(importNodes, {
+        ...defaultOptions,
+        importOrderMergeDuplicateImports: true,
+        importOrderMergeTypeImportsIntoRegular: true,
+    });
+    const formatted = getCodeFromAst({
+        nodes: sortedNodes,
+        importNodes,
+        originalCode: code,
+        directives: [],
+    });
+
+    expect(format(formatted, { parser: 'babel' })).toMatchInlineSnapshot(`
+        "import { type MyType, type SecondType, SecondValue, value } from \\"./source\\";
+        "
+    `);
+});
+it('should combine multiple groups of imports', () => {
+    const code = `
+import type {MyType} from './source';
+import type {OtherType} from './other';
+import {value} from './source';
+import {otherValue} from './other';
+`;
+    const importNodes = getImportNodes(code, { plugins: ['typescript'] });
+
+    const sortedNodes = getSortedNodes(importNodes, {
+        ...defaultOptions,
+        importOrderMergeDuplicateImports: true,
+        importOrderMergeTypeImportsIntoRegular: true,
+    });
+    const formatted = getCodeFromAst({
+        nodes: sortedNodes,
+        importNodes,
+        originalCode: code,
+        directives: [],
+    });
+
+    expect(format(formatted, { parser: 'babel' })).toMatchInlineSnapshot(`
+        "import { type OtherType, otherValue } from \\"./other\\";
+        import { type MyType, value } from \\"./source\\";
+        "
+    `);
+});
+it('should combine multiple imports statements from the same source', () => {
+    const code = `
+import type {MyType} from './source';
+import type {SecondType} from './source';
+import {value} from './source';
+import {SecondValue} from './source';
+`;
+    const importNodes = getImportNodes(code, { plugins: ['typescript'] });
+
+    const sortedNodes = getSortedNodes(importNodes, {
+        ...defaultOptions,
+        importOrderMergeDuplicateImports: true,
+        importOrderMergeTypeImportsIntoRegular: true,
+    });
+    const formatted = getCodeFromAst({
+        nodes: sortedNodes,
+        importNodes,
+        originalCode: code,
+        directives: [],
+    });
+
+    expect(format(formatted, { parser: 'babel' })).toMatchInlineSnapshot(`
+        "import { type MyType, type SecondType, SecondValue, value } from \\"./source\\";
+        "
+    `);
+});
+it('should not impact imports from different sources', () => {
+    const code = `
+import type {MyType} from './source';
+import type {OtherType} from './other';
+import {thirdValue} from './third'
+import {value} from './source';
+`;
+    const importNodes = getImportNodes(code, { plugins: ['typescript'] });
+
+    const sortedNodes = getSortedNodes(importNodes, {
+        ...defaultOptions,
+        importOrderMergeDuplicateImports: true,
+        importOrderMergeTypeImportsIntoRegular: true,
+    });
+    const formatted = getCodeFromAst({
+        nodes: sortedNodes,
+        importNodes,
+        originalCode: code,
+        directives: [],
+    });
+
+    expect(format(formatted, { parser: 'babel' })).toMatchInlineSnapshot(`
+        "import type { OtherType } from \\"./other\\";
+        import { type MyType, value } from \\"./source\\";
+        import { thirdValue } from \\"./third\\";
+        "
+    `);
+});
 
 it("doesn't merge duplicate imports if option disabled", () => {
     const code = `
