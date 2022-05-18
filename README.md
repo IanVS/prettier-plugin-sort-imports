@@ -86,7 +86,7 @@ yarn add --dev @ianvs/prettier-plugin-sort-imports
 
 ## Usage
 
-Add an order in prettier config file.
+Add your preferred settings in your prettier config file.
 
 ```javascript
 module.exports = {
@@ -96,10 +96,16 @@ module.exports = {
   "singleQuote": true,
   "semi": true,
   "importOrder": ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
+  "importOrderBuiltinModulesToTop": true,
+  "importOrderCaseInsensitive": true,
+  "importOrderParserPlugins": ["typescript", "jsx", "decorators-legacy"],
+  "importOrderMergeDuplicateImports": true,
   "importOrderSeparation": true,
-  "importOrderSortSpecifiers": true
+  "importOrderSortSpecifiers": true,
 }
 ```
+
+_Note: all flags are off by default, so explore your options [below](#apis)_
 
 ### APIs
 
@@ -203,6 +209,14 @@ compared with `"importOrderCaseInsensitive": true`:
 import ExamplesList from './ExamplesList';
 import ExampleView from './ExampleView';
 ```
+
+#### `importOrderMergeDuplicateImports`
+
+**type**: `boolean`
+
+**default value:** `false`
+
+A boolean value to enable or disable multiple import statements referencing the same source. Not all patterns can be merged! Notably: `import type …` will not be converted to `import {type …` or vice-versa.
 
 #### `importOrderParserPlugins`
 

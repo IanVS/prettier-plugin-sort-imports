@@ -14,6 +14,7 @@ export function preprocessor(code: string, options: PrettierOptions): string {
         importOrderBuiltinModulesToTop,
         importOrderCaseInsensitive,
         importOrderGroupNamespaceSpecifiers,
+        importOrderMergeDuplicateImports,
         importOrderSeparation,
         importOrderSortSpecifiers,
     } = options;
@@ -50,6 +51,7 @@ export function preprocessor(code: string, options: PrettierOptions): string {
         importOrderBuiltinModulesToTop,
         importOrderCaseInsensitive,
         importOrderGroupNamespaceSpecifiers,
+        importOrderMergeDuplicateImports,
         importOrderSeparation,
         importOrderSortSpecifiers,
     });

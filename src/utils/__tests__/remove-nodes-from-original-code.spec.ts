@@ -26,6 +26,7 @@ test('it should remove nodes from the original code', () => {
         importOrderBuiltinModulesToTop: false,
         importOrderCaseInsensitive: false,
         importOrderGroupNamespaceSpecifiers: false,
+        importOrderMergeDuplicateImports: false,
         importOrderSeparation: false,
         importOrderSortSpecifiers: false,
     });

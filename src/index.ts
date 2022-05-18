@@ -66,6 +66,12 @@ const options: Record<
         default: false,
         description: 'Should node-builtins be hoisted to the top?',
     },
+    importOrderMergeDuplicateImports: {
+        type: 'boolean',
+        category: 'Global',
+        default: false,
+        description: 'Should duplicate imports be merged?',
+    },
 };
 
 module.exports = {
