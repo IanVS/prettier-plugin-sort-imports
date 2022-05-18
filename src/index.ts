@@ -1,10 +1,24 @@
+import type { RequiredOptions as PrettierRequiredOptions } from 'prettier';
 import { parsers as babelParsers } from 'prettier/parser-babel';
 import { parsers as flowParsers } from 'prettier/parser-flow';
 import { parsers as typescriptParsers } from 'prettier/parser-typescript';
 
 import { preprocessor } from './preprocessor';
+import type { PrettierOptions } from './types';
 
-const options = {
+// Not sure what the type from Prettier should be, but this is a good enough start.
+interface PrettierOptionSchema {
+    type: string;
+    category: 'Global';
+    array?: boolean;
+    default: unknown;
+    description: string;
+}
+
+const options: Record<
+    Exclude<keyof PrettierOptions, keyof PrettierRequiredOptions>,
+    PrettierOptionSchema
+> = {
     importOrder: {
         type: 'path',
         category: 'Global',
