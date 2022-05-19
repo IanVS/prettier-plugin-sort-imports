@@ -115,17 +115,16 @@ it('should merge type imports into regular imports', () => {
         directives: [],
     });
 
-    expect(format(formatted, { parser: 'babel' })).toMatchInlineSnapshot(`
-        "// Preserves 'import type'
-        import type { A1, A2 } from \\"a\\";
-        // Preserves 'import value'
-        import { B1, B2 } from \\"b\\";
-        // Converts 'import type' to 'import value' if first
-        import { type C1, C2 } from \\"c\\";
-        // Converts 'import type' to 'import value' if last
-        import { D1, type D2 } from \\"d\\";
-        "
-    `);
+    expect(format(formatted, { parser: 'babel' }))
+        .toEqual(`// Preserves 'import type'
+import type { A1, A2 } from "a";
+// Preserves 'import value'
+import { B1, B2 } from "b";
+// Converts 'import type' to 'import value' if first
+import { type C1, C2 } from "c";
+// Converts 'import type' to 'import value' if last
+import { D1, type D2 } from "d";
+`);
 });
 it('should combine type import and default import', () => {
     const code = `
@@ -146,10 +145,9 @@ import defaultValue from './source';
         directives: [],
     });
 
-    expect(format(formatted, { parser: 'babel' })).toMatchInlineSnapshot(`
-        "import defaultValue, { type MyType } from \\"./source\\";
-        "
-    `);
+    expect(format(formatted, { parser: 'babel' }))
+        .toEqual(`import defaultValue, { type MyType } from "./source";
+`);
 });
 it('should not combine type import and namespace import', () => {
     const code = `
@@ -170,11 +168,10 @@ import * as Namespace from './source';
         directives: [],
     });
 
-    expect(format(formatted, { parser: 'babel' })).toMatchInlineSnapshot(`
-        "import type { MyType } from \\"./source\\";
-        import * as Namespace from \\"./source\\";
-        "
-    `);
+    expect(format(formatted, { parser: 'babel' }))
+        .toEqual(`import type { MyType } from "./source";
+import * as Namespace from "./source";
+`);
 });
 it('should support aliased named imports', () => {
     const code = `
@@ -195,10 +192,9 @@ import {value as alias} from './source';
         directives: [],
     });
 
-    expect(format(formatted, { parser: 'babel' })).toMatchInlineSnapshot(`
-        "import { type MyType, value as alias } from \\"./source\\";
-        "
-    `);
+    expect(format(formatted, { parser: 'babel' }))
+        .toEqual(`import { type MyType, value as alias } from "./source";
+`);
 });
 it('should combine multiple imports from the same source', () => {
     const code = `
@@ -219,10 +215,9 @@ import {value, SecondValue} from './source';
         directives: [],
     });
 
-    expect(format(formatted, { parser: 'babel' })).toMatchInlineSnapshot(`
-        "import { type MyType, type SecondType, SecondValue, value } from \\"./source\\";
-        "
-    `);
+    expect(format(formatted, { parser: 'babel' }))
+        .toEqual(`import { type MyType, type SecondType, SecondValue, value } from "./source";
+`);
 });
 it('should combine multiple groups of imports', () => {
     const code = `
@@ -245,11 +240,10 @@ import {otherValue} from './other';
         directives: [],
     });
 
-    expect(format(formatted, { parser: 'babel' })).toMatchInlineSnapshot(`
-        "import { type OtherType, otherValue } from \\"./other\\";
-        import { type MyType, value } from \\"./source\\";
-        "
-    `);
+    expect(format(formatted, { parser: 'babel' }))
+        .toEqual(`import { type OtherType, otherValue } from "./other";
+import { type MyType, value } from "./source";
+`);
 });
 it('should combine multiple imports statements from the same source', () => {
     const code = `
@@ -272,10 +266,9 @@ import {SecondValue} from './source';
         directives: [],
     });
 
-    expect(format(formatted, { parser: 'babel' })).toMatchInlineSnapshot(`
-        "import { type MyType, type SecondType, SecondValue, value } from \\"./source\\";
-        "
-    `);
+    expect(format(formatted, { parser: 'babel' }))
+        .toEqual(`import { type MyType, type SecondType, SecondValue, value } from "./source";
+`);
 });
 it('should not impact imports from different sources', () => {
     const code = `
@@ -298,12 +291,11 @@ import {value} from './source';
         directives: [],
     });
 
-    expect(format(formatted, { parser: 'babel' })).toMatchInlineSnapshot(`
-        "import type { OtherType } from \\"./other\\";
-        import { type MyType, value } from \\"./source\\";
-        import { thirdValue } from \\"./third\\";
-        "
-    `);
+    expect(format(formatted, { parser: 'babel' }))
+        .toEqual(`import type { OtherType } from "./other";
+import { type MyType, value } from "./source";
+import { thirdValue } from "./third";
+`);
 });
 
 it("doesn't merge duplicate imports if option disabled", () => {
