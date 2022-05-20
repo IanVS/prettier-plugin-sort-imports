@@ -118,17 +118,17 @@ function mergeNodes(
  */
 function mutateContextAndMerge({
     context,
-    deleteContext,
+    nodesToDelete,
     insertableNode,
 }: {
     context: Record<string, ImportDeclaration>;
-    deleteContext: ImportDeclaration[];
+    nodesToDelete: ImportDeclaration[];
     insertableNode: ImportDeclaration;
 }) {
     const source = selectNodeImportSource(insertableNode);
     if (context[source]) {
         if (mergeNodes(context[source], insertableNode)) {
-            deleteContext.push(insertableNode);
+            nodesToDelete.push(insertableNode);
         }
     } else {
         context[source] = insertableNode;
@@ -157,7 +157,7 @@ export const mergeNodesWithMatchingImportFlavors: MergeNodesWithMatchingImportFl
             for (const insertableNode of group) {
                 mutateContextAndMerge({
                     context,
-                    deleteContext: nodesToDelete,
+                    nodesToDelete,
                     insertableNode,
                 });
             }
