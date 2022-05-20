@@ -103,16 +103,18 @@ it('should merge type imports into regular imports', () => {
     import { D1 } from 'd';
     import type { D2 } from 'd';
     `;
-    const importNodes = getImportNodes(code, { plugins: ['typescript'] });
+    const allOriginalImportNodes = getImportNodes(code, {
+        plugins: ['typescript'],
+    });
 
-    const sortedNodes = getSortedNodes(importNodes, {
+    const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
         ...defaultOptions,
         importOrderMergeDuplicateImports: true,
         importOrderMergeTypeImportsIntoRegular: true,
     });
     const formatted = getCodeFromAst({
-        nodes: sortedNodes,
-        importNodes,
+        nodesToOutput,
+        allOriginalImportNodes,
         originalCode: code,
         directives: [],
     });
@@ -133,16 +135,18 @@ it('should combine type import and default import', () => {
 import type {MyType} from './source';
 import defaultValue from './source';
 `;
-    const importNodes = getImportNodes(code, { plugins: ['typescript'] });
+    const allOriginalImportNodes = getImportNodes(code, {
+        plugins: ['typescript'],
+    });
 
-    const sortedNodes = getSortedNodes(importNodes, {
+    const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
         ...defaultOptions,
         importOrderMergeDuplicateImports: true,
         importOrderMergeTypeImportsIntoRegular: true,
     });
     const formatted = getCodeFromAst({
-        nodes: sortedNodes,
-        importNodes,
+        nodesToOutput,
+        allOriginalImportNodes,
         originalCode: code,
         directives: [],
     });
@@ -156,16 +160,18 @@ it('should not combine type import and namespace import', () => {
 import type {MyType} from './source';
 import * as Namespace from './source';
 `;
-    const importNodes = getImportNodes(code, { plugins: ['typescript'] });
+    const allOriginalImportNodes = getImportNodes(code, {
+        plugins: ['typescript'],
+    });
 
-    const sortedNodes = getSortedNodes(importNodes, {
+    const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
         ...defaultOptions,
         importOrderMergeDuplicateImports: true,
         importOrderMergeTypeImportsIntoRegular: true,
     });
     const formatted = getCodeFromAst({
-        nodes: sortedNodes,
-        importNodes,
+        nodesToOutput,
+        allOriginalImportNodes,
         originalCode: code,
         directives: [],
     });
@@ -180,16 +186,18 @@ it('should support aliased named imports', () => {
 import type {MyType} from './source';
 import {value as alias} from './source';
 `;
-    const importNodes = getImportNodes(code, { plugins: ['typescript'] });
+    const allOriginalImportNodes = getImportNodes(code, {
+        plugins: ['typescript'],
+    });
 
-    const sortedNodes = getSortedNodes(importNodes, {
+    const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
         ...defaultOptions,
         importOrderMergeDuplicateImports: true,
         importOrderMergeTypeImportsIntoRegular: true,
     });
     const formatted = getCodeFromAst({
-        nodes: sortedNodes,
-        importNodes,
+        nodesToOutput,
+        allOriginalImportNodes,
         originalCode: code,
         directives: [],
     });
@@ -203,16 +211,18 @@ it('should combine multiple imports from the same source', () => {
 import type {MyType, SecondType} from './source';
 import {value, SecondValue} from './source';
 `;
-    const importNodes = getImportNodes(code, { plugins: ['typescript'] });
+    const allOriginalImportNodes = getImportNodes(code, {
+        plugins: ['typescript'],
+    });
 
-    const sortedNodes = getSortedNodes(importNodes, {
+    const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
         ...defaultOptions,
         importOrderMergeDuplicateImports: true,
         importOrderMergeTypeImportsIntoRegular: true,
     });
     const formatted = getCodeFromAst({
-        nodes: sortedNodes,
-        importNodes,
+        nodesToOutput,
+        allOriginalImportNodes,
         originalCode: code,
         directives: [],
     });
@@ -228,16 +238,18 @@ import type {OtherType} from './other';
 import {value} from './source';
 import {otherValue} from './other';
 `;
-    const importNodes = getImportNodes(code, { plugins: ['typescript'] });
+    const allOriginalImportNodes = getImportNodes(code, {
+        plugins: ['typescript'],
+    });
 
-    const sortedNodes = getSortedNodes(importNodes, {
+    const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
         ...defaultOptions,
         importOrderMergeDuplicateImports: true,
         importOrderMergeTypeImportsIntoRegular: true,
     });
     const formatted = getCodeFromAst({
-        nodes: sortedNodes,
-        importNodes,
+        nodesToOutput,
+        allOriginalImportNodes,
         originalCode: code,
         directives: [],
     });
@@ -254,16 +266,18 @@ import type {SecondType} from './source';
 import {value} from './source';
 import {SecondValue} from './source';
 `;
-    const importNodes = getImportNodes(code, { plugins: ['typescript'] });
+    const allOriginalImportNodes = getImportNodes(code, {
+        plugins: ['typescript'],
+    });
 
-    const sortedNodes = getSortedNodes(importNodes, {
+    const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
         ...defaultOptions,
         importOrderMergeDuplicateImports: true,
         importOrderMergeTypeImportsIntoRegular: true,
     });
     const formatted = getCodeFromAst({
-        nodes: sortedNodes,
-        importNodes,
+        nodesToOutput,
+        allOriginalImportNodes,
         originalCode: code,
         directives: [],
     });
@@ -279,16 +293,18 @@ import type {OtherType} from './other';
 import {thirdValue} from './third'
 import {value} from './source';
 `;
-    const importNodes = getImportNodes(code, { plugins: ['typescript'] });
+    const allOriginalImportNodes = getImportNodes(code, {
+        plugins: ['typescript'],
+    });
 
-    const sortedNodes = getSortedNodes(importNodes, {
+    const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
         ...defaultOptions,
         importOrderMergeDuplicateImports: true,
         importOrderMergeTypeImportsIntoRegular: true,
     });
     const formatted = getCodeFromAst({
-        nodes: sortedNodes,
-        importNodes,
+        nodesToOutput,
+        allOriginalImportNodes,
         originalCode: code,
         directives: [],
     });
@@ -333,7 +349,10 @@ it("doesn't merge duplicate imports if option disabled", () => {
         plugins: ['typescript'],
     });
 
-    const nodesToOutput = getSortedNodes(importNodes, defaultOptions);
+    const nodesToOutput = getSortedNodes(
+        allOriginalImportNodes,
+        defaultOptions,
+    );
     const formatted = getCodeFromAst({
         nodesToOutput,
         allOriginalImportNodes,
