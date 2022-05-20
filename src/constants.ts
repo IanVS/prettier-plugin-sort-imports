@@ -11,14 +11,14 @@ export const newLineCharacters = '\n\n';
 export const chunkTypeUnsortable = 'unsortable';
 export const chunkTypeOther = 'other';
 
-/** import Thing from ... or import {Thing} from ... */
-export const importFlavorRegular = 'regular';
+/** Value imports (including top-level default imports) - import {Thing} from ... or import Thing from ... */
+export const importFlavorValue = 'value';
 /** import type {} from ...  */
 export const importFlavorType = 'type';
 export const importFlavorSideEffect = 'side-effect';
 export const importFlavorIgnore = 'prettier-ignore';
 export const mergeableImportFlavors = [
-    importFlavorRegular,
+    importFlavorValue,
     importFlavorType,
 ] as const;
 

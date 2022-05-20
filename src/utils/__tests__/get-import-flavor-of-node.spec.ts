@@ -22,10 +22,10 @@ import { g } from "g";
     ).toMatchInlineSnapshot(`
         Array [
           "side-effect",
-          "regular",
+          "value",
           "type",
-          "regular",
-          "regular",
+          "value",
+          "value",
           "prettier-ignore",
         ]
     `);

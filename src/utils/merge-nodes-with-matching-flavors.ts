@@ -7,8 +7,8 @@ import type {
 } from '@babel/types';
 
 import {
-    importFlavorRegular,
     importFlavorType,
+    importFlavorValue,
     mergeableImportFlavors,
 } from '../constants';
 import type { MergeNodesWithMatchingImportFlavors } from '../types';
@@ -31,7 +31,7 @@ function selectMergeableNodesByImportFlavor(
             return groups;
         },
         {
-            [importFlavorRegular]: [] as ImportDeclaration[],
+            [importFlavorValue]: [] as ImportDeclaration[],
             [importFlavorType]: [] as ImportDeclaration[],
         },
     );

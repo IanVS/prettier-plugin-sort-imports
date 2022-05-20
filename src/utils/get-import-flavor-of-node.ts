@@ -1,8 +1,8 @@
 import {
     importFlavorIgnore,
-    importFlavorRegular,
     importFlavorSideEffect,
     importFlavorType,
+    importFlavorValue,
 } from '../constants';
 import type { GetImportFlavorOfNode } from '../types';
 
@@ -25,5 +25,5 @@ export const getImportFlavorOfNode: GetImportFlavorOfNode = (node) => {
     if (node.importKind === 'type') {
         return importFlavorType;
     }
-    return importFlavorRegular;
+    return importFlavorValue;
 };
