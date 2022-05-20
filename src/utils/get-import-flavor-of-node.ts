@@ -10,7 +10,7 @@ import type { GetImportFlavorOfNode } from '../types';
  * Classifies nodes by import-flavor, primarily informing whether the node is a candidate for merging
  *
  * @param node
- * @returns {("prettier-ignore"|"regular"|"side-effect"|"type")}
+ * @returns the flavor of the import node
  */
 export const getImportFlavorOfNode: GetImportFlavorOfNode = (node) => {
     const hasIgnoreNextNode = (node.leadingComments ?? []).some(
