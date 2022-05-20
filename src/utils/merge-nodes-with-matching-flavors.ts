@@ -1,5 +1,4 @@
 import type {
-    EmptyStatement,
     ImportDeclaration,
     ImportDefaultSpecifier,
     ImportNamespaceSpecifier,
@@ -22,7 +21,9 @@ function isMergeableFlavor(flavor: string): flavor is MergeableFlavor {
 function selectMergeableNodesByImportFlavor(
     nodes: ImportDeclaration[],
 ): Record<MergeableFlavor, ImportDeclaration[]> {
-    return nodes.reduce(
+    return nodes.reduce<
+        Record<typeof mergeableImportFlavors[number], ImportDeclaration[]>
+    >(
         (groups, node) => {
             const flavor = getImportFlavorOfNode(node);
             if (isMergeableFlavor(flavor)) {
@@ -31,8 +32,8 @@ function selectMergeableNodesByImportFlavor(
             return groups;
         },
         {
-            [importFlavorValue]: [] as ImportDeclaration[],
-            [importFlavorType]: [] as ImportDeclaration[],
+            [importFlavorValue]: [],
+            [importFlavorType]: [],
         },
     );
 }
