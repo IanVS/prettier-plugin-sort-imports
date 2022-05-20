@@ -94,7 +94,8 @@ function mergeNodes(
 
     nodeToKeep.specifiers.push(...nodeToForget.specifiers);
 
-    // The line numbers will be all messed up. Is this a problem?
+    // These mutations don't update the line numbers, and that's crucial for moving things around.
+    // To get updated line-numbers you would need to re-parse the code after these changes are rendered!
     nodeToKeep.leadingComments = [
         ...(nodeToKeep.leadingComments || []),
         ...(nodeToForget.leadingComments || []),
