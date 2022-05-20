@@ -33,9 +33,11 @@ it('should merge duplicate imports within a given chunk', () => {
     import Foo1 from 'e';
     import Foo2 from 'e';
     `;
-    const importNodes = getImportNodes(code, { plugins: ['typescript'] });
+    const allOriginalImportNodes = getImportNodes(code, {
+        plugins: ['typescript'],
+    });
 
-    const sortedNodes = getSortedNodes(importNodes, {
+    const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
         importOrder: [],
         importOrderBuiltinModulesToTop: false,
         importOrderCaseInsensitive: false,
@@ -45,8 +47,8 @@ it('should merge duplicate imports within a given chunk', () => {
         importOrderSortSpecifiers: true,
     });
     const formatted = getCodeFromAst({
-        nodes: sortedNodes,
-        importNodes,
+        nodesToOutput,
+        allOriginalImportNodes,
         originalCode: code,
         directives: [],
     });
@@ -108,9 +110,11 @@ it("doesn't merge duplicate imports if option disabled", () => {
     import Foo1 from 'e';
     import Foo2 from 'e';
     `;
-    const importNodes = getImportNodes(code, { plugins: ['typescript'] });
+    const allOriginalImportNodes = getImportNodes(code, {
+        plugins: ['typescript'],
+    });
 
-    const sortedNodes = getSortedNodes(importNodes, {
+    const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
         importOrder: [],
         importOrderBuiltinModulesToTop: false,
         importOrderCaseInsensitive: false,
@@ -120,8 +124,8 @@ it("doesn't merge duplicate imports if option disabled", () => {
         importOrderSortSpecifiers: true,
     });
     const formatted = getCodeFromAst({
-        nodes: sortedNodes,
-        importNodes,
+        nodesToOutput,
+        allOriginalImportNodes,
         originalCode: code,
         directives: [],
     });

@@ -25,7 +25,7 @@ import a from 'a';
         importOrderSortSpecifiers: false,
     });
     const formatted = getCodeFromAst({
-        nodes: sortedNodes,
+        nodesToOutput: sortedNodes,
         originalCode: code,
         directives: [],
     });
@@ -64,8 +64,8 @@ import {b} from 'a';
         importOrderSortSpecifiers: false,
     });
     const formatted = getCodeFromAst({
-        nodes: sortedNodes,
-        importNodes,
+        nodesToOutput: sortedNodes,
+        allOriginalImportNodes: importNodes,
         originalCode: code,
         directives: [],
     });
