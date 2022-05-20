@@ -6,10 +6,9 @@ import { getAllCommentsFromNodes } from './get-all-comments-from-nodes';
 import { removeNodesFromOriginalCode } from './remove-nodes-from-original-code';
 
 /**
- * This function generate a code string from the passed nodes.
- * @param nodes All imports, in the sorted order in which they should appear in
- * the generated code.
- * @param importNodes All nodes that were originally relevant. (This includes nodes that need to be deleted!)
+ * This function generates a code string from the passed nodes.
+ * @param nodesToOutput The remaining imports which should be rendered. (Node specifiers & types may be mutated)
+ * @param allOriginalImportNodes All import nodes that were originally relevant. (This includes nodes that need to be deleted!)
  * @param originalCode The original input code that was passed to this plugin.
  * @param directives All directive prologues from the original code (e.g.
  * `"use strict";`).
@@ -17,24 +16,24 @@ import { removeNodesFromOriginalCode } from './remove-nodes-from-original-code';
  * `#!/bin/node`).
  */
 export const getCodeFromAst = ({
-    nodes,
-    importNodes = nodes,
+    nodesToOutput,
+    allOriginalImportNodes = nodesToOutput,
     originalCode,
     directives,
     interpreter,
 }: {
-    nodes: Statement[];
-    importNodes?: Statement[];
+    nodesToOutput: Statement[];
+    allOriginalImportNodes?: Statement[];
     originalCode: string;
     directives: Directive[];
     interpreter?: InterpreterDirective | null;
 }) => {
-    const allCommentsFromImports = getAllCommentsFromNodes(nodes);
+    const allCommentsFromImports = getAllCommentsFromNodes(nodesToOutput);
     const allCommentsFromDirectives = getAllCommentsFromNodes(directives);
 
     const nodesToRemoveFromCode = [
-        ...nodes,
-        ...importNodes,
+        ...nodesToOutput,
+        ...allOriginalImportNodes,
         ...allCommentsFromImports,
         ...allCommentsFromDirectives,
         ...(interpreter ? [interpreter] : []),
@@ -48,7 +47,7 @@ export const getCodeFromAst = ({
 
     const newAST = file({
         type: 'Program',
-        body: nodes,
+        body: nodesToOutput,
         directives: directives,
         sourceType: 'module',
         interpreter: interpreter,

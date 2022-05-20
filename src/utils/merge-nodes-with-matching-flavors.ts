@@ -1,5 +1,4 @@
 import type {
-    EmptyStatement,
     ImportDeclaration,
     ImportDefaultSpecifier,
     ImportNamespaceSpecifier,
@@ -8,8 +7,8 @@ import type {
 import assert from 'assert';
 
 import {
-    importFlavorRegular,
     importFlavorType,
+    importFlavorValue,
     mergeableImportFlavors,
 } from '../constants';
 import type { MergeNodesWithMatchingImportFlavors } from '../types';
@@ -23,7 +22,9 @@ function isMergeableFlavor(flavor: string): flavor is MergeableFlavor {
 function selectMergeableNodesByImportFlavor(
     nodes: ImportDeclaration[],
 ): Record<MergeableFlavor, ImportDeclaration[]> {
-    return nodes.reduce(
+    return nodes.reduce<
+        Record<typeof mergeableImportFlavors[number], ImportDeclaration[]>
+    >(
         (groups, node) => {
             const flavor = getImportFlavorOfNode(node);
             if (isMergeableFlavor(flavor)) {
@@ -32,8 +33,8 @@ function selectMergeableNodesByImportFlavor(
             return groups;
         },
         {
-            [importFlavorRegular]: [] as ImportDeclaration[],
-            [importFlavorType]: [] as ImportDeclaration[],
+            [importFlavorValue]: [],
+            [importFlavorType]: [],
         },
     );
 }
@@ -125,7 +126,8 @@ function mergeNodes(
 
     nodeToKeep.specifiers.push(...nodeToForget.specifiers);
 
-    // The line numbers will be all messed up. Is this a problem?
+    // These mutations don't update the line numbers, and that's crucial for moving things around.
+    // To get updated line-numbers you would need to re-parse the code after these changes are rendered!
     nodeToKeep.leadingComments = [
         ...(nodeToKeep.leadingComments || []),
         ...(nodeToForget.leadingComments || []),
@@ -149,17 +151,17 @@ function mergeNodes(
  */
 function mutateContextAndMerge({
     context,
-    deleteContext,
+    nodesToDelete,
     insertableNode,
 }: {
     context: Record<string, ImportDeclaration>;
-    deleteContext: ImportDeclaration[];
+    nodesToDelete: ImportDeclaration[];
     insertableNode: ImportDeclaration;
 }) {
     const source = selectNodeImportSource(insertableNode);
     if (context[source]) {
         if (mergeNodes(context[source], insertableNode)) {
-            deleteContext.push(insertableNode);
+            nodesToDelete.push(insertableNode);
         }
     } else {
         context[source] = insertableNode;
@@ -191,7 +193,7 @@ export const mergeNodesWithMatchingImportFlavors: MergeNodesWithMatchingImportFl
             for (const insertableNode of group) {
                 mutateContextAndMerge({
                     context,
-                    deleteContext: nodesToDelete,
+                    nodesToDelete,
                     insertableNode,
                 });
             }

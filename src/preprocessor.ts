@@ -29,7 +29,7 @@ export function preprocessor(code: string, options: PrettierOptions): string {
         );
     }
 
-    const importNodes: ImportDeclaration[] = [];
+    const allOriginalImportNodes: ImportDeclaration[] = [];
     const parserOptions: ParserOptions = {
         sourceType: 'module',
         plugins: getExperimentalParserPlugins(importOrderParserPlugins),
@@ -46,17 +46,17 @@ export function preprocessor(code: string, options: PrettierOptions): string {
                 isTSModuleDeclaration(p),
             );
             if (!tsModuleParent) {
-                importNodes.push(path.node);
+                allOriginalImportNodes.push(path.node);
             }
         },
     });
 
     // short-circuit if there are no import declarations
-    if (importNodes.length === 0) {
+    if (allOriginalImportNodes.length === 0) {
         return code;
     }
 
-    const remainingImports = getSortedNodes(importNodes, {
+    const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
         importOrder,
         importOrderBuiltinModulesToTop,
         importOrderCaseInsensitive,
@@ -68,8 +68,8 @@ export function preprocessor(code: string, options: PrettierOptions): string {
     });
 
     return getCodeFromAst({
-        nodes: remainingImports,
-        importNodes,
+        nodesToOutput,
+        allOriginalImportNodes,
         originalCode: code,
         directives,
         interpreter,

@@ -1,6 +1,15 @@
 import { ExpressionStatement, ImportDeclaration } from '@babel/types';
 import { RequiredOptions } from 'prettier';
 
+import {
+    chunkTypeOther,
+    chunkTypeUnsortable,
+    importFlavorIgnore,
+    importFlavorSideEffect,
+    importFlavorType,
+    importFlavorValue,
+} from './constants';
+
 export interface PrettierOptions extends RequiredOptions {
     importOrder: string[];
     importOrderCaseInsensitive: boolean;
@@ -14,9 +23,16 @@ export interface PrettierOptions extends RequiredOptions {
     importOrderParserPlugins: string[];
 }
 
+export type ChunkType = typeof chunkTypeOther | typeof chunkTypeUnsortable;
+export type FlavorType =
+    | typeof importFlavorIgnore
+    | typeof importFlavorSideEffect
+    | typeof importFlavorType
+    | typeof importFlavorValue;
+
 export interface ImportChunk {
     nodes: ImportDeclaration[];
-    type: string;
+    type: ChunkType;
 }
 
 export type ImportGroups = Record<string, ImportDeclaration[]>;
@@ -37,9 +53,9 @@ export type GetSortedNodes = (
     >,
 ) => ImportOrLine[];
 
-export type GetChunkTypeOfNode = (node: ImportDeclaration) => string;
+export type GetChunkTypeOfNode = (node: ImportDeclaration) => ChunkType;
 
-export type GetImportFlavorOfNode = (node: ImportDeclaration) => string;
+export type GetImportFlavorOfNode = (node: ImportDeclaration) => FlavorType;
 
 export type MergeNodesWithMatchingImportFlavors = (
     nodes: ImportDeclaration[],
