@@ -1,11 +1,14 @@
-import { Import, ImportDeclaration } from '@babel/types';
+import type { ImportDeclaration } from '@babel/types';
 
 import { naturalSort } from '../natural-sort';
-import { PrettierOptions } from '../types';
+import type { PrettierOptions } from '../types';
 
 export const getSortedNodesGroup = (
     imports: ImportDeclaration[],
-    options: Pick<PrettierOptions, 'importOrderGroupNamespaceSpecifiers'>,
+    options: Pick<
+        PrettierOptions,
+        'importOrderGroupNamespaceSpecifiers' | 'importOrderCaseInsensitive'
+    >,
 ) => {
     return imports.sort((a, b) => {
         if (options.importOrderGroupNamespaceSpecifiers) {
@@ -13,7 +16,7 @@ export const getSortedNodesGroup = (
             if (diff !== 0) return diff;
         }
 
-        return naturalSort(a.source.value, b.source.value);
+        return naturalSort(a.source.value, b.source.value, options);
     });
 };
 
