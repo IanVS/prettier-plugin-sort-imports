@@ -241,7 +241,6 @@ import fourLevelRelativePath from "../../../../fourLevelRelativePath";
 import something from "@server/something";
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // I am top level comment
-
 import abc from "@core/abc";
 import otherthing from "@core/otherthing";
 import something from "@server/something";
