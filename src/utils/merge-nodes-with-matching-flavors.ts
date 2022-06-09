@@ -18,6 +18,10 @@ function isMergeableFlavor(flavor: string): flavor is MergeableFlavor {
     return mergeableImportFlavors.includes(flavor as MergeableFlavor);
 }
 
+/**
+ * Builds an object map of import declarations which can be merged together,
+ * grouped by whether they are type or value import declarations.
+ */
 function selectMergeableNodesByImportFlavor(
     nodes: ImportDeclaration[],
 ): Record<MergeableFlavor, ImportDeclaration[]> {
@@ -38,15 +42,23 @@ function selectMergeableNodesByImportFlavor(
     );
 }
 
+/**
+ * Returns the "source" (i.e. module name or path) of an import declaration
+ *
+ * e.g.: `import foo from "./foo";` -- "./foo" is the source.
+ */
 function selectNodeImportSource(node: ImportDeclaration) {
     return node.source.value;
 }
 
+/** import * as Namespace from "someModule" */
 function nodeIsImportNamespaceSpecifier(
     node: ImportSpecifier | ImportDefaultSpecifier | ImportNamespaceSpecifier,
 ): node is ImportNamespaceSpecifier {
     return node.type === 'ImportNamespaceSpecifier';
 }
+
+/** import Default from "someModule" */
 function nodeIsImportDefaultSpecifier(
     node: ImportSpecifier | ImportDefaultSpecifier | ImportNamespaceSpecifier,
 ): node is ImportDefaultSpecifier {
@@ -82,6 +94,8 @@ function mergeIsSafe(
 }
 
 /**
+ * Mutates the modeToKeep, adding the import specifiers and comments from the nodeToForget.
+ *
  * @returns (true to delete node | false to keep node)
  */
 function mergeNodes(

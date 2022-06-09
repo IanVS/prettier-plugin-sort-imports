@@ -162,3 +162,36 @@ import Foo2 from "e";
 import { Junk2 } from "junk-group-2";
 `);
 });
+
+it('merges named and default imports correctly', () => {
+    const code = `
+    import A, { a } from "a";
+    import { ahh } from "a";
+    import { bee } from "b";
+    import B from "b";
+    `;
+    const allOriginalImportNodes = getImportNodes(code, {
+        plugins: ['typescript'],
+    });
+
+    const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
+        importOrder: [],
+        importOrderBuiltinModulesToTop: false,
+        importOrderCaseInsensitive: false,
+        importOrderGroupNamespaceSpecifiers: false,
+        importOrderMergeDuplicateImports: true,
+        importOrderSeparation: true,
+        importOrderSortSpecifiers: true,
+    });
+    const formatted = getCodeFromAst({
+        nodesToOutput,
+        allOriginalImportNodes,
+        originalCode: code,
+        directives: [],
+    });
+
+    expect(format(formatted, { parser: 'babel' }))
+        .toEqual(`import A, { a, ahh } from "a";
+import B, { bee } from "b";
+`);
+});
