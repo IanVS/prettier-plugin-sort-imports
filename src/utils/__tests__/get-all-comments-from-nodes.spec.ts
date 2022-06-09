@@ -10,11 +10,12 @@ const getSortedImportNodes = (code: string, options?: ParserOptions) => {
 
     return getSortedNodes(importNodes, {
         importOrder: [],
-        importOrderCaseInsensitive: false,
-        importOrderSeparation: false,
-        importOrderGroupNamespaceSpecifiers: false,
-        importOrderSortSpecifiers: false,
         importOrderBuiltinModulesToTop: false,
+        importOrderCaseInsensitive: false,
+        importOrderGroupNamespaceSpecifiers: false,
+        importOrderMergeDuplicateImports: false,
+        importOrderSeparation: false,
+        importOrderSortSpecifiers: false,
     });
 };
 

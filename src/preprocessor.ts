@@ -11,14 +11,15 @@ export function preprocessor(code: string, options: PrettierOptions): string {
     const {
         importOrderParserPlugins,
         importOrder,
-        importOrderCaseInsensitive,
-        importOrderSeparation,
-        importOrderGroupNamespaceSpecifiers,
-        importOrderSortSpecifiers,
         importOrderBuiltinModulesToTop,
+        importOrderCaseInsensitive,
+        importOrderGroupNamespaceSpecifiers,
+        importOrderMergeDuplicateImports,
+        importOrderSeparation,
+        importOrderSortSpecifiers,
     } = options;
 
-    const importNodes: ImportDeclaration[] = [];
+    const allOriginalImportNodes: ImportDeclaration[] = [];
     const parserOptions: ParserOptions = {
         sourceType: 'module',
         plugins: getExperimentalParserPlugins(importOrderParserPlugins),
@@ -35,24 +36,31 @@ export function preprocessor(code: string, options: PrettierOptions): string {
                 isTSModuleDeclaration(p),
             );
             if (!tsModuleParent) {
-                importNodes.push(path.node);
+                allOriginalImportNodes.push(path.node);
             }
         },
     });
 
-    // short-circuit if there are no import declaration
-    if (importNodes.length === 0) {
+    // short-circuit if there are no import declarations
+    if (allOriginalImportNodes.length === 0) {
         return code;
     }
 
-    const allImports = getSortedNodes(importNodes, {
+    const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
         importOrder,
-        importOrderCaseInsensitive,
-        importOrderSeparation,
-        importOrderGroupNamespaceSpecifiers,
-        importOrderSortSpecifiers,
         importOrderBuiltinModulesToTop,
+        importOrderCaseInsensitive,
+        importOrderGroupNamespaceSpecifiers,
+        importOrderMergeDuplicateImports,
+        importOrderSeparation,
+        importOrderSortSpecifiers,
     });
 
-    return getCodeFromAst(allImports, code, directives, interpreter);
+    return getCodeFromAst({
+        nodesToOutput,
+        allOriginalImportNodes,
+        originalCode: code,
+        directives,
+        interpreter,
+    });
 }

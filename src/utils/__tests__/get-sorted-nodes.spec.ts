@@ -29,11 +29,12 @@ test('it returns all sorted nodes, preserving the order side effect nodes', () =
     const result = getImportNodes(code);
     const sorted = getSortedNodes(result, {
         importOrder: [],
-        importOrderCaseInsensitive: false,
-        importOrderSeparation: false,
-        importOrderGroupNamespaceSpecifiers: false,
-        importOrderSortSpecifiers: false,
         importOrderBuiltinModulesToTop: false,
+        importOrderCaseInsensitive: false,
+        importOrderGroupNamespaceSpecifiers: false,
+        importOrderMergeDuplicateImports: false,
+        importOrderSeparation: false,
+        importOrderSortSpecifiers: false,
     }) as ImportDeclaration[];
 
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([

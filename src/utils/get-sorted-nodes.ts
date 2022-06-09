@@ -3,6 +3,7 @@ import { GetSortedNodes, ImportChunk, ImportOrLine } from '../types';
 import { adjustCommentsOnSortedNodes } from './adjust-comments-on-sorted-nodes';
 import { getChunkTypeOfNode } from './get-chunk-type-of-node';
 import { getSortedNodesByImportOrder } from './get-sorted-nodes-by-import-order';
+import { mergeNodesWithMatchingImportFlavors } from './merge-nodes-with-matching-flavors';
 
 /**
  * This function returns the given nodes, sorted in the order as indicated by
@@ -16,12 +17,11 @@ import { getSortedNodesByImportOrder } from './get-sorted-nodes-by-import-order'
  * between the side effect nodes according to the given options.
  * @param nodes All import nodes that should be sorted.
  * @param options Options to influence the behavior of the sorting algorithm.
+ *
+ * @returns A sorted array of the remaining import nodes
  */
-export const getSortedNodes: GetSortedNodes = (
-    nodes,
-    options,
-): ImportOrLine[] => {
-    const { importOrderSeparation } = options;
+export const getSortedNodes: GetSortedNodes = (nodes, options) => {
+    const { importOrderSeparation, importOrderMergeDuplicateImports } = options;
 
     // Split nodes at each boundary between a side-effect node and a
     // non-side-effect node, keeping both types of nodes together.
@@ -48,8 +48,11 @@ export const getSortedNodes: GetSortedNodes = (
             // do not sort side effect nodes
             finalNodes.push(...chunk.nodes);
         } else {
+            const nodes = importOrderMergeDuplicateImports
+                ? mergeNodesWithMatchingImportFlavors(chunk.nodes)
+                : chunk.nodes;
             // sort non-side effect nodes
-            const sorted = getSortedNodesByImportOrder(chunk.nodes, options);
+            const sorted = getSortedNodesByImportOrder(nodes, options);
             finalNodes.push(...sorted);
         }
         if (importOrderSeparation) {
