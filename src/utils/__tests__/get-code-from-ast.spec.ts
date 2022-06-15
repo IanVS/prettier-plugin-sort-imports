@@ -52,9 +52,11 @@ import g from 'g';
 import t from 't';
 import k from 'k';
 import a from 'a';
-import {b} from 'a';
+import {b, type Bee} from 'a';
+import type {C} from 'c';
+import type {See} from 'c';
 `;
-    const importNodes = getImportNodes(code);
+    const importNodes = getImportNodes(code, { plugins: ['typescript'] });
     const sortedNodes = getSortedNodes(importNodes, {
         importOrder: [],
         importOrderBuiltinModulesToTop: false,
@@ -74,8 +76,9 @@ import {b} from 'a';
     expect(format(formatted, { parser: 'babel' })).toEqual(
         `// first comment
 // second comment
-import a, { b } from "a";
+import a, { b, type Bee } from "a";
 import c from "c";
+import type { C, See } from "c";
 import g from "g";
 import k from "k";
 import t from "t";
