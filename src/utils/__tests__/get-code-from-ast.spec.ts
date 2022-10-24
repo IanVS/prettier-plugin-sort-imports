@@ -21,6 +21,7 @@ import a from 'a';
         importOrderCaseInsensitive: false,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
+        importOrderCombineTypeAndValueImports: false,
         importOrderSeparation: false,
         importOrderSortSpecifiers: false,
     });
@@ -47,14 +48,13 @@ it('merges duplicate imports correctly', () => {
 // second comment
 import z from 'z';
 import c from 'c';
-import type {C} from 'c';
-import type {See} from 'c';
 import g from 'g';
 import t from 't';
 import k from 'k';
 import a from 'a';
-import {b} from 'a';
-import {type Bee} from 'a';
+import {b, type Bee} from 'a';
+import type {C} from 'c';
+import type {See} from 'c';
 `;
     const importNodes = getImportNodes(code, { plugins: ['typescript'] });
     const sortedNodes = getSortedNodes(importNodes, {
@@ -63,6 +63,7 @@ import {type Bee} from 'a';
         importOrderCaseInsensitive: false,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: true,
+        importOrderCombineTypeAndValueImports: false,
         importOrderSeparation: false,
         importOrderSortSpecifiers: false,
     });

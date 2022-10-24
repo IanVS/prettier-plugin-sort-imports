@@ -21,7 +21,11 @@ import { mergeNodesWithMatchingImportFlavors } from './merge-nodes-with-matching
  * @returns A sorted array of the remaining import nodes
  */
 export const getSortedNodes: GetSortedNodes = (nodes, options) => {
-    const { importOrderSeparation, importOrderMergeDuplicateImports } = options;
+    const {
+        importOrderSeparation,
+        importOrderMergeDuplicateImports,
+        importOrderCombineTypeAndValueImports,
+    } = options;
 
     // Split nodes at each boundary between a side-effect node and a
     // non-side-effect node, keeping both types of nodes together.
@@ -49,7 +53,9 @@ export const getSortedNodes: GetSortedNodes = (nodes, options) => {
             finalNodes.push(...chunk.nodes);
         } else {
             const nodes = importOrderMergeDuplicateImports
-                ? mergeNodesWithMatchingImportFlavors(chunk.nodes)
+                ? mergeNodesWithMatchingImportFlavors(chunk.nodes, {
+                      importOrderCombineTypeAndValueImports,
+                  })
                 : chunk.nodes;
             // sort non-side effect nodes
             const sorted = getSortedNodesByImportOrder(nodes, options);

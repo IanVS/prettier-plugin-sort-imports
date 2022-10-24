@@ -16,6 +16,7 @@ export interface PrettierOptions extends RequiredOptions {
     importOrderBuiltinModulesToTop: boolean;
     importOrderGroupNamespaceSpecifiers: boolean;
     importOrderMergeDuplicateImports: boolean;
+    importOrderCombineTypeAndValueImports: boolean;
     importOrderSeparation: boolean;
     importOrderSortSpecifiers: boolean;
     // should be of type ParserPlugin from '@babel/parser' but prettier does not support nested arrays in options
@@ -46,6 +47,7 @@ export type GetSortedNodes = (
         | 'importOrderCaseInsensitive'
         | 'importOrderGroupNamespaceSpecifiers'
         | 'importOrderMergeDuplicateImports'
+        | 'importOrderCombineTypeAndValueImports'
         | 'importOrderSeparation'
         | 'importOrderSortSpecifiers'
     >,
@@ -57,4 +59,5 @@ export type GetImportFlavorOfNode = (node: ImportDeclaration) => FlavorType;
 
 export type MergeNodesWithMatchingImportFlavors = (
     nodes: ImportDeclaration[],
+    options: { importOrderCombineTypeAndValueImports: boolean },
 ) => ImportDeclaration[];

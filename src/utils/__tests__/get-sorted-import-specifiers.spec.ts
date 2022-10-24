@@ -28,3 +28,23 @@ test('should return correct sorted nodes with default import', () => {
         'reduce',
     ]);
 });
+
+test('should group type imports after value imports', () => {
+    const code = `import Component, { type TypeB, filter, type TypeA, reduce, eventHandler } from '@server/z';`;
+    const [importNode] = getImportNodes(code, {
+        plugins: ['typescript'],
+    });
+    const sortedImportSpecifiers = getSortedImportSpecifiers(importNode);
+    const specifiersList = getSortedNodesModulesNames(
+        sortedImportSpecifiers.specifiers,
+    );
+
+    expect(specifiersList).toEqual([
+        'Component',
+        'eventHandler',
+        'filter',
+        'reduce',
+        'TypeA',
+        'TypeB',
+    ]);
+});

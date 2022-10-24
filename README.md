@@ -1,4 +1,4 @@
-# Prettier plugin sort imports
+# Prettier plugin sort imports <!-- omit in toc -->
 
 A prettier plugin to sort import declarations by provided Regular Expression order.
 
@@ -9,6 +9,30 @@ The first change was preserving the order of [side-effect imports](https://devel
 Since then more critical features & fixes have been added. As a result, this repo intends to stay compatible with the upstream, but may continue to gain features not present in the original version of the plugin.
 
 [We welcome contributions!](./CONTRIBUTING.md)
+
+**Table of Contents**
+
+- [Sample](#sample)
+  - [Input](#input)
+  - [Output](#output)
+- [Install](#install)
+- [Usage](#usage)
+  - [How does import sort work?](#how-does-import-sort-work)
+  - [Options](#options)
+    - [`importOrder`](#importorder)
+    - [`importOrderSeparation`](#importorderseparation)
+    - [`importOrderSortSpecifiers`](#importordersortspecifiers)
+    - [`importOrderGroupNamespaceSpecifiers`](#importordergroupnamespacespecifiers)
+    - [`importOrderCaseInsensitive`](#importordercaseinsensitive)
+    - [`importOrderMergeDuplicateImports`](#importordermergeduplicateimports)
+    - [`importOrderCombineTypeAndValueImports`](#importordercombinetypeandvalueimports)
+    - [`importOrderParserPlugins`](#importorderparserplugins)
+    - [`importOrderBuiltinModulesToTop`](#importorderbuiltinmodulestotop)
+  - [Prevent imports from being sorted](#prevent-imports-from-being-sorted)
+- [FAQ / Troubleshooting](#faq--troubleshooting)
+- [Compatibility](#compatibility)
+- [Contribution](#contribution)
+- [Disclaimer](#disclaimer)
 
 ## Sample
 
@@ -100,32 +124,59 @@ module.exports = {
   "importOrderCaseInsensitive": true,
   "importOrderParserPlugins": ["typescript", "jsx", "decorators-legacy"],
   "importOrderMergeDuplicateImports": true,
+  "importOrderCombineTypeAndValueImports": true,
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,
 }
 ```
 
-_Note: all flags are off by default, so explore your options [below](#apis)_
+_Note: all flags are off by default, so explore your options [below](#options)_
 
-### APIs
+### How does import sort work?
 
-#### Prevent imports from being sorted
+The plugin extracts the imports which are defined in `importOrder`. These imports are considered as _local imports_.
+The imports which are not part of the `importOrder` is considered as _third party imports_.
 
-This plugin supports standard prettier ignore comments. By default, side-effect imports (like
-`import "core-js/stable";`) are not sorted, so in most cases things should just work. But if you ever need to, you can
-prevent an import from getting sorted like this:
+First, the plugin checks for
+[side effect imports](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#import_a_module_for_its_side_effects_only),
+such as `import 'mock-fs'`. These imports often modify the global scope or apply some patches to the current
+environment, which may affect other imports. To preserve potential side effects, these kind of side effect imports are
+classified as unsortable. They also behave as a barrier that other imports may not cross during the sort. So for
+example, let's say you've got these imports:
 
 ```javascript
-// prettier-ignore
-import { goods } from "zealand";
-import { cars } from "austria";
+import E from 'e';
+import F from 'f';
+import D from 'd';
+import 'c';
+import B from 'b';
+import A from 'a';
 ```
 
-This will keep the `zealand` import at the top instead of moving it below the `austria` import. Note that since only
-entire import statements can be ignored, line comments (`// prettier-ignore`) are recommended over inline comments
-(`/* prettier-ignore */`).
+Then the first three imports are sorted and the last two imports are sorted, but all imports above `c` stay above `c`
+and all imports below `c` stay below `c`, resulting in:
 
-#### **`importOrder`**
+```javascript
+import D from 'd';
+import E from 'e';
+import F from 'f';
+import 'c';
+import A from 'a';
+import B from 'b';
+```
+
+Additionally, any import statements lines that are preceded by a `// prettier-ignore` comment are also classified as
+unsortable. This can be used for edge-cases, such as when you have a named import with side-effects.
+
+Next, the plugin sorts the _local imports_ and _third party imports_ using [natural sort algorithm](https://en.wikipedia.org/wiki/Natural_sort_order).
+
+In the end, the plugin returns final imports with _third party imports_ on top and _local imports_ at the end.
+
+The _third party imports_ position (it's top by default) can be overridden using the `<THIRD_PARTY_MODULES>` special word in the `importOrder`.
+
+### Options
+
+#### `importOrder`
 
 **type**: `Array<string>`
 
@@ -218,6 +269,28 @@ import ExampleView from './ExampleView';
 
 When `true`, multiple import statements from the same module will be combined into a single import.
 
+#### `importOrderCombineTypeAndValueImports`
+
+**type**: `boolean`
+
+**default value:** `false`
+
+A boolean value to control merging `import type` expressions into `import {…}`.
+
+```diff
+- import type { C1 } from 'c';
+- import { C2 } from 'c';
++ import { type C1, C2 } from "c";
+
+- import { D1 } from 'd';
+- import type { D2 } from 'd';
++ import { D1, type D2 } from "d";
+
+- import type { A1 } from 'a';
+- import type { A2 } from 'a';
++ import type { A1, A2 } from "a";
+```
+
 #### `importOrderParserPlugins`
 
 **type**: `Array<string>`
@@ -258,47 +331,21 @@ with options as a JSON string of the plugin array:
 
 A boolean value to enable sorting of [`node builtins`](https://nodejs.org/api/module.html#modulebuiltinmodules) to the top of all import groups.
 
-### How does import sort work?
+### Prevent imports from being sorted
 
-The plugin extracts the imports which are defined in `importOrder`. These imports are considered as _local imports_.
-The imports which are not part of the `importOrder` is considered as _third party imports_.
-
-First, the plugin checks for
-[side effect imports](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#import_a_module_for_its_side_effects_only),
-such as `import 'mock-fs'`. These imports often modify the global scope or apply some patches to the current
-environment, which may affect other imports. To preserve potential side effects, these kind of side effect imports are
-classified as unsortable. They also behave as a barrier that other imports may not cross during the sort. So for
-example, let's say you've got these imports:
+This plugin supports standard prettier ignore comments. By default, side-effect imports (like
+`import "core-js/stable";`) are not sorted, so in most cases things should just work. But if you ever need to, you can
+prevent an import from getting sorted like this:
 
 ```javascript
-import E from 'e';
-import F from 'f';
-import D from 'd';
-import 'c';
-import B from 'b';
-import A from 'a';
+// prettier-ignore
+import { goods } from "zealand";
+import { cars } from "austria";
 ```
 
-Then the first three imports are sorted and the last two imports are sorted, but all imports above `c` stay above `c`
-and all imports below `c` stay below `c`, resulting in:
-
-```javascript
-import D from 'd';
-import E from 'e';
-import F from 'f';
-import 'c';
-import A from 'a';
-import B from 'b';
-```
-
-Additionally, any import statements lines that are preceded by a `// prettier-ignore` comment are also classified as
-unsortable. This can be used for edge-cases, such as when you have a named import with side-effects.
-
-Next, the plugin sorts the _local imports_ and _third party imports_ using [natural sort algorithm](https://en.wikipedia.org/wiki/Natural_sort_order).
-
-In the end, the plugin returns final imports with _third party imports_ on top and _local imports_ at the end.
-
-The _third party imports_ position (it's top by default) can be overridden using the `<THIRD_PARTY_MODULES>` special word in the `importOrder`.
+This will keep the `zealand` import at the top instead of moving it below the `austria` import. Note that since only
+entire import statements can be ignored, line comments (`// prettier-ignore`) are recommended over inline comments
+(`/* prettier-ignore */`).
 
 ## FAQ / Troubleshooting
 
