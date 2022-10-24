@@ -51,11 +51,13 @@ function selectNodeImportSource(node: ImportDeclaration) {
     return node.source.value;
 }
 
+/** e.g. import * as Namespace from "someModule" */
 function nodeIsImportNamespaceSpecifier(
     node: ImportSpecifier | ImportDefaultSpecifier | ImportNamespaceSpecifier,
 ): node is ImportNamespaceSpecifier {
     return node.type === 'ImportNamespaceSpecifier';
 }
+/** e.g. import Default from "someModule" */
 function nodeIsImportDefaultSpecifier(
     node: ImportSpecifier | ImportDefaultSpecifier | ImportNamespaceSpecifier,
 ): node is ImportDefaultSpecifier {
@@ -67,7 +69,7 @@ function nodeIsImportSpecifier(
     return node.type === 'ImportSpecifier';
 }
 
-function convertImportSpecifierType(node: ImportSpecifier) {
+function convertImportSpecifierToType(node: ImportSpecifier) {
     assert(node.importKind === 'value' || node.importKind === 'type');
     node.importKind = 'type';
 }
@@ -78,7 +80,7 @@ function convertTypeImportToValueImport(node: ImportDeclaration) {
     node.importKind = 'value';
     node.specifiers
         .filter(nodeIsImportSpecifier)
-        .forEach(convertImportSpecifierType);
+        .forEach(convertImportSpecifierToType);
 }
 
 /** Return false if the merge will produce an invalid result */

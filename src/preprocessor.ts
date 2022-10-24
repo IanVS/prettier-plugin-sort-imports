@@ -25,7 +25,7 @@ export function preprocessor(code: string, options: PrettierOptions): string {
         !importOrderMergeDuplicateImports
     ) {
         console.warn(
-            "[@ianvs/prettier-plugin-sort-imports]: Option combination of both importOrderMergeTypeImportsIntoRegular: true and importOrderMergeDuplicateImports: false is not won't do anything!",
+            '[@ianvs/prettier-plugin-sort-imports]: Enabling importOrderMergeTypeImportsIntoRegular will have no effect unless importOrderMergeDuplicateImports is also enabled.',
         );
     }
 
