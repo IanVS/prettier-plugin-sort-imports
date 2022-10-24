@@ -57,7 +57,13 @@ function nodeIsImportNamespaceSpecifier(
 ): node is ImportNamespaceSpecifier {
     return node.type === 'ImportNamespaceSpecifier';
 }
-/** e.g. import Default from "someModule" */
+/**
+ * Default type or value import
+ *
+ * e.g.
+ * import Default from "someModule"
+ * import type Default from "someModule"
+ */
 function nodeIsImportDefaultSpecifier(
     node: ImportSpecifier | ImportDefaultSpecifier | ImportNamespaceSpecifier,
 ): node is ImportDefaultSpecifier {
@@ -106,6 +112,13 @@ function mergeIsSafe(
         // Future work could convert `import Foo1 from 'a'; import Foo2 from 'a';
         //  into `import {default as Foo1, default as Foo2} from 'a';`
         // But since this runs the risk of making code longer, this won't be in v1.
+        return false;
+    }
+    if (
+        nodeToKeep.importKind === 'type' && nodeToKeep.specifiers.some(nodeIsImportDefaultSpecifier) ||
+        nodeToForget.importKind === 'type' && nodeToForget.specifiers.some(nodeIsImportDefaultSpecifier)
+    ) {
+        // Cannot merge default type imports (.e.g. import type React from 'react')
         return false;
     }
     return true;
