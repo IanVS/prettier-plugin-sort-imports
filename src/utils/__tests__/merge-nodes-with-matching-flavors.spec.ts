@@ -88,6 +88,7 @@ import Foo2 from "e";
 import { Junk2 } from "junk-group-2";
 `);
 });
+
 it('should merge type imports into regular imports', () => {
     const code = `
     // Preserves 'import type'
@@ -130,6 +131,7 @@ import { C2, type C1 } from "c";
 import { D1, type D2 } from "d";
 `);
 });
+
 it('should combine type import and default import', () => {
     const code = `
 import type {MyType} from './source';
@@ -155,6 +157,7 @@ import defaultValue from './source';
         .toEqual(`import defaultValue, { type MyType } from "./source";
 `);
 });
+
 it('should not combine type import and namespace import', () => {
     const code = `
 import type {MyType} from './source';
@@ -181,6 +184,7 @@ import * as Namespace from './source';
 import * as Namespace from "./source";
 `);
 });
+
 it('should support aliased named imports', () => {
     const code = `
 import type {MyType} from './source';
@@ -206,6 +210,7 @@ import {value as alias} from './source';
         .toEqual(`import { value as alias, type MyType } from "./source";
 `);
 });
+
 it('should combine multiple imports from the same source', () => {
     const code = `
 import type {MyType, SecondType} from './source';
@@ -231,6 +236,7 @@ import {value, SecondValue} from './source';
         .toEqual(`import { SecondValue, value, type MyType, type SecondType } from "./source";
 `);
 });
+
 it('should combine multiple groups of imports', () => {
     const code = `
 import type {MyType} from './source';
@@ -259,6 +265,7 @@ import {otherValue} from './other';
 import { value, type MyType } from "./source";
 `);
 });
+
 it('should combine multiple imports statements from the same source', () => {
     const code = `
 import type {MyType} from './source';
@@ -286,6 +293,7 @@ import {SecondValue} from './source';
         .toEqual(`import { SecondValue, value, type MyType, type SecondType } from "./source";
 `);
 });
+
 it('should not impact imports from different sources', () => {
     const code = `
 import type {MyType} from './source';
@@ -390,5 +398,32 @@ import { default as Def1 } from "d";
 import Foo1 from "e";
 import Foo2 from "e";
 import { Junk2 } from "junk-group-2";
+`);
+});
+
+it('should not combine default type imports', () => {
+    const code = `
+    import { ComponentProps, useEffect } from "react";
+    import type React from "react";
+`;
+    const allOriginalImportNodes = getImportNodes(code, {
+        plugins: ['typescript'],
+    });
+
+    const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
+        ...defaultOptions,
+        importOrderMergeDuplicateImports: true,
+        importOrderCombineTypeAndValueImports: true,
+    });
+    const formatted = getCodeFromAst({
+        nodesToOutput,
+        allOriginalImportNodes,
+        originalCode: code,
+        directives: [],
+    });
+
+    expect(format(formatted, { parser: 'babel' }))
+        .toEqual(`import { ComponentProps, useEffect } from "react";
+import type React from "react";
 `);
 });
