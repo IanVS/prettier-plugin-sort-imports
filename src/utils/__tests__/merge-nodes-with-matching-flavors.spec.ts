@@ -97,9 +97,9 @@ it('should merge type imports into regular imports', () => {
     import { B1 } from 'b';
     import { B2 } from 'b';
     // Converts 'import type' to 'import value' if first
-    import type { C1 } from 'c';
     import { C2 } from 'c';
-    // Converts 'import type' to 'import value' if last
+    import type { C1 } from 'c';
+    // Sorts type import to end
     import { D1 } from 'd';
     import type { D2 } from 'd';
     `;
@@ -125,8 +125,8 @@ import type { A1, A2 } from "a";
 // Preserves 'import value'
 import { B1, B2 } from "b";
 // Converts 'import type' to 'import value' if first
-import { type C1, C2 } from "c";
-// Converts 'import type' to 'import value' if last
+import { C2, type C1 } from "c";
+// Sorts type import to end
 import { D1, type D2 } from "d";
 `);
 });
@@ -203,7 +203,7 @@ import {value as alias} from './source';
     });
 
     expect(format(formatted, { parser: 'babel' }))
-        .toEqual(`import { type MyType, value as alias } from "./source";
+        .toEqual(`import { value as alias, type MyType } from "./source";
 `);
 });
 it('should combine multiple imports from the same source', () => {
@@ -228,7 +228,7 @@ import {value, SecondValue} from './source';
     });
 
     expect(format(formatted, { parser: 'babel' }))
-        .toEqual(`import { type MyType, type SecondType, SecondValue, value } from "./source";
+        .toEqual(`import { SecondValue, value, type MyType, type SecondType } from "./source";
 `);
 });
 it('should combine multiple groups of imports', () => {
@@ -255,8 +255,8 @@ import {otherValue} from './other';
     });
 
     expect(format(formatted, { parser: 'babel' }))
-        .toEqual(`import { type OtherType, otherValue } from "./other";
-import { type MyType, value } from "./source";
+        .toEqual(`import { otherValue, type OtherType } from "./other";
+import { value, type MyType } from "./source";
 `);
 });
 it('should combine multiple imports statements from the same source', () => {
@@ -283,7 +283,7 @@ import {SecondValue} from './source';
     });
 
     expect(format(formatted, { parser: 'babel' }))
-        .toEqual(`import { type MyType, type SecondType, SecondValue, value } from "./source";
+        .toEqual(`import { SecondValue, value, type MyType, type SecondType } from "./source";
 `);
 });
 it('should not impact imports from different sources', () => {
@@ -311,7 +311,7 @@ import {value} from './source';
 
     expect(format(formatted, { parser: 'babel' }))
         .toEqual(`import type { OtherType } from "./other";
-import { type MyType, value } from "./source";
+import { value, type MyType } from "./source";
 import { thirdValue } from "./third";
 `);
 });
