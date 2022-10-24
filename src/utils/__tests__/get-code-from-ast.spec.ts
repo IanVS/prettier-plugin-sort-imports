@@ -21,7 +21,7 @@ import a from 'a';
         importOrderCaseInsensitive: false,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
-        importOrderMergeTypeImportsIntoRegular: false,
+        importOrderCombineTypeAndValueImports: false,
         importOrderSeparation: false,
         importOrderSortSpecifiers: false,
     });
@@ -63,7 +63,7 @@ import type {See} from 'c';
         importOrderCaseInsensitive: false,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: true,
-        importOrderMergeTypeImportsIntoRegular: false,
+        importOrderCombineTypeAndValueImports: false,
         importOrderSeparation: false,
         importOrderSortSpecifiers: false,
     });

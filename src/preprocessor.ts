@@ -15,17 +15,17 @@ export function preprocessor(code: string, options: PrettierOptions): string {
         importOrderCaseInsensitive,
         importOrderGroupNamespaceSpecifiers,
         importOrderMergeDuplicateImports,
-        importOrderMergeTypeImportsIntoRegular,
+        importOrderCombineTypeAndValueImports,
         importOrderSeparation,
         importOrderSortSpecifiers,
     } = options;
 
     if (
-        importOrderMergeTypeImportsIntoRegular &&
+        importOrderCombineTypeAndValueImports &&
         !importOrderMergeDuplicateImports
     ) {
         console.warn(
-            '[@ianvs/prettier-plugin-sort-imports]: Enabling importOrderMergeTypeImportsIntoRegular will have no effect unless importOrderMergeDuplicateImports is also enabled.',
+            '[@ianvs/prettier-plugin-sort-imports]: Enabling importOrderCombineTypeAndValueImports will have no effect unless importOrderMergeDuplicateImports is also enabled.',
         );
     }
 
@@ -62,7 +62,7 @@ export function preprocessor(code: string, options: PrettierOptions): string {
         importOrderCaseInsensitive,
         importOrderGroupNamespaceSpecifiers,
         importOrderMergeDuplicateImports,
-        importOrderMergeTypeImportsIntoRegular,
+        importOrderCombineTypeAndValueImports,
         importOrderSeparation,
         importOrderSortSpecifiers,
     });

@@ -10,7 +10,7 @@ const defaultOptions = {
     importOrderCaseInsensitive: false,
     importOrderGroupNamespaceSpecifiers: false,
     importOrderMergeDuplicateImports: false,
-    importOrderMergeTypeImportsIntoRegular: false,
+    importOrderCombineTypeAndValueImports: false,
     importOrderSeparation: true,
     importOrderSortSpecifiers: true,
 };
@@ -51,7 +51,7 @@ it('should merge duplicate imports within a given chunk', () => {
     const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
         ...defaultOptions,
         importOrderMergeDuplicateImports: true,
-        importOrderMergeTypeImportsIntoRegular: false,
+        importOrderCombineTypeAndValueImports: false,
     });
     const formatted = getCodeFromAst({
         nodesToOutput,
@@ -110,7 +110,7 @@ it('should merge type imports into regular imports', () => {
     const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
         ...defaultOptions,
         importOrderMergeDuplicateImports: true,
-        importOrderMergeTypeImportsIntoRegular: true,
+        importOrderCombineTypeAndValueImports: true,
     });
     const formatted = getCodeFromAst({
         nodesToOutput,
@@ -142,7 +142,7 @@ import defaultValue from './source';
     const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
         ...defaultOptions,
         importOrderMergeDuplicateImports: true,
-        importOrderMergeTypeImportsIntoRegular: true,
+        importOrderCombineTypeAndValueImports: true,
     });
     const formatted = getCodeFromAst({
         nodesToOutput,
@@ -167,7 +167,7 @@ import * as Namespace from './source';
     const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
         ...defaultOptions,
         importOrderMergeDuplicateImports: true,
-        importOrderMergeTypeImportsIntoRegular: true,
+        importOrderCombineTypeAndValueImports: true,
     });
     const formatted = getCodeFromAst({
         nodesToOutput,
@@ -193,7 +193,7 @@ import {value as alias} from './source';
     const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
         ...defaultOptions,
         importOrderMergeDuplicateImports: true,
-        importOrderMergeTypeImportsIntoRegular: true,
+        importOrderCombineTypeAndValueImports: true,
     });
     const formatted = getCodeFromAst({
         nodesToOutput,
@@ -218,7 +218,7 @@ import {value, SecondValue} from './source';
     const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
         ...defaultOptions,
         importOrderMergeDuplicateImports: true,
-        importOrderMergeTypeImportsIntoRegular: true,
+        importOrderCombineTypeAndValueImports: true,
     });
     const formatted = getCodeFromAst({
         nodesToOutput,
@@ -245,7 +245,7 @@ import {otherValue} from './other';
     const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
         ...defaultOptions,
         importOrderMergeDuplicateImports: true,
-        importOrderMergeTypeImportsIntoRegular: true,
+        importOrderCombineTypeAndValueImports: true,
     });
     const formatted = getCodeFromAst({
         nodesToOutput,
@@ -273,7 +273,7 @@ import {SecondValue} from './source';
     const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
         ...defaultOptions,
         importOrderMergeDuplicateImports: true,
-        importOrderMergeTypeImportsIntoRegular: true,
+        importOrderCombineTypeAndValueImports: true,
     });
     const formatted = getCodeFromAst({
         nodesToOutput,
@@ -300,7 +300,7 @@ import {value} from './source';
     const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
         ...defaultOptions,
         importOrderMergeDuplicateImports: true,
-        importOrderMergeTypeImportsIntoRegular: true,
+        importOrderCombineTypeAndValueImports: true,
     });
     const formatted = getCodeFromAst({
         nodesToOutput,

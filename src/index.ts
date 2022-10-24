@@ -72,7 +72,7 @@ const options: Record<
         default: false,
         description: 'Should duplicate imports be merged?',
     },
-    importOrderMergeTypeImportsIntoRegular: {
+    importOrderCombineTypeAndValueImports: {
         type: 'boolean',
         category: 'Global',
         default: false,

@@ -32,7 +32,7 @@ test('it returns all sorted nodes', () => {
         importOrderCaseInsensitive: false,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
-        importOrderMergeTypeImportsIntoRegular: false,
+        importOrderCombineTypeAndValueImports: false,
         importOrderSeparation: false,
         importOrderSortSpecifiers: false,
     }) as ImportDeclaration[];
@@ -87,7 +87,7 @@ test('it returns all sorted nodes case-insensitive', () => {
         importOrderCaseInsensitive: true,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
-        importOrderMergeTypeImportsIntoRegular: false,
+        importOrderCombineTypeAndValueImports: false,
         importOrderSeparation: false,
         importOrderSortSpecifiers: false,
     }) as ImportDeclaration[];
@@ -142,7 +142,7 @@ test('it returns all sorted nodes with sort order', () => {
         importOrderCaseInsensitive: false,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
-        importOrderMergeTypeImportsIntoRegular: false,
+        importOrderCombineTypeAndValueImports: false,
         importOrderSeparation: false,
         importOrderSortSpecifiers: false,
     }) as ImportDeclaration[];
@@ -197,7 +197,7 @@ test('it returns all sorted nodes with sort order case-insensitive', () => {
         importOrderCaseInsensitive: true,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
-        importOrderMergeTypeImportsIntoRegular: false,
+        importOrderCombineTypeAndValueImports: false,
         importOrderSeparation: false,
         importOrderSortSpecifiers: false,
     }) as ImportDeclaration[];
@@ -251,7 +251,7 @@ test('it returns all sorted import nodes with sorted import specifiers', () => {
         importOrderCaseInsensitive: false,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
-        importOrderMergeTypeImportsIntoRegular: false,
+        importOrderCombineTypeAndValueImports: false,
         importOrderSeparation: false,
         importOrderSortSpecifiers: true,
     }) as ImportDeclaration[];
@@ -305,7 +305,7 @@ test('it returns all sorted import nodes with sorted import specifiers with case
         importOrderCaseInsensitive: true,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
-        importOrderMergeTypeImportsIntoRegular: false,
+        importOrderCombineTypeAndValueImports: false,
         importOrderSeparation: false,
         importOrderSortSpecifiers: true,
     }) as ImportDeclaration[];
@@ -359,7 +359,7 @@ test('it returns all sorted nodes with custom third party modules', () => {
         importOrderCaseInsensitive: true,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
-        importOrderMergeTypeImportsIntoRegular: false,
+        importOrderCombineTypeAndValueImports: false,
         importOrderSeparation: false,
         importOrderSortSpecifiers: false,
     }) as ImportDeclaration[];
@@ -390,7 +390,7 @@ test('it returns all sorted nodes with namespace specifiers at the top', () => {
         importOrderCaseInsensitive: false,
         importOrderGroupNamespaceSpecifiers: true,
         importOrderMergeDuplicateImports: false,
-        importOrderMergeTypeImportsIntoRegular: false,
+        importOrderCombineTypeAndValueImports: false,
         importOrderSeparation: false,
         importOrderSortSpecifiers: false,
     }) as ImportDeclaration[];
@@ -422,7 +422,7 @@ test('it returns all sorted nodes with builtin specifiers at the top, ', () => {
         importOrderCaseInsensitive: false,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
-        importOrderMergeTypeImportsIntoRegular: false,
+        importOrderCombineTypeAndValueImports: false,
         importOrderSeparation: false,
         importOrderSortSpecifiers: false,
     }) as ImportDeclaration[];
@@ -454,7 +454,7 @@ test('it returns all sorted nodes with custom third party modules and builtins a
         importOrderCaseInsensitive: true,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
-        importOrderMergeTypeImportsIntoRegular: false,
+        importOrderCombineTypeAndValueImports: false,
         importOrderSeparation: false,
         importOrderSortSpecifiers: false,
     }) as ImportDeclaration[];
@@ -485,7 +485,7 @@ test('it adds newlines when importOrderSeparation is true', () => {
         importOrderCaseInsensitive: true,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
-        importOrderMergeTypeImportsIntoRegular: false,
+        importOrderCombineTypeAndValueImports: false,
         importOrderSeparation: true,
         importOrderSortSpecifiers: false,
     }) as ImportDeclaration[];
@@ -526,7 +526,7 @@ test('it returns all sorted nodes with custom separation', () => {
         importOrderCaseInsensitive: true,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
-        importOrderMergeTypeImportsIntoRegular: false,
+        importOrderCombineTypeAndValueImports: false,
         importOrderSeparation: false,
         importOrderSortSpecifiers: false,
     }) as ImportDeclaration[];
@@ -565,7 +565,7 @@ test('it allows both importOrderSeparation and custom separation (but why?)', ()
         importOrderCaseInsensitive: true,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
-        importOrderMergeTypeImportsIntoRegular: false,
+        importOrderCombineTypeAndValueImports: false,
         importOrderSeparation: true,
         importOrderSortSpecifiers: false,
     }) as ImportDeclaration[];
@@ -610,7 +610,7 @@ test('it does not add multiple custom import separators', () => {
         importOrderCaseInsensitive: true,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
-        importOrderMergeTypeImportsIntoRegular: false,
+        importOrderCombineTypeAndValueImports: false,
         importOrderSeparation: false,
         importOrderSortSpecifiers: false,
     }) as ImportDeclaration[];

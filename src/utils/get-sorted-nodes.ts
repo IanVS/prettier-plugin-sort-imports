@@ -24,7 +24,7 @@ export const getSortedNodes: GetSortedNodes = (nodes, options) => {
     const {
         importOrderSeparation,
         importOrderMergeDuplicateImports,
-        importOrderMergeTypeImportsIntoRegular,
+        importOrderCombineTypeAndValueImports,
     } = options;
 
     // Split nodes at each boundary between a side-effect node and a
@@ -54,7 +54,7 @@ export const getSortedNodes: GetSortedNodes = (nodes, options) => {
         } else {
             const nodes = importOrderMergeDuplicateImports
                 ? mergeNodesWithMatchingImportFlavors(chunk.nodes, {
-                      importOrderMergeTypeImportsIntoRegular,
+                      importOrderCombineTypeAndValueImports,
                   })
                 : chunk.nodes;
             // sort non-side effect nodes

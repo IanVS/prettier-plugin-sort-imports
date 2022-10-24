@@ -190,13 +190,13 @@ function mutateContextAndMerge({
  * `import type {Foo}` expressions won't be converted into `import {type Foo}` or vice versa
  */
 export const mergeNodesWithMatchingImportFlavors: MergeNodesWithMatchingImportFlavors =
-    (input, { importOrderMergeTypeImportsIntoRegular }) => {
+    (input, { importOrderCombineTypeAndValueImports }) => {
         const nodesToDelete: ImportDeclaration[] = [];
 
         let context: Record<string, ImportDeclaration> = {};
         const groups = selectMergeableNodesByImportFlavor(input);
         for (const groupKey of mergeableImportFlavors) {
-            if (!importOrderMergeTypeImportsIntoRegular) {
+            if (!importOrderCombineTypeAndValueImports) {
                 // Reset in loop to avoid unintended merge across variants
                 context = {};
             }

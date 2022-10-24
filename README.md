@@ -100,7 +100,7 @@ module.exports = {
   "importOrderCaseInsensitive": true,
   "importOrderParserPlugins": ["typescript", "jsx", "decorators-legacy"],
   "importOrderMergeDuplicateImports": true,
-  "importOrderMergeTypeImportsIntoRegular": true,
+  "importOrderCombineTypeAndValueImports": true,
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,
 }
@@ -219,7 +219,7 @@ import ExampleView from './ExampleView';
 
 When `true`, multiple import statements from the same module will be combined into a single import.
 
-#### `importOrderMergeTypeImportsIntoRegular`
+#### `importOrderCombineTypeAndValueImports`
 
 **type**: `boolean`
 
