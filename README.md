@@ -228,7 +228,17 @@ _Note:_ If you want greater control over which groups are separated from others,
 
 **default value:** `false`
 
-A boolean value to enable or disable sorting of the specifiers in an import declarations.
+A boolean value to enable or disable sorting of the specifiers in an import declarations.  If enabled, type imports will be sorted after value imports.
+
+Before:
+```ts
+import Default, {type Bravo, delta as echo, charlie, type Alpha} from 'source';
+```
+
+After:
+```ts
+import Default, {charlie, delta as echo, type Alpha, type Bravo} from 'source';
+```
 
 #### `importOrderGroupNamespaceSpecifiers`
 
