@@ -15,7 +15,7 @@ const defaultOptions = {
     importOrderSortSpecifiers: true,
 };
 
-it('should merge duplicate imports within a given chunk', () => {
+it('should merge duplicate imports within a given chunk', async () => {
     const code = `
     import type { A } from 'a';
     import { Junk } from 'junk-group-1'
@@ -60,7 +60,7 @@ it('should merge duplicate imports within a given chunk', () => {
         directives: [],
     });
 
-    expect(format(formatted, { parser: 'babel' }))
+    expect(await format(formatted, { parser: 'babel' }))
         .toEqual(`import type { A, B } from "a";
 import { Junk } from "junk-group-1";
 
@@ -89,7 +89,7 @@ import { Junk2 } from "junk-group-2";
 `);
 });
 
-it('should merge type imports into regular imports', () => {
+it('should merge type imports into regular imports', async () => {
     const code = `
     // Preserves 'import type'
     import type { A1 } from 'a';
@@ -120,7 +120,7 @@ it('should merge type imports into regular imports', () => {
         directives: [],
     });
 
-    expect(format(formatted, { parser: 'babel' }))
+    expect(await format(formatted, { parser: 'babel' }))
         .toEqual(`// Preserves 'import type'
 import type { A1, A2 } from "a";
 // Preserves 'import value'
@@ -132,7 +132,7 @@ import { D1, type D2 } from "d";
 `);
 });
 
-it('should combine type import and default import', () => {
+it('should combine type import and default import', async () => {
     const code = `
 import type {MyType} from './source';
 import defaultValue from './source';
@@ -153,12 +153,12 @@ import defaultValue from './source';
         directives: [],
     });
 
-    expect(format(formatted, { parser: 'babel' }))
+    expect(await format(formatted, { parser: 'babel' }))
         .toEqual(`import defaultValue, { type MyType } from "./source";
 `);
 });
 
-it('should not combine type import and namespace import', () => {
+it('should not combine type import and namespace import', async () => {
     const code = `
 import type {MyType} from './source';
 import * as Namespace from './source';
@@ -179,13 +179,13 @@ import * as Namespace from './source';
         directives: [],
     });
 
-    expect(format(formatted, { parser: 'babel' }))
+    expect(await format(formatted, { parser: 'babel' }))
         .toEqual(`import type { MyType } from "./source";
 import * as Namespace from "./source";
 `);
 });
 
-it('should support aliased named imports', () => {
+it('should support aliased named imports', async () => {
     const code = `
 import type {MyType} from './source';
 import {value as alias} from './source';
@@ -206,12 +206,12 @@ import {value as alias} from './source';
         directives: [],
     });
 
-    expect(format(formatted, { parser: 'babel' }))
+    expect(await format(formatted, { parser: 'babel' }))
         .toEqual(`import { value as alias, type MyType } from "./source";
 `);
 });
 
-it('should combine multiple imports from the same source', () => {
+it('should combine multiple imports from the same source', async () => {
     const code = `
 import type {MyType, SecondType} from './source';
 import {value, SecondValue} from './source';
@@ -232,12 +232,12 @@ import {value, SecondValue} from './source';
         directives: [],
     });
 
-    expect(format(formatted, { parser: 'babel' }))
+    expect(await format(formatted, { parser: 'babel' }))
         .toEqual(`import { SecondValue, value, type MyType, type SecondType } from "./source";
 `);
 });
 
-it('should combine multiple groups of imports', () => {
+it('should combine multiple groups of imports', async () => {
     const code = `
 import type {MyType} from './source';
 import type {OtherType} from './other';
@@ -260,13 +260,13 @@ import {otherValue} from './other';
         directives: [],
     });
 
-    expect(format(formatted, { parser: 'babel' }))
+    expect(await format(formatted, { parser: 'babel' }))
         .toEqual(`import { otherValue, type OtherType } from "./other";
 import { value, type MyType } from "./source";
 `);
 });
 
-it('should combine multiple imports statements from the same source', () => {
+it('should combine multiple imports statements from the same source', async () => {
     const code = `
 import type {MyType} from './source';
 import type {SecondType} from './source';
@@ -289,12 +289,12 @@ import {SecondValue} from './source';
         directives: [],
     });
 
-    expect(format(formatted, { parser: 'babel' }))
+    expect(await format(formatted, { parser: 'babel' }))
         .toEqual(`import { SecondValue, value, type MyType, type SecondType } from "./source";
 `);
 });
 
-it('should not impact imports from different sources', () => {
+it('should not impact imports from different sources', async () => {
     const code = `
 import type {MyType} from './source';
 import type {OtherType} from './other';
@@ -317,14 +317,14 @@ import {value} from './source';
         directives: [],
     });
 
-    expect(format(formatted, { parser: 'babel' }))
+    expect(await format(formatted, { parser: 'babel' }))
         .toEqual(`import type { OtherType } from "./other";
 import { value, type MyType } from "./source";
 import { thirdValue } from "./third";
 `);
 });
 
-it("doesn't merge duplicate imports if option disabled", () => {
+it("doesn't merge duplicate imports if option disabled", async () => {
     const code = `
     import type { A } from 'a';
     import { Junk } from 'junk-group-1'
@@ -368,7 +368,7 @@ it("doesn't merge duplicate imports if option disabled", () => {
         directives: [],
     });
 
-    expect(format(formatted, { parser: 'babel' }))
+    expect(await format(formatted, { parser: 'babel' }))
         .toEqual(`import type { A } from "a";
 import type { B } from "a";
 import { Junk } from "junk-group-1";
@@ -401,7 +401,7 @@ import { Junk2 } from "junk-group-2";
 `);
 });
 
-it('should not combine default type imports', () => {
+it('should not combine default type imports', async () => {
     const code = `
     import { ComponentProps, useEffect } from "react";
     import type React from "react";
@@ -422,7 +422,7 @@ it('should not combine default type imports', () => {
         directives: [],
     });
 
-    expect(format(formatted, { parser: 'babel' }))
+    expect(await format(formatted, { parser: 'babel' }))
         .toEqual(`import { ComponentProps, useEffect } from "react";
 import type React from "react";
 `);

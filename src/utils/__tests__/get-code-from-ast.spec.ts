@@ -4,7 +4,7 @@ import { getCodeFromAst } from '../get-code-from-ast';
 import { getImportNodes } from '../get-import-nodes';
 import { getSortedNodes } from '../get-sorted-nodes';
 
-it('sorts imports correctly', () => {
+it('sorts imports correctly', async () => {
     const code = `// first comment
 // second comment
 import z from 'z';
@@ -30,7 +30,7 @@ import a from 'a';
         originalCode: code,
         directives: [],
     });
-    expect(format(formatted, { parser: 'babel' })).toEqual(
+    expect(await format(formatted, { parser: 'babel' })).toEqual(
         `// first comment
 // second comment
 import a from "a";
@@ -43,7 +43,7 @@ import z from "z";
     );
 });
 
-it('merges duplicate imports correctly', () => {
+it('merges duplicate imports correctly', async () => {
     const code = `// first comment
 // second comment
 import z from 'z';
@@ -73,7 +73,7 @@ import type {See} from 'c';
         originalCode: code,
         directives: [],
     });
-    expect(format(formatted, { parser: 'babel' })).toEqual(
+    expect(await format(formatted, { parser: 'babel' })).toEqual(
         `// first comment
 // second comment
 import a, { b, type Bee } from "a";

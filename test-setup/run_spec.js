@@ -4,7 +4,7 @@ const fs = require('fs');
 const extname = require('path').extname;
 const prettier = require('prettier');
 
-function run_spec(dirname, parsers, options) {
+async function run_spec(dirname, parsers, options) {
     options = Object.assign(
         {
             plugins: ['./src'],
@@ -18,7 +18,7 @@ function run_spec(dirname, parsers, options) {
         throw new Error(`No parsers were specified for ${dirname}`);
     }
 
-    fs.readdirSync(dirname).forEach((filename) => {
+    for (const filename of fs.readdirSync(dirname)) {
         const path = dirname + '/' + filename;
         if (
             extname(filename) !== '.snap' &&
@@ -31,8 +31,8 @@ function run_spec(dirname, parsers, options) {
             const mergedOptions = Object.assign({}, options, {
                 parser: parsers[0],
             });
-            const output = prettyprint(source, path, mergedOptions);
-            test(`${filename} - ${mergedOptions.parser}-verify`, () => {
+            test(`${filename} - ${mergedOptions.parser}-verify`, async () => {
+                const output = await prettyprint(source, path, mergedOptions);
                 try {
                     expect(
                         raw(source + '~'.repeat(80) + '\n' + output),
@@ -42,21 +42,21 @@ function run_spec(dirname, parsers, options) {
                 }
             });
 
-            parsers.slice(1).forEach((parserName) => {
-                test(`${filename} - ${parserName}-verify`, () => {
+            for (const parserName of parsers.slice(1)) {
+                test(`${filename} - ${parserName}-verify`, async () => {
                     const verifyOptions = Object.assign(mergedOptions, {
                         parser: parserName,
                     });
-                    const verifyOutput = prettyprint(
+                    const verifyOutput = await prettyprint(
                         source,
                         path,
                         verifyOptions,
                     );
                     expect(output).toEqual(verifyOutput);
                 });
-            });
+            }
         }
-    });
+    }
 }
 global.run_spec = run_spec;
 
