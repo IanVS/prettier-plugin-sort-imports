@@ -20,7 +20,7 @@ import { g } from "g";
             { plugins: ['typescript'] },
         ).map((node) => getImportFlavorOfNode(node)),
     ).toMatchInlineSnapshot(`
-        Array [
+        [
           "side-effect",
           "value",
           "type",
