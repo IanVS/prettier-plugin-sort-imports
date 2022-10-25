@@ -372,8 +372,8 @@ Having some trouble or an issue? You can check [FAQ / Troubleshooting section](.
 | NodeJS with ES Modules | ✅ Everything            | -                                                |
 | React                  | ✅ Everything            | -                                                |
 | Angular                | ✅ Everything            | Supported through `importOrderParserPlugins` API |
-| Vue                    | ⚠️ Soon to be supported. | Any contribution is welcome.                     |
-| Svelte                 | ⚠️ Soon to be supported. | Any contribution is welcome.                     |
+| Vue                    | ✅ Everything            | -                                                |
+| Svelte                 | ⚠️ Not yet                | Contributions are welcome                        |
 
 ## Contribution
 
