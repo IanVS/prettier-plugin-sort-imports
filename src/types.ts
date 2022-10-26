@@ -1,6 +1,7 @@
 import { ExpressionStatement, ImportDeclaration } from '@babel/types';
 import { RequiredOptions } from 'prettier';
 
+import { PluginConfig } from '../types';
 import {
     chunkTypeOther,
     chunkTypeUnsortable,
@@ -10,18 +11,9 @@ import {
     importFlavorValue,
 } from './constants';
 
-export interface PrettierOptions extends RequiredOptions {
-    importOrder: string[];
-    importOrderCaseInsensitive: boolean;
-    importOrderBuiltinModulesToTop: boolean;
-    importOrderGroupNamespaceSpecifiers: boolean;
-    importOrderMergeDuplicateImports: boolean;
-    importOrderCombineTypeAndValueImports: boolean;
-    importOrderSeparation: boolean;
-    importOrderSortSpecifiers: boolean;
-    // should be of type ParserPlugin from '@babel/parser' but prettier does not support nested arrays in options
-    importOrderParserPlugins: string[];
-}
+export interface PrettierOptions
+    extends Required<PluginConfig>,
+        RequiredOptions {}
 
 export type ChunkType = typeof chunkTypeOther | typeof chunkTypeUnsortable;
 export type FlavorType =

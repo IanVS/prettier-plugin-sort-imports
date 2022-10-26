@@ -112,7 +112,10 @@ yarn add --dev @ianvs/prettier-plugin-sort-imports
 
 Add your preferred settings in your prettier config file.
 
-```javascript
+```ts
+// @ts-check
+
+/** @type {import("@ianvs/prettier-plugin-sort-imports").PrettierConfig} */
 module.exports = {
   "printWidth": 80,
   "tabWidth": 4,
