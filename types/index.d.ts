@@ -26,6 +26,15 @@ export interface PluginConfig {
      * ```json
      * "importOrder": ["^@core/(.*)$", "<THIRD_PARTY_MODULES>", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
      * ```
+     *
+     * If you would like to order type imports differently from value imports,
+     * you can use the special `<TYPES>` string.
+     * This example will place third party types at the top, followed by local types,
+     * then third party value imports, and lastly local value imports:
+     *
+     * ```json
+     * "importOrder": ["<TYPES>", "<TYPES>^[./]", "<THIRD_PARTY_MODULES>", "^[./]"],
+     * ```
      */
     importOrder?: string[];
 
