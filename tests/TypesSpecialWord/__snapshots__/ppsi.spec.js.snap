@@ -2,12 +2,16 @@
 
 exports[`imports-with-mixed-declarations.ts - typescript-verify: imports-with-mixed-declarations.ts 1`] = `
 import a, {type LocalType} from './local-file';
-import value from 'third-party';
+import value, {tp} from 'third-party';
 import {specifier, type ThirdPartyType} from 'third-party';
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-import value, { specifier, type ThirdPartyType } from "third-party";
+import type { ThirdPartyType } from "third-party";
 
-import a, { type LocalType } from "./local-file";
+import value, { tp, specifier } from "third-party";
+
+import type { LocalType } from "./local-file";
+
+import a from "./local-file";
 
 `;
 
