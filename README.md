@@ -8,6 +8,14 @@ The first change was preserving the order of [side-effect imports](https://devel
 
 Since then more critical features & fixes have been added. As a result, this repo intends to stay compatible with the upstream, but may continue to gain features not present in the original version of the plugin.
 
+**Features not currently supported by upstream:**
+
+- Do not re-order across side-effect imports
+- Combine imports from the same source ([`importOrderMergeDuplicateImports`](#importordermergeduplicateimports))
+- Combine type and value imports ([`importOrderCombineTypeAndValueImports`](#importordercombinetypeandvalueimports))
+- Sort node.js builtin modules to top ([`importOrderBuiltinModulesToTop`](#importorderbuiltinmodulestotop))
+- Custom import order separation ([`importOrderSeparation`](#importorderseparation))
+
 [We welcome contributions!](./CONTRIBUTING.md)
 
 **Table of Contents**
