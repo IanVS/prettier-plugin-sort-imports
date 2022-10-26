@@ -60,7 +60,7 @@ export class TemplateController {
     constructor(
         private templateService: TemplateService,
         private _httpService: HttpService,
-        private _canvaskitService: CanvasKitService
+        private _canvaskitService: CanvasKitService,
     ) {
         this.CanvasKit = this._canvaskitService.canvasKit;
         this.requestFile = (url) => {
@@ -207,7 +207,7 @@ export class TemplateController {
     constructor(
         private templateService: TemplateService,
         private _httpService: HttpService,
-        private _canvaskitService: CanvasKitService
+        private _canvaskitService: CanvasKitService,
     ) {
         this.CanvasKit = this._canvaskitService.canvasKit;
         this.requestFile = (url) => {
