@@ -7,6 +7,9 @@ import {
 
 /**
  * Get the regexp group to keep the import nodes.
+ *
+ * This comes near the end of processing, after import declaration nodes have been combined or exploded.
+ *
  * @param node
  * @param importOrder
  */
@@ -36,7 +39,11 @@ export const getImportNodesMatchedGroup = (
                 node.importKind === 'type' &&
                 node.source.value.match(regExp) !== null;
         } else {
-            matched = node.source.value.match(regExp) !== null;
+            // If <TYPES> is being used for any group, and this group doesn't have it, only look for value imports
+            matched = includesTypesSpecialWord
+                ? node.importKind !== 'type' &&
+                  node.source.value.match(regExp) !== null
+                : node.source.value.match(regExp) !== null;
         }
 
         if (matched) return group;
