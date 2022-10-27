@@ -12,6 +12,16 @@ import j from './j';
 import l from './l';
 import a from '@core/a';
 `;
+
+const codeWithTypes = `
+import z from 'z';
+import type T from 't';
+import {b} from 'b';
+import a from './a';
+import type {F} from 'f';
+import type Local from './local';
+`;
+
 test('should return correct matched groups', () => {
     const importNodes = getImportNodes(code);
     const importOrder = [
@@ -52,4 +62,28 @@ test('should return THIRD_PARTY_MODULES as matched group with empty order list',
         );
         expect(matchedGroup).toEqual('<THIRD_PARTY_MODULES>');
     }
+});
+
+test('should sort non-types separately from types if <TYPES> group is present', () => {
+    const importNodes = getImportNodes(codeWithTypes, {
+        plugins: ['typescript'],
+    });
+    const importOrder = ['^[./]', '<TYPES>^[./]', '<TYPES>'];
+
+    let matchedGroups: string[] = [];
+    for (const importNode of importNodes) {
+        const matchedGroup = getImportNodesMatchedGroup(
+            importNode,
+            importOrder,
+        );
+        matchedGroups.push(matchedGroup);
+    }
+    expect(matchedGroups).toEqual([
+        '<THIRD_PARTY_MODULES>',
+        '<TYPES>',
+        '<THIRD_PARTY_MODULES>',
+        '^[./]',
+        '<TYPES>',
+        '<TYPES>^[./]',
+    ]);
 });
