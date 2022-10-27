@@ -53,3 +53,7 @@ export type MergeNodesWithMatchingImportFlavors = (
     nodes: ImportDeclaration[],
     options: { importOrderCombineTypeAndValueImports: boolean },
 ) => ImportDeclaration[];
+
+export type ExplodeTypeAndValueSpecifiers = (
+    nodes: ImportDeclaration[],
+) => ImportDeclaration[];

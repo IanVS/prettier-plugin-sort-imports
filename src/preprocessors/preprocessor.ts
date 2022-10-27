@@ -2,6 +2,7 @@ import { ParserOptions, parse as babelParser } from '@babel/parser';
 import traverse, { NodePath } from '@babel/traverse';
 import { ImportDeclaration, isTSModuleDeclaration } from '@babel/types';
 
+import { TYPES_SPECIAL_WORD } from '../constants';
 import { PrettierOptions } from '../types';
 import { getCodeFromAst } from '../utils/get-code-from-ast';
 import { getExperimentalParserPlugins } from '../utils/get-experimental-parser-plugins';
@@ -15,18 +16,29 @@ export function preprocessor(code: string, options: PrettierOptions): string {
         importOrderCaseInsensitive,
         importOrderGroupNamespaceSpecifiers,
         importOrderMergeDuplicateImports,
-        importOrderCombineTypeAndValueImports,
         importOrderSeparation,
         importOrderSortSpecifiers,
     } = options;
+
+    let { importOrderCombineTypeAndValueImports } = options;
 
     if (
         importOrderCombineTypeAndValueImports &&
         !importOrderMergeDuplicateImports
     ) {
         console.warn(
-            '[@ianvs/prettier-plugin-sort-imports]: Enabling importOrderCombineTypeAndValueImports will have no effect unless importOrderMergeDuplicateImports is also enabled.',
+            '[@ianvs/prettier-plugin-sort-imports]: The option importOrderCombineTypeAndValueImports will have no effect since importOrderMergeDuplicateImports is not also enabled.',
         );
+    }
+
+    if (
+        importOrderCombineTypeAndValueImports &&
+        importOrder.some((group) => group.includes(TYPES_SPECIAL_WORD))
+    ) {
+        console.warn(
+            `[@ianvs/prettier-plugin-sort-imports]: The option importOrderCombineTypeAndValueImports will have no effect since ${TYPES_SPECIAL_WORD} is used in importOrder.`,
+        );
+        importOrderCombineTypeAndValueImports = false;
     }
 
     const allOriginalImportNodes: ImportDeclaration[] = [];

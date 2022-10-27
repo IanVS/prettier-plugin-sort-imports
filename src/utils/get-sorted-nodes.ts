@@ -1,6 +1,11 @@
-import { chunkTypeUnsortable, newLineNode } from '../constants';
+import {
+    TYPES_SPECIAL_WORD,
+    chunkTypeUnsortable,
+    newLineNode,
+} from '../constants';
 import { GetSortedNodes, ImportChunk, ImportOrLine } from '../types';
 import { adjustCommentsOnSortedNodes } from './adjust-comments-on-sorted-nodes';
+import { explodeTypeAndValueSpecifiers } from './explode-type-and-value-specifiers';
 import { getChunkTypeOfNode } from './get-chunk-type-of-node';
 import { getSortedNodesByImportOrder } from './get-sorted-nodes-by-import-order';
 import { mergeNodesWithMatchingImportFlavors } from './merge-nodes-with-matching-flavors';
@@ -22,6 +27,7 @@ import { mergeNodesWithMatchingImportFlavors } from './merge-nodes-with-matching
  */
 export const getSortedNodes: GetSortedNodes = (nodes, options) => {
     const {
+        importOrder,
         importOrderSeparation,
         importOrderMergeDuplicateImports,
         importOrderCombineTypeAndValueImports,
@@ -52,11 +58,17 @@ export const getSortedNodes: GetSortedNodes = (nodes, options) => {
             // do not sort side effect nodes
             finalNodes.push(...chunk.nodes);
         } else {
-            const nodes = importOrderMergeDuplicateImports
+            let nodes = importOrderMergeDuplicateImports
                 ? mergeNodesWithMatchingImportFlavors(chunk.nodes, {
                       importOrderCombineTypeAndValueImports,
                   })
                 : chunk.nodes;
+            // If type ordering is specified explicitly, we need to break apart type and value specifiers
+            if (
+                importOrder.some((group) => group.includes(TYPES_SPECIAL_WORD))
+            ) {
+                nodes = explodeTypeAndValueSpecifiers(nodes);
+            }
             // sort non-side effect nodes
             const sorted = getSortedNodesByImportOrder(nodes, options);
             finalNodes.push(...sorted);
