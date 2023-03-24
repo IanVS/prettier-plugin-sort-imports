@@ -199,3 +199,18 @@ export function givesAFoo3Obj(): AliasFoo3 {
 }
 
 `;
+
+exports[`imports-with-type-and-value-imports.js - flow-verify: imports-with-type-and-value-imports.js 1`] = `
+/**
+ * @flow
+ */
+
+import type {Foo} from './foo';
+import {fooValue} from './foo';
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+ * @flow
+ */
+import { fooValue, type Foo } from "./foo";
+
+`;
