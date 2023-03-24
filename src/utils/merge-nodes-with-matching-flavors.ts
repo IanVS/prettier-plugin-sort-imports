@@ -76,7 +76,12 @@ function nodeIsImportSpecifier(
 }
 
 function convertImportSpecifierToType(node: ImportSpecifier) {
-    assert(node.importKind === 'value' || node.importKind === 'type');
+    assert(
+        node.importKind === 'value' ||
+            node.importKind === 'type' ||
+            // importKind can be null when using Flow
+            node.importKind === null,
+    );
     node.importKind = 'type';
 }
 
