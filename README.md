@@ -10,37 +10,37 @@ Since then more critical features & fixes have been added. As a result, this rep
 
 **Features not currently supported by upstream:**
 
-- Do not re-order across side-effect imports
-- Combine imports from the same source ([`importOrderMergeDuplicateImports`](#importordermergeduplicateimports))
-- Combine type and value imports ([`importOrderCombineTypeAndValueImports`](#importordercombinetypeandvalueimports))
-- Sort node.js builtin modules to top ([`importOrderBuiltinModulesToTop`](#importorderbuiltinmodulestotop))
-- Custom import order separation ([`importOrderSeparation`](#importorderseparation))
+-   Do not re-order across side-effect imports
+-   Combine imports from the same source ([`importOrderMergeDuplicateImports`](#importordermergeduplicateimports))
+-   Combine type and value imports ([`importOrderCombineTypeAndValueImports`](#importordercombinetypeandvalueimports))
+-   Sort node.js builtin modules to top ([`importOrderBuiltinModulesToTop`](#importorderbuiltinmodulestotop))
+-   Custom import order separation ([`importOrderSeparation`](#importorderseparation))
 
 [We welcome contributions!](./CONTRIBUTING.md)
 
 **Table of Contents**
 
-- [Sample](#sample)
-  - [Input](#input)
-  - [Output](#output)
-- [Install](#install)
-- [Usage](#usage)
-  - [How does import sort work?](#how-does-import-sort-work)
-  - [Options](#options)
-    - [`importOrder`](#importorder)
-    - [`importOrderSeparation`](#importorderseparation)
-    - [`importOrderSortSpecifiers`](#importordersortspecifiers)
-    - [`importOrderGroupNamespaceSpecifiers`](#importordergroupnamespacespecifiers)
-    - [`importOrderCaseInsensitive`](#importordercaseinsensitive)
-    - [`importOrderMergeDuplicateImports`](#importordermergeduplicateimports)
-    - [`importOrderCombineTypeAndValueImports`](#importordercombinetypeandvalueimports)
-    - [`importOrderParserPlugins`](#importorderparserplugins)
-    - [`importOrderBuiltinModulesToTop`](#importorderbuiltinmodulestotop)
-  - [Prevent imports from being sorted](#prevent-imports-from-being-sorted)
-- [FAQ / Troubleshooting](#faq--troubleshooting)
-- [Compatibility](#compatibility)
-- [Contribution](#contribution)
-- [Disclaimer](#disclaimer)
+-   [Sample](#sample)
+    -   [Input](#input)
+    -   [Output](#output)
+-   [Install](#install)
+-   [Usage](#usage)
+    -   [How does import sort work?](#how-does-import-sort-work)
+    -   [Options](#options)
+        -   [`importOrder`](#importorder)
+        -   [`importOrderSeparation`](#importorderseparation)
+        -   [`importOrderSortSpecifiers`](#importordersortspecifiers)
+        -   [`importOrderGroupNamespaceSpecifiers`](#importordergroupnamespacespecifiers)
+        -   [`importOrderCaseInsensitive`](#importordercaseinsensitive)
+        -   [`importOrderMergeDuplicateImports`](#importordermergeduplicateimports)
+        -   [`importOrderCombineTypeAndValueImports`](#importordercombinetypeandvalueimports)
+        -   [`importOrderParserPlugins`](#importorderparserplugins)
+        -   [`importOrderBuiltinModulesToTop`](#importorderbuiltinmodulestotop)
+    -   [Prevent imports from being sorted](#prevent-imports-from-being-sorted)
+-   [FAQ / Troubleshooting](#faq--troubleshooting)
+-   [Compatibility](#compatibility)
+-   [Contribution](#contribution)
+-   [Disclaimer](#disclaimer)
 
 ## Sample
 
@@ -125,20 +125,20 @@ Add your preferred settings in your prettier config file.
 
 /** @type {import("@ianvs/prettier-plugin-sort-imports").PrettierConfig} */
 module.exports = {
-  "printWidth": 80,
-  "tabWidth": 4,
-  "trailingComma": "all",
-  "singleQuote": true,
-  "semi": true,
-  "importOrder": ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
-  "importOrderBuiltinModulesToTop": true,
-  "importOrderCaseInsensitive": true,
-  "importOrderParserPlugins": ["typescript", "jsx", "decorators-legacy"],
-  "importOrderMergeDuplicateImports": true,
-  "importOrderCombineTypeAndValueImports": true,
-  "importOrderSeparation": true,
-  "importOrderSortSpecifiers": true,
-}
+    printWidth: 80,
+    tabWidth: 4,
+    trailingComma: 'all',
+    singleQuote: true,
+    semi: true,
+    importOrder: ['^@core/(.*)$', '^@server/(.*)$', '^@ui/(.*)$', '^[./]'],
+    importOrderBuiltinModulesToTop: true,
+    importOrderCaseInsensitive: true,
+    importOrderParserPlugins: ['typescript', 'jsx', 'decorators-legacy'],
+    importOrderMergeDuplicateImports: true,
+    importOrderCombineTypeAndValueImports: true,
+    importOrderSeparation: true,
+    importOrderSortSpecifiers: true,
+};
 ```
 
 _Note: all flags are off by default, so explore your options [below](#options)_
@@ -208,7 +208,7 @@ To move the third party imports at desired place, you can use `<THIRD_PARTY_MODU
 "importOrder": ["^@core/(.*)$", "<THIRD_PARTY_MODULES>", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
 ```
 
-If you would like to order type imports differently from value imports, you can use the special `<TYPES>` string.  This example will place third party types at the top, followed by local types, then third party value imports, and lastly local value imports:
+If you would like to order type imports differently from value imports, you can use the special `<TYPES>` string. This example will place third party types at the top, followed by local types, then third party value imports, and lastly local value imports:
 
 ```json
 "importOrder": ["<TYPES>", "<TYPES>^[./]", "<THIRD_PARTY_MODULES>", "^[./]"],
@@ -245,14 +245,16 @@ _Note:_ If you want greater control over which groups are separated from others,
 
 **default value:** `false`
 
-A boolean value to enable or disable sorting of the specifiers in an import declarations.  If enabled, type imports will be sorted after value imports.
+A boolean value to enable or disable sorting of the specifiers in an import declarations. If enabled, type imports will be sorted after value imports.
 
 Before:
+
 ```ts
 import Default, {type Bravo, delta as echo, charlie, type Alpha} from 'source';
 ```
 
 After:
+
 ```ts
 import Default, {charlie, delta as echo, type Alpha, type Bravo} from 'source';
 ```
@@ -380,14 +382,14 @@ Having some trouble or an issue? You can check [FAQ / Troubleshooting section](.
 
 ## Compatibility
 
-| Framework              | Supported                | Note                                             |
-| ---------------------- | ------------------------ | ------------------------------------------------ |
-| JS with ES Modules     | ✅ Everything            | -                                                |
-| NodeJS with ES Modules | ✅ Everything            | -                                                |
-| React                  | ✅ Everything            | -                                                |
-| Angular                | ✅ Everything            | Supported through `importOrderParserPlugins` API |
-| Vue                    | ✅ Everything            | Peer dependency `@vue/compiler-sfc` is required  |
-| Svelte                 | ⚠️ Not yet                | Contributions are welcome                        |
+| Framework              | Supported     | Note                                             |
+| ---------------------- | ------------- | ------------------------------------------------ |
+| JS with ES Modules     | ✅ Everything | -                                                |
+| NodeJS with ES Modules | ✅ Everything | -                                                |
+| React                  | ✅ Everything | -                                                |
+| Angular                | ✅ Everything | Supported through `importOrderParserPlugins` API |
+| Vue                    | ✅ Everything | Peer dependency `@vue/compiler-sfc` is required  |
+| Svelte                 | ⚠️ Not yet    | Contributions are welcome                        |
 
 ## Contribution
 

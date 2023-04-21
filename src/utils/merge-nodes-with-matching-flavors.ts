@@ -14,7 +14,7 @@ import {
 import type { MergeNodesWithMatchingImportFlavors } from '../types';
 import { getImportFlavorOfNode } from './get-import-flavor-of-node';
 
-type MergeableFlavor = typeof mergeableImportFlavors[number];
+type MergeableFlavor = (typeof mergeableImportFlavors)[number];
 function isMergeableFlavor(flavor: string): flavor is MergeableFlavor {
     return mergeableImportFlavors.includes(flavor as MergeableFlavor);
 }
@@ -27,7 +27,7 @@ function selectMergeableNodesByImportFlavor(
     nodes: ImportDeclaration[],
 ): Record<MergeableFlavor, ImportDeclaration[]> {
     return nodes.reduce<
-        Record<typeof mergeableImportFlavors[number], ImportDeclaration[]>
+        Record<(typeof mergeableImportFlavors)[number], ImportDeclaration[]>
     >(
         (groups, node) => {
             const flavor = getImportFlavorOfNode(node);
@@ -120,8 +120,10 @@ function mergeIsSafe(
         return false;
     }
     if (
-        nodeToKeep.importKind === 'type' && nodeToKeep.specifiers.some(nodeIsImportDefaultSpecifier) ||
-        nodeToForget.importKind === 'type' && nodeToForget.specifiers.some(nodeIsImportDefaultSpecifier)
+        (nodeToKeep.importKind === 'type' &&
+            nodeToKeep.specifiers.some(nodeIsImportDefaultSpecifier)) ||
+        (nodeToForget.importKind === 'type' &&
+            nodeToForget.specifiers.some(nodeIsImportDefaultSpecifier))
     ) {
         // Cannot merge default type imports (.e.g. import type React from 'react')
         return false;

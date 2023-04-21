@@ -9,14 +9,14 @@ Contributions are always welcome, no matter how large or small! Before contribut
 There are different ways to contribute, each comes with a different levels
 of tasks, such as:
 
-- Report a bug.
-- Request a feature you think would be great for the plugin.
-- Take the ownership of the bug you want to fix and let others know about it by commenting on the issue.
-- Test and triage reported bugs by others.
-- Work on requested/approved features.
-- Improve the codebase (lint, naming, comments, test descriptions, etc...)
-- Improve the documentation.
-- Let the world know about the plugin!
+-   Report a bug.
+-   Request a feature you think would be great for the plugin.
+-   Take the ownership of the bug you want to fix and let others know about it by commenting on the issue.
+-   Test and triage reported bugs by others.
+-   Work on requested/approved features.
+-   Improve the codebase (lint, naming, comments, test descriptions, etc...)
+-   Improve the documentation.
+-   Let the world know about the plugin!
 
 ### Submitting a Pull Request
 
