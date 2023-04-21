@@ -17,7 +17,7 @@ interface PrettierOptionSchema {
     description: string;
 }
 
-const options: Record<
+export const options: Record<
     Exclude<keyof PrettierOptions, keyof PrettierRequiredOptions>,
     PrettierOptionSchema
 > = {
@@ -83,24 +83,21 @@ const options: Record<
     },
 };
 
-module.exports = {
-    parsers: {
-        babel: {
-            ...babelParsers.babel,
-            preprocess: defaultPreprocessor,
-        },
-        flow: {
-            ...flowParsers.flow,
-            preprocess: defaultPreprocessor,
-        },
-        typescript: {
-            ...typescriptParsers.typescript,
-            preprocess: defaultPreprocessor,
-        },
-        vue: {
-            ...htmlParsers.vue,
-            preprocess: vuePreprocessor,
-        },
+export const parsers = {
+    babel: {
+        ...babelParsers.babel,
+        preprocess: defaultPreprocessor,
     },
-    options,
+    flow: {
+        ...flowParsers.flow,
+        preprocess: defaultPreprocessor,
+    },
+    typescript: {
+        ...typescriptParsers.typescript,
+        preprocess: defaultPreprocessor,
+    },
+    vue: {
+        ...htmlParsers.vue,
+        preprocess: vuePreprocessor,
+    },
 };

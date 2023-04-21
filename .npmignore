@@ -14,7 +14,7 @@ public/
 .gitignore
 .prettierignore
 prettier.config.js
-jest.config.js
+vitest.config.js
 yarn.lock
 tsconfig.json
 CODE_OF_CONDUCT.md
