@@ -20,7 +20,6 @@
         "prepare": "yarn run compile",
         "compile": "tsc",
         "preexample": "yarn run compile",
-        "example": "prettier --config ./examples/.prettierrc --plugin lib/src/index.js",
         "test": "vitest --run",
         "type-check": "tsc --noEmit",
         "prepublishOnly": "npm run compile && npm run test"
