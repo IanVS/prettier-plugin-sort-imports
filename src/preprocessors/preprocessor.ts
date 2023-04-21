@@ -12,7 +12,6 @@ export function preprocessor(code: string, options: PrettierOptions): string {
     const {
         importOrderParserPlugins,
         importOrder,
-        importOrderBuiltinModulesToTop,
         importOrderCaseInsensitive,
         importOrderGroupNamespaceSpecifiers,
         importOrderMergeDuplicateImports,
@@ -70,7 +69,6 @@ export function preprocessor(code: string, options: PrettierOptions): string {
 
     const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
         importOrder,
-        importOrderBuiltinModulesToTop,
         importOrderCaseInsensitive,
         importOrderGroupNamespaceSpecifiers,
         importOrderMergeDuplicateImports,

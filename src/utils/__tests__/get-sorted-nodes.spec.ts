@@ -30,7 +30,6 @@ test('it returns all sorted nodes, preserving the order side effect nodes', () =
     const result = getImportNodes(code);
     const sorted = getSortedNodes(result, {
         importOrder: [],
-        importOrderBuiltinModulesToTop: false,
         importOrderCaseInsensitive: false,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
@@ -48,12 +47,12 @@ test('it returns all sorted nodes, preserving the order side effect nodes', () =
         'z',
         'se4',
         'se1',
+        'path', // Builtins are not sorted past side-effects either
         'BY',
         'Ba',
         'XY',
         'Xa',
         'a',
-        'path',
         'x',
         'se2',
         '',
@@ -73,12 +72,12 @@ test('it returns all sorted nodes, preserving the order side effect nodes', () =
         ['z'],
         [],
         [],
+        ['path'],
         ['BY'],
         ['Ba'],
         ['XY'],
         ['Xa'],
         ['a'],
-        ['path'],
         ['x'],
         [],
     ]);

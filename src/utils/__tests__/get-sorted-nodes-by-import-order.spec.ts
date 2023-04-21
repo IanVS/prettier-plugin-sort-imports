@@ -29,7 +29,6 @@ test('it returns all sorted nodes', () => {
     const result = getImportNodes(code);
     const sorted = getSortedNodesByImportOrder(result, {
         importOrder: ['^[./]'],
-        importOrderBuiltinModulesToTop: false,
         importOrderCaseInsensitive: false,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
@@ -39,6 +38,9 @@ test('it returns all sorted nodes', () => {
     }) as ImportDeclaration[];
 
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
+        'node:fs/promises',
+        'node:url',
+        'path',
         'BY',
         'Ba',
         'XY',
@@ -47,9 +49,6 @@ test('it returns all sorted nodes', () => {
         'c',
         'g',
         'k',
-        'node:fs/promises',
-        'node:url',
-        'path',
         't',
         'x',
         'z',
@@ -62,6 +61,9 @@ test('it returns all sorted nodes', () => {
                 getSortedNodesModulesNames(importDeclaration.specifiers),
             ),
     ).toEqual([
+        ['fs'],
+        ['url'], // `node:url` comes before `path`
+        ['path'],
         ['BY'],
         ['Ba'],
         ['XY'],
@@ -70,9 +72,6 @@ test('it returns all sorted nodes', () => {
         ['c', 'cD'],
         ['g'],
         ['k', 'kE', 'kB'],
-        ['fs'],
-        ['url'],
-        ['path'],
         ['tC', 'tA', 'tB'],
         ['x'],
         ['z'],
@@ -84,7 +83,6 @@ test('it returns all sorted nodes case-insensitive', () => {
     const result = getImportNodes(code);
     const sorted = getSortedNodesByImportOrder(result, {
         importOrder: ['^[./]'],
-        importOrderBuiltinModulesToTop: false,
         importOrderCaseInsensitive: true,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
@@ -94,15 +92,15 @@ test('it returns all sorted nodes case-insensitive', () => {
     }) as ImportDeclaration[];
 
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
+        'node:fs/promises',
+        'node:url',
+        'path',
         'a',
         'Ba',
         'BY',
         'c',
         'g',
         'k',
-        'node:fs/promises',
-        'node:url',
-        'path',
         't',
         'x',
         'Xa',
@@ -117,15 +115,15 @@ test('it returns all sorted nodes case-insensitive', () => {
                 getSortedNodesModulesNames(importDeclaration.specifiers),
             ),
     ).toEqual([
+        ['fs'],
+        ['url'], // `node:url` comes before `path`
+        ['path'],
         ['a'],
         ['Ba'],
         ['BY'],
         ['c', 'cD'],
         ['g'],
         ['k', 'kE', 'kB'],
-        ['fs'],
-        ['url'],
-        ['path'],
         ['tC', 'tA', 'tB'],
         ['x'],
         ['Xa'],
@@ -139,7 +137,6 @@ test('it returns all sorted nodes with sort order', () => {
     const result = getImportNodes(code);
     const sorted = getSortedNodesByImportOrder(result, {
         importOrder: ['^a$', '^t$', '^k$', '^B', '^[./]'],
-        importOrderBuiltinModulesToTop: false,
         importOrderCaseInsensitive: false,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
@@ -149,13 +146,13 @@ test('it returns all sorted nodes with sort order', () => {
     }) as ImportDeclaration[];
 
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
+        'node:fs/promises',
+        'node:url',
+        'path',
         'XY',
         'Xa',
         'c',
         'g',
-        'node:fs/promises',
-        'node:url',
-        'path',
         'x',
         'z',
         'a',
@@ -172,13 +169,13 @@ test('it returns all sorted nodes with sort order', () => {
                 getSortedNodesModulesNames(importDeclaration.specifiers),
             ),
     ).toEqual([
+        ['fs'],
+        ['url'], // `node:url` comes before `path`
+        ['path'],
         ['XY'],
         ['Xa'],
         ['c', 'cD'],
         ['g'],
-        ['fs'],
-        ['url'],
-        ['path'],
         ['x'],
         ['z'],
         ['a'],
@@ -194,7 +191,6 @@ test('it returns all sorted nodes with sort order case-insensitive', () => {
     const result = getImportNodes(code);
     const sorted = getSortedNodesByImportOrder(result, {
         importOrder: ['^a$', '^t$', '^k$', '^B', '^[./]'],
-        importOrderBuiltinModulesToTop: false,
         importOrderCaseInsensitive: true,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
@@ -203,11 +199,11 @@ test('it returns all sorted nodes with sort order case-insensitive', () => {
         importOrderSortSpecifiers: false,
     }) as ImportDeclaration[];
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
-        'c',
-        'g',
         'node:fs/promises',
         'node:url',
         'path',
+        'c',
+        'g',
         'x',
         'Xa',
         'XY',
@@ -226,11 +222,11 @@ test('it returns all sorted nodes with sort order case-insensitive', () => {
                 getSortedNodesModulesNames(importDeclaration.specifiers),
             ),
     ).toEqual([
+        ['fs'],
+        ['url'], // `node:url` comes before `path`
+        ['path'],
         ['c', 'cD'],
         ['g'],
-        ['fs'],
-        ['url'],
-        ['path'],
         ['x'],
         ['Xa'],
         ['XY'],
@@ -248,7 +244,6 @@ test('it returns all sorted import nodes with sorted import specifiers', () => {
     const result = getImportNodes(code);
     const sorted = getSortedNodesByImportOrder(result, {
         importOrder: ['^a$', '^t$', '^k$', '^B', '^[./]'],
-        importOrderBuiltinModulesToTop: false,
         importOrderCaseInsensitive: false,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
@@ -257,13 +252,13 @@ test('it returns all sorted import nodes with sorted import specifiers', () => {
         importOrderSortSpecifiers: true,
     }) as ImportDeclaration[];
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
+        'node:fs/promises',
+        'node:url',
+        'path',
         'XY',
         'Xa',
         'c',
         'g',
-        'node:fs/promises',
-        'node:url',
-        'path',
         'x',
         'z',
         'a',
@@ -280,13 +275,13 @@ test('it returns all sorted import nodes with sorted import specifiers', () => {
                 getSortedNodesModulesNames(importDeclaration.specifiers),
             ),
     ).toEqual([
+        ['fs'],
+        ['url'], // `node:url` comes before `path`
+        ['path'],
         ['XY'],
         ['Xa'],
         ['c', 'cD'],
         ['g'],
-        ['fs'],
-        ['url'],
-        ['path'],
         ['x'],
         ['z'],
         ['a'],
@@ -302,7 +297,6 @@ test('it returns all sorted import nodes with sorted import specifiers with case
     const result = getImportNodes(code);
     const sorted = getSortedNodesByImportOrder(result, {
         importOrder: ['^a$', '^t$', '^k$', '^B', '^[./]'],
-        importOrderBuiltinModulesToTop: false,
         importOrderCaseInsensitive: true,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
@@ -311,11 +305,11 @@ test('it returns all sorted import nodes with sorted import specifiers with case
         importOrderSortSpecifiers: true,
     }) as ImportDeclaration[];
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
-        'c',
-        'g',
         'node:fs/promises',
         'node:url',
         'path',
+        'c',
+        'g',
         'x',
         'Xa',
         'XY',
@@ -334,11 +328,11 @@ test('it returns all sorted import nodes with sorted import specifiers with case
                 getSortedNodesModulesNames(importDeclaration.specifiers),
             ),
     ).toEqual([
+        ['fs'],
+        ['url'], // `node:url` comes before `path`
+        ['path'],
         ['c', 'cD'],
         ['g'],
-        ['fs'],
-        ['url'],
-        ['path'],
         ['x'],
         ['Xa'],
         ['XY'],
@@ -352,42 +346,10 @@ test('it returns all sorted import nodes with sorted import specifiers with case
     ]);
 });
 
-test('it returns all sorted nodes with custom third party modules', () => {
-    const result = getImportNodes(code);
-    const sorted = getSortedNodesByImportOrder(result, {
-        importOrder: ['^a$', '<THIRD_PARTY_MODULES>', '^t$', '^k$', '^[./]'],
-        importOrderBuiltinModulesToTop: false,
-        importOrderCaseInsensitive: true,
-        importOrderGroupNamespaceSpecifiers: false,
-        importOrderMergeDuplicateImports: false,
-        importOrderCombineTypeAndValueImports: false,
-        importOrderSeparation: false,
-        importOrderSortSpecifiers: false,
-    }) as ImportDeclaration[];
-    expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
-        'a',
-        'Ba',
-        'BY',
-        'c',
-        'g',
-        'node:fs/promises',
-        'node:url',
-        'path',
-        'x',
-        'Xa',
-        'XY',
-        'z',
-        't',
-        'k',
-        './local',
-    ]);
-});
-
-test('it returns all sorted nodes with namespace specifiers at the top', () => {
+test('it returns all sorted nodes with namespace specifiers at the top (under builtins)', () => {
     const result = getImportNodes(code);
     const sorted = getSortedNodesByImportOrder(result, {
         importOrder: ['^[./]'],
-        importOrderBuiltinModulesToTop: false,
         importOrderCaseInsensitive: false,
         importOrderGroupNamespaceSpecifiers: true,
         importOrderMergeDuplicateImports: false,
@@ -397,8 +359,10 @@ test('it returns all sorted nodes with namespace specifiers at the top', () => {
     }) as ImportDeclaration[];
 
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
-        'a',
         'node:fs/promises',
+        'node:url',
+        'path',
+        'a',
         'x',
         'BY',
         'Ba',
@@ -407,8 +371,6 @@ test('it returns all sorted nodes with namespace specifiers at the top', () => {
         'c',
         'g',
         'k',
-        'node:url',
-        'path',
         't',
         'z',
         './local',
@@ -419,7 +381,6 @@ test('it returns all sorted nodes with builtin specifiers at the top, ', () => {
     const result = getImportNodes(code);
     const sorted = getSortedNodesByImportOrder(result, {
         importOrder: ['^[./]'],
-        importOrderBuiltinModulesToTop: true,
         importOrderCaseInsensitive: false,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
@@ -451,7 +412,6 @@ test('it returns all sorted nodes with custom third party modules and builtins a
     const result = getImportNodes(code);
     const sorted = getSortedNodesByImportOrder(result, {
         importOrder: ['^a$', '<THIRD_PARTY_MODULES>', '^t$', '^k$', '^[./]'],
-        importOrderBuiltinModulesToTop: true,
         importOrderCaseInsensitive: true,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
@@ -482,7 +442,6 @@ test('it adds newlines when importOrderSeparation is true', () => {
     const result = getImportNodes(code);
     const sorted = getSortedNodesByImportOrder(result, {
         importOrder: ['^[./]'],
-        importOrderBuiltinModulesToTop: true,
         importOrderCaseInsensitive: true,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
@@ -523,7 +482,6 @@ test('it returns all sorted nodes with custom separation', () => {
             '^k$',
             '^[./]',
         ],
-        importOrderBuiltinModulesToTop: false,
         importOrderCaseInsensitive: true,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
@@ -532,14 +490,14 @@ test('it returns all sorted nodes with custom separation', () => {
         importOrderSortSpecifiers: false,
     }) as ImportDeclaration[];
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
+        'node:fs/promises',
+        'node:url',
+        'path',
         'a',
         'Ba',
         'BY',
         'c',
         'g',
-        'node:fs/promises',
-        'node:url',
-        'path',
         'x',
         'Xa',
         'XY',
@@ -562,7 +520,6 @@ test('it allows both importOrderSeparation and custom separation (but why?)', ()
             '^k$',
             '^[./]',
         ],
-        importOrderBuiltinModulesToTop: false,
         importOrderCaseInsensitive: true,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
@@ -571,15 +528,16 @@ test('it allows both importOrderSeparation and custom separation (but why?)', ()
         importOrderSortSpecifiers: false,
     }) as ImportDeclaration[];
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
+        'node:fs/promises',
+        'node:url',
+        'path',
+        '',
         'a',
         '',
         'Ba',
         'BY',
         'c',
         'g',
-        'node:fs/promises',
-        'node:url',
-        'path',
         'x',
         'Xa',
         'XY',
@@ -607,7 +565,6 @@ test('it does not add multiple custom import separators', () => {
             '^k$',
             '^[./]',
         ],
-        importOrderBuiltinModulesToTop: false,
         importOrderCaseInsensitive: true,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
@@ -616,14 +573,14 @@ test('it does not add multiple custom import separators', () => {
         importOrderSortSpecifiers: false,
     }) as ImportDeclaration[];
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
+        'node:fs/promises',
+        'node:url',
+        'path',
         'a',
         'Ba',
         'BY',
         'c',
         'g',
-        'node:fs/promises',
-        'node:url',
-        'path',
         'x',
         'Xa',
         'XY',

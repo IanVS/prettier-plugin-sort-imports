@@ -26,7 +26,6 @@ export const getSortedNodesByImportOrder: GetSortedNodes = (nodes, options) => {
         importOrderSeparation,
         importOrderSortSpecifiers,
         importOrderGroupNamespaceSpecifiers,
-        importOrderBuiltinModulesToTop,
     } = options;
 
     const originalNodes = nodes.map(clone);
@@ -36,9 +35,8 @@ export const getSortedNodesByImportOrder: GetSortedNodes = (nodes, options) => {
         importOrder = [THIRD_PARTY_MODULES_SPECIAL_WORD, ...importOrder];
     }
 
-    if (importOrderBuiltinModulesToTop) {
-        importOrder = [BUILTIN_MODULES, ...importOrder];
-    }
+    // IDEA: We could make built-ins a special word, if people do not want them up top
+    importOrder = [BUILTIN_MODULES, ...importOrder];
 
     const importOrderGroups = importOrder.reduce<ImportGroups>(
         (groups, regexp) =>
