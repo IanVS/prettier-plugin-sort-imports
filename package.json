@@ -10,6 +10,12 @@
         "type": "git"
     },
     "homepage": "https://github.com/ianvs/prettier-plugin-sort-imports#readme",
+    "files": [
+        "CHANGELOG.md",
+        "lib/**",
+        "!lib/**/__tests__/**",
+        "types"
+    ],
     "scripts": {
         "prepare": "yarn run compile",
         "compile": "tsc",
