@@ -1,4 +1,5 @@
 import { ImportDeclaration } from '@babel/types';
+import { expect, test } from 'vitest';
 
 import { getImportNodes } from '../get-import-nodes';
 import { getSortedNodesByImportOrder } from '../get-sorted-nodes-by-import-order';

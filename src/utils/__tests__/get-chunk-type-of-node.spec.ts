@@ -1,3 +1,5 @@
+import { expect, test } from 'vitest';
+
 import { chunkTypeOther, chunkTypeUnsortable } from '../../constants';
 import { getChunkTypeOfNode } from '../get-chunk-type-of-node';
 import { getImportNodes } from '../get-import-nodes';

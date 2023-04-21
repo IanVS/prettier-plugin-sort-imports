@@ -1,5 +1,6 @@
 import { parse as babelParser } from '@babel/parser';
 import { format } from 'prettier';
+import { expect, test } from 'vitest';
 
 import { getAllCommentsFromNodes } from '../get-all-comments-from-nodes';
 import { getImportNodes } from '../get-import-nodes';

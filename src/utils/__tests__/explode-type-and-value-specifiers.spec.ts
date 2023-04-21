@@ -1,3 +1,5 @@
+import { expect, test } from 'vitest';
+
 import { explodeTypeAndValueSpecifiers } from '../explode-type-and-value-specifiers';
 import { getCodeFromAst } from '../get-code-from-ast';
 import { getImportNodes } from '../get-import-nodes';

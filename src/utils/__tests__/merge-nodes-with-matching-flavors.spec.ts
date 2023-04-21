@@ -1,4 +1,5 @@
 import { format } from 'prettier';
+import { expect, test } from 'vitest';
 
 import { getCodeFromAst } from '../get-code-from-ast';
 import { getImportNodes } from '../get-import-nodes';
@@ -15,7 +16,7 @@ const defaultOptions = {
     importOrderSortSpecifiers: true,
 };
 
-it('should merge duplicate imports within a given chunk', () => {
+test('should merge duplicate imports within a given chunk', () => {
     const code = `
     import type { A } from 'a';
     import { Junk } from 'junk-group-1'
@@ -89,7 +90,7 @@ import { Junk2 } from "junk-group-2";
 `);
 });
 
-it('should merge type imports into regular imports', () => {
+test('should merge type imports into regular imports', () => {
     const code = `
     // Preserves 'import type'
     import type { A1 } from 'a';
@@ -132,7 +133,7 @@ import { D1, type D2 } from "d";
 `);
 });
 
-it('should combine type import and default import', () => {
+test('should combine type import and default import', () => {
     const code = `
 import type {MyType} from './source';
 import defaultValue from './source';
@@ -158,7 +159,7 @@ import defaultValue from './source';
 `);
 });
 
-it('should not combine type import and namespace import', () => {
+test('should not combine type import and namespace import', () => {
     const code = `
 import type {MyType} from './source';
 import * as Namespace from './source';
@@ -185,7 +186,7 @@ import * as Namespace from "./source";
 `);
 });
 
-it('should support aliased named imports', () => {
+test('should support aliased named imports', () => {
     const code = `
 import type {MyType} from './source';
 import {value as alias} from './source';
@@ -211,7 +212,7 @@ import {value as alias} from './source';
 `);
 });
 
-it('should combine multiple imports from the same source', () => {
+test('should combine multiple imports from the same source', () => {
     const code = `
 import type {MyType, SecondType} from './source';
 import {value, SecondValue} from './source';
@@ -237,7 +238,7 @@ import {value, SecondValue} from './source';
 `);
 });
 
-it('should combine multiple groups of imports', () => {
+test('should combine multiple groups of imports', () => {
     const code = `
 import type {MyType} from './source';
 import type {OtherType} from './other';
@@ -266,7 +267,7 @@ import { value, type MyType } from "./source";
 `);
 });
 
-it('should combine multiple imports statements from the same source', () => {
+test('should combine multiple imports statements from the same source', () => {
     const code = `
 import type {MyType} from './source';
 import type {SecondType} from './source';
@@ -294,7 +295,7 @@ import {SecondValue} from './source';
 `);
 });
 
-it('should not impact imports from different sources', () => {
+test('should not impact imports from different sources', () => {
     const code = `
 import type {MyType} from './source';
 import type {OtherType} from './other';
@@ -324,7 +325,7 @@ import { thirdValue } from "./third";
 `);
 });
 
-it("doesn't merge duplicate imports if option disabled", () => {
+test("doesn't merge duplicate imports if option disabled", () => {
     const code = `
     import type { A } from 'a';
     import { Junk } from 'junk-group-1'
@@ -401,7 +402,7 @@ import { Junk2 } from "junk-group-2";
 `);
 });
 
-it('should not combine default type imports', () => {
+test('should not combine default type imports', () => {
     const code = `
     import { ComponentProps, useEffect } from "react";
     import type React from "react";

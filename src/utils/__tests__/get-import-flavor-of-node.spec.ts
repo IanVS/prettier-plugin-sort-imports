@@ -1,7 +1,9 @@
+import { expect, test } from 'vitest';
+
 import { getImportFlavorOfNode } from '../get-import-flavor-of-node';
 import { getImportNodes } from '../get-import-nodes';
 
-it('should correctly classify a bunch of import expressions', () => {
+test('should correctly classify a bunch of import expressions', () => {
     expect(
         getImportNodes(
             `
