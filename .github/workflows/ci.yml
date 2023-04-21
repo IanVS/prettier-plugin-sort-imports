@@ -12,4 +12,7 @@ jobs:
               with:
                   node-version: ${{ matrix.node }}
             - run: yarn --frozen-lockfile
-            - run: yarn test
+            - name: Test
+              run: yarn test
+            - name: Check formatting
+              run: yarn format:check
