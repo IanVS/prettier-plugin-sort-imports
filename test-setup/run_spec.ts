@@ -2,6 +2,7 @@
 
 import fs from 'fs';
 import { extname, join, resolve } from 'path';
+
 import prettier from 'prettier';
 import { expect, test } from 'vitest';
 
