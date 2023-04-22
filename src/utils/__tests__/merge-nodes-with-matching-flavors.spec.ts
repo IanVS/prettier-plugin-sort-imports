@@ -7,7 +7,6 @@ import { getSortedNodes } from '../get-sorted-nodes';
 
 const defaultOptions = {
     importOrder: [],
-    importOrderBuiltinModulesToTop: false,
     importOrderCaseInsensitive: false,
     importOrderGroupNamespaceSpecifiers: false,
     importOrderMergeDuplicateImports: false,

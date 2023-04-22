@@ -61,15 +61,6 @@ export interface PluginConfig {
     importOrderCaseInsensitive?: boolean;
 
     /**
-     * A boolean value to enable sorting of node builtins
-     * to the top of all import groups.
-     *
-     * @ref https://nodejs.org/api/module.html#modulebuiltinmodules
-     * @default false
-     */
-    importOrderBuiltinModulesToTop?: boolean;
-
-    /**
      * A boolean value to enable or disable sorting the namespace specifiers to the top of the import group.
      *
      * @default false

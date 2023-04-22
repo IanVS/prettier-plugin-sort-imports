@@ -13,7 +13,7 @@ Since then more critical features & fixes have been added. As a result, this rep
 -   Do not re-order across side-effect imports
 -   Combine imports from the same source ([`importOrderMergeDuplicateImports`](#importordermergeduplicateimports))
 -   Combine type and value imports ([`importOrderCombineTypeAndValueImports`](#importordercombinetypeandvalueimports))
--   Sort node.js builtin modules to top ([`importOrderBuiltinModulesToTop`](#importorderbuiltinmodulestotop))
+-   Sorts node.js builtin modules to top
 -   Custom import order separation ([`importOrderSeparation`](#importorderseparation))
 
 [We welcome contributions!](./CONTRIBUTING.md)
@@ -35,7 +35,6 @@ Since then more critical features & fixes have been added. As a result, this rep
         -   [`importOrderMergeDuplicateImports`](#importordermergeduplicateimports)
         -   [`importOrderCombineTypeAndValueImports`](#importordercombinetypeandvalueimports)
         -   [`importOrderParserPlugins`](#importorderparserplugins)
-        -   [`importOrderBuiltinModulesToTop`](#importorderbuiltinmodulestotop)
     -   [Prevent imports from being sorted](#prevent-imports-from-being-sorted)
 -   [FAQ / Troubleshooting](#faq--troubleshooting)
 -   [Compatibility](#compatibility)
@@ -131,7 +130,6 @@ module.exports = {
     singleQuote: true,
     semi: true,
     importOrder: ['^@core/(.*)$', '^@server/(.*)$', '^@ui/(.*)$', '^[./]'],
-    importOrderBuiltinModulesToTop: true,
     importOrderCaseInsensitive: true,
     importOrderParserPlugins: ['typescript', 'jsx', 'decorators-legacy'],
     importOrderMergeDuplicateImports: true,
@@ -351,14 +349,6 @@ with options as a JSON string of the plugin array:
 ```json
 "importOrderParserPlugins": []
 ```
-
-#### `importOrderBuiltinModulesToTop`
-
-**type**: `boolean`
-
-**default value:** `false`
-
-A boolean value to enable sorting of [`node builtins`](https://nodejs.org/api/module.html#modulebuiltinmodules) to the top of all import groups.
 
 ### Prevent imports from being sorted
 

@@ -1,10 +1,11 @@
+import assert from 'assert';
+
 import type {
     ImportDeclaration,
     ImportDefaultSpecifier,
     ImportNamespaceSpecifier,
     ImportSpecifier,
 } from '@babel/types';
-import assert from 'assert';
 
 import {
     importFlavorType,
