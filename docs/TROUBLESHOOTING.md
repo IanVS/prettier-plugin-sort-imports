@@ -110,4 +110,4 @@ module.exports = {
 
 #### Q. Why are my .vue sfc files not being formatted?
 
-Be sure that you have `@vue/compiler-sfc` installed in your project, (run `npm ls @vue/compiler-sfc` to double-check).  If it's not there, install it and try formatting again.
+Be sure that you have `@vue/compiler-sfc` installed in your project, (run `npm ls @vue/compiler-sfc` to double-check). If it's not there, install it and try formatting again.
