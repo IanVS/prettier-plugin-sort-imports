@@ -23,7 +23,6 @@ function foo() {
 "another directive";
 
 import "./SetupEnvironment";
-
 import type { Period } from "./Period";
 
 ("this is not a directive prologue");
@@ -47,7 +46,6 @@ function foo() {
 "use custom";
 
 import "./SetupEnvironment";
-
 import type { Period } from "./Period";
 
 ("this is not a directive prologue");
@@ -76,7 +74,6 @@ function foo() {
 "forbid IE";
 
 import "./SetupEnvironment";
-
 import type { Period } from "./Period";
 
 ("this is not a directive prologue");
@@ -100,7 +97,6 @@ function foo() {
 "use strict";
 
 import "./SetupEnvironment";
-
 import type { Period } from "./Period";
 
 ("this is not a directive prologue");
@@ -120,7 +116,6 @@ import type { Period } from './Period'
 function foo() {
 }~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import "./SetupEnvironment";
-
 import type { Period } from "./Period";
 
 ("use strict");
