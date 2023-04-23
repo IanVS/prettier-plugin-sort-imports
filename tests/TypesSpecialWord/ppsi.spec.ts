@@ -7,7 +7,6 @@ run_spec(__dirname, ['typescript'], {
         '^[./]',
         '<TYPES>^[./]',
     ],
-    importOrderSeparation: true,
     importOrderMergeDuplicateImports: true,
     importOrderParserPlugins: ['typescript'],
 });

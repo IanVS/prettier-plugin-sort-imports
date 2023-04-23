@@ -2,6 +2,39 @@
 
 ---
 
+### Migrating from v3.x.x to v4.x.x
+
+- The `importOrderBuiltinModulesToTop` option has been removed, and node.js built in modules are always sorted to the top.
+- The `importOrderSeparation` option has been removed.  Use empty quotes in your `importOrder` to control the placement of blank lines.
+
+#### `importOrderSeparation` removed
+
+This option was removed to simplify the configuration of the plugin. But if you like to separate your import groups with newlines, you can do so by adding `""` groups to your `importOrder` array.
+
+For example:
+
+```js
+    "importOrder": [
+        "", // This emptry group at the start will add separators for side-effect imports and node.js built-in modules
+        "<THIRD_PARTY_MODULES>",
+        "",
+        "^@app/(.*)$",
+        "",
+        "^[./]"
+    ]
+```
+
+Or, if you would like to keep all imports together, but add a newline before side-effect imports:
+
+```js
+    "importOrder": [
+        "<THIRD_PARTY_MODULES>",
+        "^@app/(.*)$",
+        "^[./]"
+        "", // This will add a newline between side-effect groups (i.e. the chunks that are sorted)
+    ]
+```
+
 ### Migrating from v2.x.x to v3.x.x
 
 #### TL;DR

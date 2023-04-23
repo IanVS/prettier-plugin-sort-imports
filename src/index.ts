@@ -43,12 +43,6 @@ export const options: Record<
         default: [{ value: ['typescript', 'jsx'] }],
         description: 'Provide a list of plugins for special syntax',
     },
-    importOrderSeparation: {
-        type: 'boolean',
-        category: 'Global',
-        default: false,
-        description: 'Should imports be separated by new line?',
-    },
     importOrderGroupNamespaceSpecifiers: {
         type: 'boolean',
         category: 'Global',

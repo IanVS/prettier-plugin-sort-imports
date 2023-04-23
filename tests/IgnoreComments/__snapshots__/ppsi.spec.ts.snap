@@ -25,23 +25,18 @@ export const foo = 42;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // prettier-ignore
 import c from "c";
-
 import a from "a";
 import b from "b";
-
 // prettier-ignore
 import { h } from "h";
 // prettier-ignore
 import { g } from "g";
-
 import { d } from "d";
 import { e } from "e";
 import { f } from "f";
-
 // prettier-ignore
 // some other comments
 import z2 from "z2";
-
 import z1 from "z1";
 import z3 from "z3";
 
@@ -68,15 +63,12 @@ export const foo = 42;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // prettier-ignore
 import c from "c";
-
 import a from "a";
 import b from "b";
-
 // prettier-ignore
 import { type h, h2 } from "h";
 // prettier-ignore
 import { g, type g2 } from "g";
-
 import { d1, type d, type d2 } from "d";
 import { type e, e2 } from "e";
 import { f, type f2 } from "f";
@@ -104,15 +96,12 @@ export const foo = 42;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // prettier-ignore
 import type c from "c";
-
 import type a from "a";
 import type b from "b";
-
 // prettier-ignore
 import type { h } from "h";
 // prettier-ignore
 import type { g } from "g";
-
 import type { d } from "d";
 import type { e } from "e";
 import type { f } from "f";

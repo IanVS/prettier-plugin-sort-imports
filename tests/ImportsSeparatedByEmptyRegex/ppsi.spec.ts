@@ -9,5 +9,4 @@ run_spec(__dirname, ['typescript'], {
         '',
         '^[./]',
     ],
-    importOrderSeparation: false,
 });

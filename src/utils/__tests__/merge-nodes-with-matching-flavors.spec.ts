@@ -6,12 +6,11 @@ import { getImportNodes } from '../get-import-nodes';
 import { getSortedNodes } from '../get-sorted-nodes';
 
 const defaultOptions = {
-    importOrder: [],
+    importOrder: [''], // Separate side-effect and ignored chunks, for easier test readability
     importOrderCaseInsensitive: false,
     importOrderGroupNamespaceSpecifiers: false,
     importOrderMergeDuplicateImports: false,
     importOrderCombineTypeAndValueImports: false,
-    importOrderSeparation: true,
     importOrderSortSpecifiers: true,
 };
 

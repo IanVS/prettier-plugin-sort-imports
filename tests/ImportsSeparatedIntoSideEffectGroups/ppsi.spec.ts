@@ -5,9 +5,7 @@ run_spec(__dirname, ['typescript'], {
         '^@core/(.*)$',
         '^@server/(.*)',
         '^@ui/(.*)$',
-        '<THIRD_PARTY_MODULES>',
         '^[./]',
+        '', // This adds a newline before side effect groups
     ],
-    importOrderSeparation: true,
-    importOrderParserPlugins: ['typescript'],
 });

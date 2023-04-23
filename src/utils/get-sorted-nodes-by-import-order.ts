@@ -22,11 +22,8 @@ export const getSortedNodesByImportOrder: GetSortedNodes = (nodes, options) => {
     naturalSort.insensitive = options.importOrderCaseInsensitive;
 
     let { importOrder } = options;
-    const {
-        importOrderSeparation,
-        importOrderSortSpecifiers,
-        importOrderGroupNamespaceSpecifiers,
-    } = options;
+    const { importOrderSortSpecifiers, importOrderGroupNamespaceSpecifiers } =
+        options;
 
     const originalNodes = nodes.map(clone);
     const finalNodes: ImportOrLine[] = [];
@@ -97,10 +94,6 @@ export const getSortedNodesByImportOrder: GetSortedNodes = (nodes, options) => {
         }
 
         finalNodes.push(...sortedInsideGroup);
-
-        if (importOrderSeparation) {
-            finalNodes.push(newLineNode);
-        }
     }
 
     return finalNodes;
@@ -110,8 +103,8 @@ export const getSortedNodesByImportOrder: GetSortedNodes = (nodes, options) => {
  * isCustomGroupSeparator checks if the provided pattern is intended to be used
  * as an import separator, rather than an actual group of imports.
  */
-function isCustomGroupSeparator(pattern: string) {
-    return pattern.trim() === '';
+export function isCustomGroupSeparator(pattern?: string) {
+    return pattern?.trim() === '';
 }
 
 function isNodeANewline(node: ImportOrLine) {

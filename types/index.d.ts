@@ -96,14 +96,6 @@ export interface PluginConfig {
     importOrderCombineTypeAndValueImports?: boolean;
 
     /**
-     * A boolean value to enable or disable the new line separation between sorted import declarations group.
-     * The separation takes place according to the `importOrder`.
-     *
-     * @default false
-     */
-    importOrderSeparation?: boolean;
-
-    /**
      * A boolean value to enable or disable sorting of the specifiers in an import declarations.
      *
      * @default false
