@@ -112,7 +112,7 @@ or, using yarn
 yarn add --dev @ianvs/prettier-plugin-sort-imports
 ```
 
-**Note: If you are migrating from v2.x.x to v3.x.x, [Please Read Migration Guidelines](./docs/MIGRATION.md)**
+**Note: If you are migrating from v3.x.x to v4.x.x, [Please Read Migration Guidelines](./docs/MIGRATION.md)**
 
 ## Usage
 
@@ -128,7 +128,7 @@ module.exports = {
     trailingComma: 'all',
     singleQuote: true,
     semi: true,
-    importOrder: ['^@core/(.*)$', '^@server/(.*)$', '^@ui/(.*)$', '^[./]'],
+    importOrder: ['^@core/(.*)$', '', '^@server/(.*)$', '', '^@ui/(.*)$', '', '^[./]'],
     importOrderCaseInsensitive: true,
     importOrderParserPlugins: ['typescript', 'jsx', 'decorators-legacy'],
     importOrderMergeDuplicateImports: true,
