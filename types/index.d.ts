@@ -39,28 +39,6 @@ export interface PluginConfig {
     importOrder?: string[];
 
     /**
-     * A boolean value to enable case-insensitivity in the sorting algorithm
-     * used to order imports within each match group.
-     *
-     * For example, when false (or not specified):
-     *
-     * ```js
-     * import ExampleView from './ExampleView';
-     * import ExamplesList from './ExamplesList';
-     * ```
-     *
-     * compared with `"importOrderCaseInsensitive": true`:
-     *
-     * ```js
-     * import ExamplesList from './ExamplesList';
-     * import ExampleView from './ExampleView';
-     * ```
-     *
-     * @default false
-     */
-    importOrderCaseInsensitive?: boolean;
-
-    /**
      * A boolean value to enable or disable sorting the namespace specifiers to the top of the import group.
      *
      * @default false

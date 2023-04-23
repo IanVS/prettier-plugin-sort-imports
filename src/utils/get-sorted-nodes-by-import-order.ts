@@ -2,8 +2,8 @@ import clone from 'lodash.clone';
 
 import {
     BUILTIN_MODULES,
-    THIRD_PARTY_MODULES_SPECIAL_WORD,
     newLineNode,
+    THIRD_PARTY_MODULES_SPECIAL_WORD,
 } from '../constants';
 import { naturalSort } from '../natural-sort';
 import { GetSortedNodes, ImportGroups, ImportOrLine } from '../types';
@@ -19,7 +19,7 @@ import { getSortedNodesGroup } from './get-sorted-nodes-group';
  * @param options Options to influence the behavior of the sorting algorithm.
  */
 export const getSortedNodesByImportOrder: GetSortedNodes = (nodes, options) => {
-    naturalSort.insensitive = options.importOrderCaseInsensitive;
+    naturalSort.insensitive = true;
 
     let { importOrder } = options;
     const { importOrderSortSpecifiers, importOrderGroupNamespaceSpecifiers } =

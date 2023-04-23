@@ -35,7 +35,6 @@ export type GetSortedNodes = (
     options: Pick<
         PrettierOptions,
         | 'importOrder'
-        | 'importOrderCaseInsensitive'
         | 'importOrderGroupNamespaceSpecifiers'
         | 'importOrderMergeDuplicateImports'
         | 'importOrderCombineTypeAndValueImports'

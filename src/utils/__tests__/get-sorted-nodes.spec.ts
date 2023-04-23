@@ -30,13 +30,11 @@ test('it returns all sorted nodes, preserving the order side effect nodes', () =
     const result = getImportNodes(code);
     const sorted = getSortedNodes(result, {
         importOrder: [],
-        importOrderCaseInsensitive: false,
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
         importOrderSortSpecifiers: false,
     }) as ImportDeclaration[];
-
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
         'se3',
         'c',
@@ -47,12 +45,12 @@ test('it returns all sorted nodes, preserving the order side effect nodes', () =
         'se4',
         'se1',
         'path', // Builtins are not sorted past side-effects either
-        'BY',
-        'Ba',
-        'XY',
-        'Xa',
         'a',
+        'Ba',
+        'BY',
         'x',
+        'Xa',
+        'XY',
         'se2',
         '',
     ]);
@@ -72,12 +70,12 @@ test('it returns all sorted nodes, preserving the order side effect nodes', () =
         [],
         [],
         ['path'],
-        ['BY'],
-        ['Ba'],
-        ['XY'],
-        ['Xa'],
         ['a'],
+        ['Ba'],
+        ['BY'],
         ['x'],
+        ['Xa'],
+        ['XY'],
         [],
     ]);
 });

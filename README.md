@@ -30,7 +30,6 @@ Since then more critical features & fixes have been added. As a result, this rep
     - [`importOrder`](#importorder)
     - [`importOrderSortSpecifiers`](#importordersortspecifiers)
     - [`importOrderGroupNamespaceSpecifiers`](#importordergroupnamespacespecifiers)
-    - [`importOrderCaseInsensitive`](#importordercaseinsensitive)
     - [`importOrderMergeDuplicateImports`](#importordermergeduplicateimports)
     - [`importOrderCombineTypeAndValueImports`](#importordercombinetypeandvalueimports)
     - [`importOrderParserPlugins`](#importorderparserplugins)
@@ -129,7 +128,6 @@ module.exports = {
     singleQuote: true,
     semi: true,
     importOrder: ['^@core/(.*)$', '', '^@server/(.*)$', '', '^@ui/(.*)$', '', '^[./]'],
-    importOrderCaseInsensitive: true,
     importOrderParserPlugins: ['typescript', 'jsx', 'decorators-legacy'],
     importOrderMergeDuplicateImports: true,
     importOrderCombineTypeAndValueImports: true,
@@ -248,29 +246,6 @@ import Default, {charlie, delta as echo, type Alpha, type Bravo} from 'source';
 **default value:** `false`
 
 A boolean value to enable or disable sorting the namespace specifiers to the top of the import group.
-
-#### `importOrderCaseInsensitive`
-
-**type**: `boolean`
-
-**default value**: `false`
-
-A boolean value to enable case-insensitivity in the sorting algorithm
-used to order imports within each match group.
-
-For example, when false (or not specified):
-
-```javascript
-import ExampleView from './ExampleView';
-import ExamplesList from './ExamplesList';
-```
-
-compared with `"importOrderCaseInsensitive": true`:
-
-```javascript
-import ExamplesList from './ExamplesList';
-import ExampleView from './ExampleView';
-```
 
 #### `importOrderMergeDuplicateImports`
 

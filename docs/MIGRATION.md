@@ -6,6 +6,7 @@
 
 - The `importOrderBuiltinModulesToTop` option has been removed, and node.js built in modules are always sorted to the top.
 - The `importOrderSeparation` option has been removed.  Use empty quotes in your `importOrder` to control the placement of blank lines.
+- The `importOrderCaseInsensitive` option has been removed, and imports will always be sorted case-insensitive.
 
 #### `importOrderSeparation` removed
 

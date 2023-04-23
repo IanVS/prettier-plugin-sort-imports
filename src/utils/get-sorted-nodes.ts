@@ -1,7 +1,7 @@
 import {
-    TYPES_SPECIAL_WORD,
     chunkTypeUnsortable,
     newLineNode,
+    TYPES_SPECIAL_WORD,
 } from '../constants';
 import { GetSortedNodes, ImportChunk, ImportOrLine } from '../types';
 import { adjustCommentsOnSortedNodes } from './adjust-comments-on-sorted-nodes';
