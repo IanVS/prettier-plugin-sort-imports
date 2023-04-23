@@ -22,7 +22,6 @@ import a from 'a';
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
-        importOrderSeparation: false,
         importOrderSortSpecifiers: false,
     });
     const formatted = getCodeFromAst({
@@ -63,7 +62,6 @@ import type {See} from 'c';
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: true,
         importOrderCombineTypeAndValueImports: false,
-        importOrderSeparation: false,
         importOrderSortSpecifiers: false,
     });
     const formatted = getCodeFromAst({

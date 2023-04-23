@@ -7,7 +7,10 @@ import { GetSortedNodes, ImportChunk, ImportOrLine } from '../types';
 import { adjustCommentsOnSortedNodes } from './adjust-comments-on-sorted-nodes';
 import { explodeTypeAndValueSpecifiers } from './explode-type-and-value-specifiers';
 import { getChunkTypeOfNode } from './get-chunk-type-of-node';
-import { getSortedNodesByImportOrder } from './get-sorted-nodes-by-import-order';
+import {
+    getSortedNodesByImportOrder,
+    isCustomGroupSeparator,
+} from './get-sorted-nodes-by-import-order';
 import { mergeNodesWithMatchingImportFlavors } from './merge-nodes-with-matching-flavors';
 
 /**
@@ -28,7 +31,6 @@ import { mergeNodesWithMatchingImportFlavors } from './merge-nodes-with-matching
 export const getSortedNodes: GetSortedNodes = (nodes, options) => {
     const {
         importOrder,
-        importOrderSeparation,
         importOrderMergeDuplicateImports,
         importOrderCombineTypeAndValueImports,
     } = options;
@@ -51,12 +53,20 @@ export const getSortedNodes: GetSortedNodes = (nodes, options) => {
 
     const finalNodes: ImportOrLine[] = [];
 
-    // Sort each chunk of side-effect and non-side-effect nodes, and insert new
-    // lines according the importOrderSeparation option.
+    // Sort each chunk of side-effect and non-side-effect nodes
     for (const chunk of splitBySideEffectNodes) {
+        // do not sort side effect nodes
         if (chunk.type === chunkTypeUnsortable) {
-            // do not sort side effect nodes
-            finalNodes.push(...chunk.nodes);
+            // If the first item in importOrder is a newline, add newlines around the side effect node
+            if (isCustomGroupSeparator(importOrder[0])) {
+                // Add newline before chunk if it has no leading comment
+                if (!chunk.nodes[0].leadingComments?.length) {
+                    finalNodes.push(newLineNode);
+                }
+                finalNodes.push(...chunk.nodes, newLineNode);
+            } else {
+                finalNodes.push(...chunk.nodes);
+            }
         } else {
             let nodes = importOrderMergeDuplicateImports
                 ? mergeNodesWithMatchingImportFlavors(chunk.nodes, {
@@ -73,12 +83,9 @@ export const getSortedNodes: GetSortedNodes = (nodes, options) => {
             const sorted = getSortedNodesByImportOrder(nodes, options);
             finalNodes.push(...sorted);
         }
-        if (importOrderSeparation) {
-            finalNodes.push(newLineNode);
-        }
     }
 
-    if (finalNodes.length > 0 && !importOrderSeparation) {
+    if (finalNodes.length > 0) {
         finalNodes.push(newLineNode);
     }
 

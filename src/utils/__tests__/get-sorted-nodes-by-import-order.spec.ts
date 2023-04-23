@@ -33,7 +33,6 @@ test('it returns all sorted nodes', () => {
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
-        importOrderSeparation: false,
         importOrderSortSpecifiers: false,
     }) as ImportDeclaration[];
 
@@ -87,7 +86,6 @@ test('it returns all sorted nodes case-insensitive', () => {
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
-        importOrderSeparation: false,
         importOrderSortSpecifiers: false,
     }) as ImportDeclaration[];
 
@@ -141,7 +139,6 @@ test('it returns all sorted nodes with sort order', () => {
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
-        importOrderSeparation: false,
         importOrderSortSpecifiers: false,
     }) as ImportDeclaration[];
 
@@ -195,7 +192,6 @@ test('it returns all sorted nodes with sort order case-insensitive', () => {
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
-        importOrderSeparation: false,
         importOrderSortSpecifiers: false,
     }) as ImportDeclaration[];
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
@@ -248,7 +244,6 @@ test('it returns all sorted import nodes with sorted import specifiers', () => {
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
-        importOrderSeparation: false,
         importOrderSortSpecifiers: true,
     }) as ImportDeclaration[];
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
@@ -301,7 +296,6 @@ test('it returns all sorted import nodes with sorted import specifiers with case
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
-        importOrderSeparation: false,
         importOrderSortSpecifiers: true,
     }) as ImportDeclaration[];
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
@@ -354,7 +348,6 @@ test('it returns all sorted nodes with namespace specifiers at the top (under bu
         importOrderGroupNamespaceSpecifiers: true,
         importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
-        importOrderSeparation: false,
         importOrderSortSpecifiers: false,
     }) as ImportDeclaration[];
 
@@ -385,7 +378,6 @@ test('it returns all sorted nodes with builtin specifiers at the top, ', () => {
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
-        importOrderSeparation: false,
         importOrderSortSpecifiers: false,
     }) as ImportDeclaration[];
 
@@ -416,7 +408,6 @@ test('it returns all sorted nodes with custom third party modules and builtins a
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
-        importOrderSeparation: false,
         importOrderSortSpecifiers: false,
     }) as ImportDeclaration[];
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
@@ -435,39 +426,6 @@ test('it returns all sorted nodes with custom third party modules and builtins a
         't',
         'k',
         './local',
-    ]);
-});
-
-test('it adds newlines when importOrderSeparation is true', () => {
-    const result = getImportNodes(code);
-    const sorted = getSortedNodesByImportOrder(result, {
-        importOrder: ['^[./]'],
-        importOrderCaseInsensitive: true,
-        importOrderGroupNamespaceSpecifiers: false,
-        importOrderMergeDuplicateImports: false,
-        importOrderCombineTypeAndValueImports: false,
-        importOrderSeparation: true,
-        importOrderSortSpecifiers: false,
-    }) as ImportDeclaration[];
-    expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
-        'node:fs/promises',
-        'node:url',
-        'path',
-        '',
-        'a',
-        'Ba',
-        'BY',
-        'c',
-        'g',
-        'k',
-        't',
-        'x',
-        'Xa',
-        'XY',
-        'z',
-        '',
-        './local',
-        '',
     ]);
 });
 
@@ -486,7 +444,6 @@ test('it returns all sorted nodes with custom separation', () => {
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
-        importOrderSeparation: false,
         importOrderSortSpecifiers: false,
     }) as ImportDeclaration[];
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
@@ -506,49 +463,6 @@ test('it returns all sorted nodes with custom separation', () => {
         '',
         'k',
         './local',
-    ]);
-});
-
-test('it allows both importOrderSeparation and custom separation (but why?)', () => {
-    const result = getImportNodes(code);
-    const sorted = getSortedNodesByImportOrder(result, {
-        importOrder: [
-            '^a$',
-            '<THIRD_PARTY_MODULES>',
-            '^t$',
-            '',
-            '^k$',
-            '^[./]',
-        ],
-        importOrderCaseInsensitive: true,
-        importOrderGroupNamespaceSpecifiers: false,
-        importOrderMergeDuplicateImports: false,
-        importOrderCombineTypeAndValueImports: false,
-        importOrderSeparation: true,
-        importOrderSortSpecifiers: false,
-    }) as ImportDeclaration[];
-    expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
-        'node:fs/promises',
-        'node:url',
-        'path',
-        '',
-        'a',
-        '',
-        'Ba',
-        'BY',
-        'c',
-        'g',
-        'x',
-        'Xa',
-        'XY',
-        'z',
-        '',
-        't',
-        '',
-        'k',
-        '',
-        './local',
-        '',
     ]);
 });
 
@@ -569,7 +483,6 @@ test('it does not add multiple custom import separators', () => {
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
-        importOrderSeparation: false,
         importOrderSortSpecifiers: false,
     }) as ImportDeclaration[];
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([

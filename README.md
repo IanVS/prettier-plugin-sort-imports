@@ -14,32 +14,31 @@ Since then more critical features & fixes have been added. As a result, this rep
 -   Combine imports from the same source ([`importOrderMergeDuplicateImports`](#importordermergeduplicateimports))
 -   Combine type and value imports ([`importOrderCombineTypeAndValueImports`](#importordercombinetypeandvalueimports))
 -   Sorts node.js builtin modules to top
--   Custom import order separation ([`importOrderSeparation`](#importorderseparation))
+-   Custom import order separation
 
 [We welcome contributions!](./CONTRIBUTING.md)
 
 **Table of Contents**
 
--   [Sample](#sample)
-    -   [Input](#input)
-    -   [Output](#output)
--   [Install](#install)
--   [Usage](#usage)
-    -   [How does import sort work?](#how-does-import-sort-work)
-    -   [Options](#options)
-        -   [`importOrder`](#importorder)
-        -   [`importOrderSeparation`](#importorderseparation)
-        -   [`importOrderSortSpecifiers`](#importordersortspecifiers)
-        -   [`importOrderGroupNamespaceSpecifiers`](#importordergroupnamespacespecifiers)
-        -   [`importOrderCaseInsensitive`](#importordercaseinsensitive)
-        -   [`importOrderMergeDuplicateImports`](#importordermergeduplicateimports)
-        -   [`importOrderCombineTypeAndValueImports`](#importordercombinetypeandvalueimports)
-        -   [`importOrderParserPlugins`](#importorderparserplugins)
-    -   [Prevent imports from being sorted](#prevent-imports-from-being-sorted)
--   [FAQ / Troubleshooting](#faq--troubleshooting)
--   [Compatibility](#compatibility)
--   [Contribution](#contribution)
--   [Disclaimer](#disclaimer)
+- [Sample](#sample)
+  - [Input](#input)
+  - [Output](#output)
+- [Install](#install)
+- [Usage](#usage)
+  - [How does import sort work?](#how-does-import-sort-work)
+  - [Options](#options)
+    - [`importOrder`](#importorder)
+    - [`importOrderSortSpecifiers`](#importordersortspecifiers)
+    - [`importOrderGroupNamespaceSpecifiers`](#importordergroupnamespacespecifiers)
+    - [`importOrderCaseInsensitive`](#importordercaseinsensitive)
+    - [`importOrderMergeDuplicateImports`](#importordermergeduplicateimports)
+    - [`importOrderCombineTypeAndValueImports`](#importordercombinetypeandvalueimports)
+    - [`importOrderParserPlugins`](#importorderparserplugins)
+  - [Prevent imports from being sorted](#prevent-imports-from-being-sorted)
+- [FAQ / Troubleshooting](#faq--troubleshooting)
+- [Compatibility](#compatibility)
+- [Contribution](#contribution)
+- [Disclaimer](#disclaimer)
 
 ## Sample
 
@@ -134,7 +133,6 @@ module.exports = {
     importOrderParserPlugins: ['typescript', 'jsx', 'decorators-legacy'],
     importOrderMergeDuplicateImports: true,
     importOrderCombineTypeAndValueImports: true,
-    importOrderSeparation: true,
     importOrderSortSpecifiers: true,
 };
 ```
@@ -212,23 +210,9 @@ If you would like to order type imports differently from value imports, you can 
 "importOrder": ["<TYPES>", "<TYPES>^[./]", "<THIRD_PARTY_MODULES>", "^[./]"],
 ```
 
-#### `importOrderSeparation`
-
-**type**: `boolean`
-
-**default value**: `false`
-
-A boolean value to enable or disable the new line separation
-between sorted import declarations group. The separation takes place according to the `importOrder`.
-
-```json
-"importOrderSeparation": true,
-```
-
-_Note:_ If you want greater control over which groups are separated from others, you can add an empty string to your `importOrder` array to signify newlines. For example:
+_Note:_ If you want to separate some groups from others, you can add an empty string to your `importOrder` array to signify newlines. For example:
 
 ```js
-"importOrderSeparation": false,
 "importOrder": [
    "^react", // React will be placed at the top of third-party modules
     "<THIRD_PARTY_MODULES>",

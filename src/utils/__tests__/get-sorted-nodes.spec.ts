@@ -34,7 +34,6 @@ test('it returns all sorted nodes, preserving the order side effect nodes', () =
         importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
-        importOrderSeparation: false,
         importOrderSortSpecifiers: false,
     }) as ImportDeclaration[];
 
