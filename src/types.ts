@@ -32,10 +32,9 @@ export type ImportOrLine = ImportDeclaration | ExpressionStatement;
 
 export type GetSortedNodes = (
     nodes: ImportDeclaration[],
-    options: Pick<
-        PrettierOptions,
-        'importOrder' | 'importOrderCombineTypeAndValueImports'
-    >,
+    options: Pick<PrettierOptions, 'importOrder'> & {
+        importOrderCombineTypeAndValueImports: boolean;
+    },
 ) => ImportOrLine[];
 
 export type GetChunkTypeOfNode = (node: ImportDeclaration) => ChunkType;

@@ -1,6 +1,7 @@
 import { parse as babelParser, ParserOptions } from '@babel/parser';
 import traverse, { NodePath } from '@babel/traverse';
 import { ImportDeclaration, isTSModuleDeclaration } from '@babel/types';
+import semver from 'semver';
 
 import { TYPES_SPECIAL_WORD } from '../constants';
 import { PrettierOptions } from '../types';
@@ -10,22 +11,36 @@ import { getSortedNodes } from '../utils/get-sorted-nodes';
 
 export function preprocessor(code: string, options: PrettierOptions): string {
     const { importOrderParserPlugins, importOrder } = options;
+    let { importOrderTypeScriptVersion } = options;
+    const isTSSemverValid = semver.valid(importOrderTypeScriptVersion);
 
-    let { importOrderCombineTypeAndValueImports } = options;
+    if (!isTSSemverValid) {
+        console.warn(
+            `[@ianvs/prettier-plugin-sort-imports]: The option importOrderTypeScriptVersion is not a valid semver version and will be ignored.`,
+        );
+        importOrderTypeScriptVersion = '1.0.0';
+    }
 
     // Do not combine type and value imports if `<TYPES>` is specified explicitly
-    if (
-        importOrderCombineTypeAndValueImports &&
-        importOrder.some((group) => group.includes(TYPES_SPECIAL_WORD))
-    ) {
-        importOrderCombineTypeAndValueImports = false;
-    }
+    let importOrderCombineTypeAndValueImports = importOrder.some((group) =>
+        group.includes(TYPES_SPECIAL_WORD),
+    )
+        ? false
+        : true;
 
     const allOriginalImportNodes: ImportDeclaration[] = [];
     const parserOptions: ParserOptions = {
         sourceType: 'module',
         plugins: getExperimentalParserPlugins(importOrderParserPlugins),
     };
+
+    // Disable importOrderCombineTypeAndValueImports if typescript is not set to a version that supports it
+    if (
+        parserOptions.plugins?.includes('typescript') &&
+        semver.lt(importOrderTypeScriptVersion, '4.5.0')
+    ) {
+        importOrderCombineTypeAndValueImports = false;
+    }
 
     const ast = babelParser(code, parserOptions);
 

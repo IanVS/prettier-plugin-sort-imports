@@ -14,7 +14,7 @@ Since then more critical features & fixes have been added, and the options have 
 
 -   Do not re-order across side-effect imports
 -   Combine imports from the same source
--   Combine type and value imports ([`importOrderCombineTypeAndValueImports`](#importordercombinetypeandvalueimports))
+-   Combine type and value imports
 -   Type import grouping with `<TYPES>` keyword
 -   Sorts node.js builtin modules to top
 -   Custom import order separation
@@ -215,29 +215,13 @@ _Note:_ If you want to separate some groups from others, you can add an empty st
 ],
 ```
 
-#### `importOrderCombineTypeAndValueImports`
+#### `importOrderTypeScriptVersion`
 
-**type**: `boolean`
+**type**: `string`
 
-**default value:** `true`
+**default value:** `1.0.0`
 
-By default, `import type` expressions will be merged into `import {…}` statements.
-
-```diff
-- import { D1 } from 'd';
-- import type { D2 } from 'd';
-+ import { D1, type D2 } from "d";
-```
-
-This is supported in Flow and TypeScript 4.5+.  Disable this setting if you are using an older TypeScript version, or prefer not to combine type and value imports.  You can also use the `<Types>` keyword in your [importOrder](#importorder) array to keep type imports separate and control their placement.
-
-Note that not every `type {X}` import is converted into a `{type X}` import, only when combining with value imports.
-
-```diff
-- import type { A1 } from 'a';
-- import type { A2 } from 'a';
-+ import type { A1, A2 } from "a";
-```
+When using TypeScript, some import syntax can only be used in newer versions of TypeScript.  If you would like to enable modern features like mixed type and value imports, set this option to the semver version string of the TypeScript in use in your project.
 
 #### `importOrderParserPlugins`
 

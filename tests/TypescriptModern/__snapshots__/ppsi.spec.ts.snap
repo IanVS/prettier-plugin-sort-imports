@@ -1,0 +1,18 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`imports-with-type-and-value-imports.js - typescript-verify > imports-with-type-and-value-imports.js 1`] = `
+import type {Foo} from './foo';
+import {fooValue} from './foo';
+
+import def from './bar';
+import type {Bar} from './bar';
+
+import * as namespace from './baz'
+import type {Baz} from './bar';
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import def, { type Bar, type Baz } from "./bar";
+import * as namespace from "./baz";
+import { fooValue, type Foo } from "./foo";
+
+`;

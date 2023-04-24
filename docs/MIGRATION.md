@@ -10,6 +10,8 @@
 - The `importOrderGroupNamespaceSpecifiers` option has been removed.
 - The `importOrderSortSpecifiers` option has been removed, and specifiers are now always sorted (previous `true` setting)
 - The `importOrderMergeDuplicateImports` option has been removed, and imports are always combined (previous `true` setting)
+- The `importOrderCombineTypeAndValueImports` option has been removed.  See [below](#importOrderCombineTypeAndValueImports-removed) for details
+- Added `importOrderTypeScriptVersion` option.
 
 #### `importOrderSeparation` removed
 
@@ -38,6 +40,15 @@ Or, if you would like to keep all imports together, but add a newline before sid
         "", // This will add a newline between side-effect groups (i.e. the chunks that are sorted)
     ]
 ```
+
+#### `importOrderCombineTypeAndValueImports` removed
+
+Combining type and value imports is supported in Flow and TypeScript 4.5.0 and above.  To simplify the configuration of the plugin, the explicit setting has been removed.  Instead, we will always enable combining these imports when using Flow and have introduced a new option, `importOrderTypeScriptVersion` to control whether or not merging can happen when using TypeScript.
+
+#### `importOrderTypeScriptVersion` added
+
+Some import statement syntax can only be used in certain versions of TypeScript.  In order to enable these features, such as merging type and value imports, you can specify the version of TypeScript that you're using in your project using this option, which should be a valid semver string.
+
 
 ### Migrating from v2.x.x to v3.x.x
 
