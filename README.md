@@ -1,3 +1,5 @@
+NOTE: These docs are for the upcoming version 4.0.  View the [3.X readme](https://github.com/IanVS/prettier-plugin-sort-imports/tree/main#readme) for the latest stable release, or the [migration guide](https://github.com/IanVS/prettier-plugin-sort-imports/blob/next/docs/MIGRATION.md#migrating-from-v3xx-to-v4xx) for the changes so far.
+
 # Prettier plugin sort imports <!-- omit in toc -->
 
 A prettier plugin to sort import declarations by provided Regular Expression order.
@@ -6,13 +8,14 @@ This was forked from [@trivago/prettier-plugin-sort-imports](https://github.com/
 
 The first change was preserving the order of [side-effect imports](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#import_a_module_for_its_side_effects_only) to avoid breaking situations where import-order has correctness implications (such as styles).
 
-Since then more critical features & fixes have been added. As a result, this repo intends to stay compatible with the upstream, but may continue to gain features not present in the original version of the plugin.
+Since then more critical features & fixes have been added, and the options have been simplified.
 
 **Features not currently supported by upstream:**
 
 -   Do not re-order across side-effect imports
 -   Combine imports from the same source ([`importOrderMergeDuplicateImports`](#importordermergeduplicateimports))
 -   Combine type and value imports ([`importOrderCombineTypeAndValueImports`](#importordercombinetypeandvalueimports))
+-   Type import grouping with `<TYPES>` keyword
 -   Sorts node.js builtin modules to top
 -   Custom import order separation
 
