@@ -18,7 +18,7 @@ import a from 'a';
     const importNodes = getImportNodes(code);
     const sortedNodes = getSortedNodes(importNodes, {
         importOrder: [],
-        importOrderCombineTypeAndValueImports: false,
+        importOrderCombineTypeAndValueImports: true,
     });
     const formatted = getCodeFromAst({
         nodesToOutput: sortedNodes,
@@ -54,7 +54,7 @@ import type {See} from 'c';
     const importNodes = getImportNodes(code, { plugins: ['typescript'] });
     const sortedNodes = getSortedNodes(importNodes, {
         importOrder: [],
-        importOrderCombineTypeAndValueImports: false,
+        importOrderCombineTypeAndValueImports: true,
     });
     const formatted = getCodeFromAst({
         nodesToOutput: sortedNodes,
@@ -66,8 +66,7 @@ import type {See} from 'c';
         `// first comment
 // second comment
 import a, { b, type Bee } from "a";
-import c from "c";
-import type { C, See } from "c";
+import c, { type C, type See } from "c";
 import g from "g";
 import k from "k";
 import t from "t";

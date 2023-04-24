@@ -7,7 +7,7 @@ import { getSortedNodes } from '../get-sorted-nodes';
 
 const defaultOptions = {
     importOrder: [''], // Separate side-effect and ignored chunks, for easier test readability
-    importOrderCombineTypeAndValueImports: false,
+    importOrderCombineTypeAndValueImports: true,
 };
 
 test('should merge duplicate imports within a given chunk', () => {
@@ -43,10 +43,10 @@ test('should merge duplicate imports within a given chunk', () => {
         plugins: ['typescript'],
     });
 
-    const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
-        ...defaultOptions,
-        importOrderCombineTypeAndValueImports: false,
-    });
+    const nodesToOutput = getSortedNodes(
+        allOriginalImportNodes,
+        defaultOptions,
+    );
     const formatted = getCodeFromAst({
         nodesToOutput,
         allOriginalImportNodes,
@@ -61,8 +61,7 @@ import { Junk } from "junk-group-1";
 import "./side-effects1";
 
 // C, E and D will be separated from A, B because side-effects in-between
-import type { C, E } from "a";
-import { D } from "a";
+import { D, type C, type E } from "a";
 
 // prettier-ignore
 import type { NoMerge1 } from "a";
@@ -102,10 +101,10 @@ test('should merge type imports into regular imports', () => {
         plugins: ['typescript'],
     });
 
-    const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
-        ...defaultOptions,
-        importOrderCombineTypeAndValueImports: true,
-    });
+    const nodesToOutput = getSortedNodes(
+        allOriginalImportNodes,
+        defaultOptions,
+    );
     const formatted = getCodeFromAst({
         nodesToOutput,
         allOriginalImportNodes,
@@ -134,10 +133,10 @@ import defaultValue from './source';
         plugins: ['typescript'],
     });
 
-    const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
-        ...defaultOptions,
-        importOrderCombineTypeAndValueImports: true,
-    });
+    const nodesToOutput = getSortedNodes(
+        allOriginalImportNodes,
+        defaultOptions,
+    );
     const formatted = getCodeFromAst({
         nodesToOutput,
         allOriginalImportNodes,
@@ -159,10 +158,10 @@ import * as Namespace from './source';
         plugins: ['typescript'],
     });
 
-    const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
-        ...defaultOptions,
-        importOrderCombineTypeAndValueImports: true,
-    });
+    const nodesToOutput = getSortedNodes(
+        allOriginalImportNodes,
+        defaultOptions,
+    );
     const formatted = getCodeFromAst({
         nodesToOutput,
         allOriginalImportNodes,
@@ -185,10 +184,10 @@ import {value as alias} from './source';
         plugins: ['typescript'],
     });
 
-    const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
-        ...defaultOptions,
-        importOrderCombineTypeAndValueImports: true,
-    });
+    const nodesToOutput = getSortedNodes(
+        allOriginalImportNodes,
+        defaultOptions,
+    );
     const formatted = getCodeFromAst({
         nodesToOutput,
         allOriginalImportNodes,
@@ -210,10 +209,10 @@ import {value, SecondValue} from './source';
         plugins: ['typescript'],
     });
 
-    const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
-        ...defaultOptions,
-        importOrderCombineTypeAndValueImports: true,
-    });
+    const nodesToOutput = getSortedNodes(
+        allOriginalImportNodes,
+        defaultOptions,
+    );
     const formatted = getCodeFromAst({
         nodesToOutput,
         allOriginalImportNodes,
@@ -237,10 +236,10 @@ import {otherValue} from './other';
         plugins: ['typescript'],
     });
 
-    const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
-        ...defaultOptions,
-        importOrderCombineTypeAndValueImports: true,
-    });
+    const nodesToOutput = getSortedNodes(
+        allOriginalImportNodes,
+        defaultOptions,
+    );
     const formatted = getCodeFromAst({
         nodesToOutput,
         allOriginalImportNodes,
@@ -265,10 +264,10 @@ import {SecondValue} from './source';
         plugins: ['typescript'],
     });
 
-    const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
-        ...defaultOptions,
-        importOrderCombineTypeAndValueImports: true,
-    });
+    const nodesToOutput = getSortedNodes(
+        allOriginalImportNodes,
+        defaultOptions,
+    );
     const formatted = getCodeFromAst({
         nodesToOutput,
         allOriginalImportNodes,
@@ -292,10 +291,10 @@ import {value} from './source';
         plugins: ['typescript'],
     });
 
-    const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
-        ...defaultOptions,
-        importOrderCombineTypeAndValueImports: true,
-    });
+    const nodesToOutput = getSortedNodes(
+        allOriginalImportNodes,
+        defaultOptions,
+    );
     const formatted = getCodeFromAst({
         nodesToOutput,
         allOriginalImportNodes,
@@ -319,10 +318,10 @@ test('should not combine default type imports', () => {
         plugins: ['typescript'],
     });
 
-    const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
-        ...defaultOptions,
-        importOrderCombineTypeAndValueImports: true,
-    });
+    const nodesToOutput = getSortedNodes(
+        allOriginalImportNodes,
+        defaultOptions,
+    );
     const formatted = getCodeFromAst({
         nodesToOutput,
         allOriginalImportNodes,

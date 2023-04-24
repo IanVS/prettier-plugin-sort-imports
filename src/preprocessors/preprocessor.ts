@@ -13,13 +13,11 @@ export function preprocessor(code: string, options: PrettierOptions): string {
 
     let { importOrderCombineTypeAndValueImports } = options;
 
+    // Do not combine type and value imports if `<TYPES>` is specified explicitly
     if (
         importOrderCombineTypeAndValueImports &&
         importOrder.some((group) => group.includes(TYPES_SPECIAL_WORD))
     ) {
-        console.warn(
-            `[@ianvs/prettier-plugin-sort-imports]: The option importOrderCombineTypeAndValueImports will have no effect since ${TYPES_SPECIAL_WORD} is used in importOrder.`,
-        );
         importOrderCombineTypeAndValueImports = false;
     }
 

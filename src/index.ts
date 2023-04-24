@@ -40,7 +40,7 @@ export const options: Record<
     importOrderCombineTypeAndValueImports: {
         type: 'boolean',
         category: 'Global',
-        default: false,
+        default: true,
         description:
             'Should import-type expressions be merged into import-value expressions?',
     },

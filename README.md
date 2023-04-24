@@ -129,11 +129,9 @@ module.exports = {
     semi: true,
     importOrder: ['^@core/(.*)$', '', '^@server/(.*)$', '', '^@ui/(.*)$', '', '^[./]'],
     importOrderParserPlugins: ['typescript', 'jsx', 'decorators-legacy'],
-    importOrderCombineTypeAndValueImports: true,
+    importOrderCombineTypeAndValueImports: false, // Disable if using TS 4.4 or below
 };
 ```
-
-_Note: all flags are off by default, so explore your options [below](#options)_
 
 ### How does import sort work?
 
@@ -221,19 +219,21 @@ _Note:_ If you want to separate some groups from others, you can add an empty st
 
 **type**: `boolean`
 
-**default value:** `false`
+**default value:** `true`
 
-A boolean value to control merging `import type` expressions into `import {…}`.
+By default, `import type` expressions will be merged into `import {…}` statements.
 
 ```diff
-- import type { C1 } from 'c';
-- import { C2 } from 'c';
-+ import { type C1, C2 } from "c";
-
 - import { D1 } from 'd';
 - import type { D2 } from 'd';
 + import { D1, type D2 } from "d";
+```
 
+This is supported in Flow and TypeScript 4.5+.  Disable this setting if you are using an older TypeScript version, or prefer not to combine type and value imports.  You can also use the `<Types>` keyword in your [importOrder](#importorder) array to keep type imports separate and control their placement.
+
+Note that not every `type {X}` import is converted into a `{type X}` import, only when combining with value imports.
+
+```diff
 - import type { A1 } from 'a';
 - import type { A2 } from 'a';
 + import type { A1, A2 } from "a";
