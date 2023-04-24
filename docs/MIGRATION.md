@@ -9,6 +9,7 @@
 - The `importOrderCaseInsensitive` option has been removed, and imports will always be sorted case-insensitive.
 - The `importOrderGroupNamespaceSpecifiers` option has been removed.
 - The `importOrderSortSpecifiers` option has been removed, and specifiers are now always sorted (previous `true` setting)
+- The `importOrderMergeDuplicateImports` option has been removed, and imports are always combined (previous `true` setting)
 
 #### `importOrderSeparation` removed
 
