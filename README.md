@@ -32,7 +32,6 @@ Since then more critical features & fixes have been added, and the options have 
   - [Options](#options)
     - [`importOrder`](#importorder)
     - [`importOrderSortSpecifiers`](#importordersortspecifiers)
-    - [`importOrderGroupNamespaceSpecifiers`](#importordergroupnamespacespecifiers)
     - [`importOrderMergeDuplicateImports`](#importordermergeduplicateimports)
     - [`importOrderCombineTypeAndValueImports`](#importordercombinetypeandvalueimports)
     - [`importOrderParserPlugins`](#importorderparserplugins)
@@ -241,14 +240,6 @@ After:
 ```ts
 import Default, {charlie, delta as echo, type Alpha, type Bravo} from 'source';
 ```
-
-#### `importOrderGroupNamespaceSpecifiers`
-
-**type**: `boolean`
-
-**default value:** `false`
-
-A boolean value to enable or disable sorting the namespace specifiers to the top of the import group.
 
 #### `importOrderMergeDuplicateImports`
 

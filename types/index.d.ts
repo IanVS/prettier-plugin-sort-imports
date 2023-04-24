@@ -39,13 +39,6 @@ export interface PluginConfig {
     importOrder?: string[];
 
     /**
-     * A boolean value to enable or disable sorting the namespace specifiers to the top of the import group.
-     *
-     * @default false
-     */
-    importOrderGroupNamespaceSpecifiers?: boolean;
-
-    /**
      * When `true`, multiple import statements from the same module will be combined into a single import.
      *
      * @default false

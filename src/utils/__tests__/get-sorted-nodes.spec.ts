@@ -30,7 +30,6 @@ test('it returns all sorted nodes, preserving the order side effect nodes', () =
     const result = getImportNodes(code);
     const sorted = getSortedNodes(result, {
         importOrder: [],
-        importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
         importOrderSortSpecifiers: false,

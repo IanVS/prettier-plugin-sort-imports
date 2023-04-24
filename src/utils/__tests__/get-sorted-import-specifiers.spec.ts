@@ -1,20 +1,13 @@
 import { expect, test } from 'vitest';
 
-import { NaturalSortOptions } from "../../natural-sort";
-
 import { getImportNodes } from '../get-import-nodes';
 import { getSortedImportSpecifiers } from '../get-sorted-import-specifiers';
 import { getSortedNodesModulesNames } from '../get-sorted-nodes-modules-names';
 
-const defaultSortOptions: NaturalSortOptions = {}
-
 test('should return correct sorted nodes', () => {
     const code = `import { filter, reduce, eventHandler } from '@server/z';`;
     const [importNode] = getImportNodes(code);
-    const sortedImportSpecifiers = getSortedImportSpecifiers(
-        importNode,
-        defaultSortOptions,
-    );
+    const sortedImportSpecifiers = getSortedImportSpecifiers(importNode);
     const specifiersList = getSortedNodesModulesNames(
         sortedImportSpecifiers.specifiers,
     );
@@ -25,10 +18,7 @@ test('should return correct sorted nodes', () => {
 test('should return correct sorted nodes with default import', () => {
     const code = `import Component, { filter, reduce, eventHandler } from '@server/z';`;
     const [importNode] = getImportNodes(code);
-    const sortedImportSpecifiers = getSortedImportSpecifiers(
-        importNode,
-        defaultSortOptions,
-    );
+    const sortedImportSpecifiers = getSortedImportSpecifiers(importNode);
     const specifiersList = getSortedNodesModulesNames(
         sortedImportSpecifiers.specifiers,
     );
@@ -46,7 +36,7 @@ test('should group type imports after value imports', () => {
     const [importNode] = getImportNodes(code, {
         plugins: ['typescript'],
     });
-    const sortedImportSpecifiers = getSortedImportSpecifiers(importNode, defaultSortOptions);
+    const sortedImportSpecifiers = getSortedImportSpecifiers(importNode);
     const specifiersList = getSortedNodesModulesNames(
         sortedImportSpecifiers.specifiers,
     );
