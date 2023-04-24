@@ -18,7 +18,6 @@ import a from 'a';
     const importNodes = getImportNodes(code);
     const sortedNodes = getSortedNodes(importNodes, {
         importOrder: [],
-        importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
     });
     const formatted = getCodeFromAst({
@@ -55,7 +54,6 @@ import type {See} from 'c';
     const importNodes = getImportNodes(code, { plugins: ['typescript'] });
     const sortedNodes = getSortedNodes(importNodes, {
         importOrder: [],
-        importOrderMergeDuplicateImports: true,
         importOrderCombineTypeAndValueImports: false,
     });
     const formatted = getCodeFromAst({

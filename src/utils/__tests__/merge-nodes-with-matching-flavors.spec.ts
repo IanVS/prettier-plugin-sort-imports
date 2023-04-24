@@ -7,7 +7,6 @@ import { getSortedNodes } from '../get-sorted-nodes';
 
 const defaultOptions = {
     importOrder: [''], // Separate side-effect and ignored chunks, for easier test readability
-    importOrderMergeDuplicateImports: false,
     importOrderCombineTypeAndValueImports: false,
 };
 
@@ -46,7 +45,6 @@ test('should merge duplicate imports within a given chunk', () => {
 
     const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
         ...defaultOptions,
-        importOrderMergeDuplicateImports: true,
         importOrderCombineTypeAndValueImports: false,
     });
     const formatted = getCodeFromAst({
@@ -106,7 +104,6 @@ test('should merge type imports into regular imports', () => {
 
     const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
         ...defaultOptions,
-        importOrderMergeDuplicateImports: true,
         importOrderCombineTypeAndValueImports: true,
     });
     const formatted = getCodeFromAst({
@@ -139,7 +136,6 @@ import defaultValue from './source';
 
     const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
         ...defaultOptions,
-        importOrderMergeDuplicateImports: true,
         importOrderCombineTypeAndValueImports: true,
     });
     const formatted = getCodeFromAst({
@@ -165,7 +161,6 @@ import * as Namespace from './source';
 
     const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
         ...defaultOptions,
-        importOrderMergeDuplicateImports: true,
         importOrderCombineTypeAndValueImports: true,
     });
     const formatted = getCodeFromAst({
@@ -192,7 +187,6 @@ import {value as alias} from './source';
 
     const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
         ...defaultOptions,
-        importOrderMergeDuplicateImports: true,
         importOrderCombineTypeAndValueImports: true,
     });
     const formatted = getCodeFromAst({
@@ -218,7 +212,6 @@ import {value, SecondValue} from './source';
 
     const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
         ...defaultOptions,
-        importOrderMergeDuplicateImports: true,
         importOrderCombineTypeAndValueImports: true,
     });
     const formatted = getCodeFromAst({
@@ -246,7 +239,6 @@ import {otherValue} from './other';
 
     const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
         ...defaultOptions,
-        importOrderMergeDuplicateImports: true,
         importOrderCombineTypeAndValueImports: true,
     });
     const formatted = getCodeFromAst({
@@ -275,7 +267,6 @@ import {SecondValue} from './source';
 
     const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
         ...defaultOptions,
-        importOrderMergeDuplicateImports: true,
         importOrderCombineTypeAndValueImports: true,
     });
     const formatted = getCodeFromAst({
@@ -303,7 +294,6 @@ import {value} from './source';
 
     const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
         ...defaultOptions,
-        importOrderMergeDuplicateImports: true,
         importOrderCombineTypeAndValueImports: true,
     });
     const formatted = getCodeFromAst({
@@ -320,83 +310,6 @@ import { thirdValue } from "./third";
 `);
 });
 
-test("doesn't merge duplicate imports if option disabled", () => {
-    const code = `
-    import type { A } from 'a';
-    import { Junk } from 'junk-group-1'
-    import type { B } from 'a';
-    import "./side-effects1";
-    // C, E and D will be separated from A, B because side-effects in-between
-    import type { C } from 'a';
-    import { D } from "a";
-    import type { E } from "a";
-    // prettier-ignore
-    import type { NoMerge1 } from "a";
-    // prettier-ignore
-    import { NoMerge2 } from "a";
-    import { H } from 'b';
-    import { F } from 'a';
-    // F Will be alone because prettier-ignore in-between
-
-    import { G } from 'b';
-    import * as J from 'c';
-    import { Junk2 } from 'junk-group-2'
-    import * as K from "c";
-    // * as J, * as K can't merge because both Namespaces
-    import {I} from "c"
-    import { default as Def2 } from 'd';
-    import { default as Def1 } from 'd';
-    import Foo1 from 'e';
-    import Foo2 from 'e';
-`;
-    const allOriginalImportNodes = getImportNodes(code, {
-        plugins: ['typescript'],
-    });
-
-    const nodesToOutput = getSortedNodes(
-        allOriginalImportNodes,
-        defaultOptions,
-    );
-    const formatted = getCodeFromAst({
-        nodesToOutput,
-        allOriginalImportNodes,
-        originalCode: code,
-        directives: [],
-    });
-
-    expect(format(formatted, { parser: 'babel' }))
-        .toEqual(`import type { A } from "a";
-import type { B } from "a";
-import { Junk } from "junk-group-1";
-
-import "./side-effects1";
-
-// C, E and D will be separated from A, B because side-effects in-between
-import type { C } from "a";
-import { D } from "a";
-import type { E } from "a";
-
-// prettier-ignore
-import type { NoMerge1 } from "a";
-// prettier-ignore
-import { NoMerge2 } from "a";
-
-import { F } from "a";
-import { H } from "b";
-// F Will be alone because prettier-ignore in-between
-import { G } from "b";
-import * as J from "c";
-import * as K from "c";
-// * as J, * as K can't merge because both Namespaces
-import { I } from "c";
-import { default as Def2 } from "d";
-import { default as Def1 } from "d";
-import Foo1 from "e";
-import Foo2 from "e";
-import { Junk2 } from "junk-group-2";
-`);
-});
-
 test('should not combine default type imports', () => {
     const code = `
     import { ComponentProps, useEffect } from "react";
@@ -408,7 +321,6 @@ test('should not combine default type imports', () => {
 
     const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
         ...defaultOptions,
-        importOrderMergeDuplicateImports: true,
         importOrderCombineTypeAndValueImports: true,
     });
     const formatted = getCodeFromAst({

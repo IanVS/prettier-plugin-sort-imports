@@ -37,12 +37,6 @@ export const options: Record<
         default: [{ value: ['typescript', 'jsx'] }],
         description: 'Provide a list of plugins for special syntax',
     },
-    importOrderMergeDuplicateImports: {
-        type: 'boolean',
-        category: 'Global',
-        default: false,
-        description: 'Should duplicate imports be merged?',
-    },
     importOrderCombineTypeAndValueImports: {
         type: 'boolean',
         category: 'Global',

@@ -29,7 +29,6 @@ test('it returns all sorted nodes', () => {
     const result = getImportNodes(code);
     const sorted = getSortedNodesByImportOrder(result, {
         importOrder: ['^[./]'],
-        importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
     }) as ImportDeclaration[];
 
@@ -79,7 +78,6 @@ test('it returns all sorted nodes with sort order', () => {
     const result = getImportNodes(code);
     const sorted = getSortedNodesByImportOrder(result, {
         importOrder: ['^a$', '^t$', '^k$', '^B', '^[./]'],
-        importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
     }) as ImportDeclaration[];
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
@@ -136,7 +134,6 @@ import {type B, A} from 'z';
     });
     const sorted = getSortedNodesByImportOrder(result, {
         importOrder: ['^[./]'],
-        importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
     }) as ImportDeclaration[];
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual(['k', 't', 'z']);
@@ -157,7 +154,6 @@ test('it returns all sorted nodes with builtin specifiers at the top', () => {
     const result = getImportNodes(code);
     const sorted = getSortedNodesByImportOrder(result, {
         importOrder: ['^[./]'],
-        importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
     }) as ImportDeclaration[];
 
@@ -184,7 +180,6 @@ test('it returns all sorted nodes with custom third party modules and builtins a
     const result = getImportNodes(code);
     const sorted = getSortedNodesByImportOrder(result, {
         importOrder: ['^a$', '<THIRD_PARTY_MODULES>', '^t$', '^k$', '^[./]'],
-        importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
     }) as ImportDeclaration[];
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
@@ -217,7 +212,6 @@ test('it returns all sorted nodes with custom separation', () => {
             '^k$',
             '^[./]',
         ],
-        importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
     }) as ImportDeclaration[];
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
@@ -253,7 +247,6 @@ test('it does not add multiple custom import separators', () => {
             '^k$',
             '^[./]',
         ],
-        importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
     }) as ImportDeclaration[];
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([

@@ -13,7 +13,7 @@ Since then more critical features & fixes have been added, and the options have 
 **Features not currently supported by upstream:**
 
 -   Do not re-order across side-effect imports
--   Combine imports from the same source ([`importOrderMergeDuplicateImports`](#importordermergeduplicateimports))
+-   Combine imports from the same source
 -   Combine type and value imports ([`importOrderCombineTypeAndValueImports`](#importordercombinetypeandvalueimports))
 -   Type import grouping with `<TYPES>` keyword
 -   Sorts node.js builtin modules to top
@@ -31,7 +31,6 @@ Since then more critical features & fixes have been added, and the options have 
   - [How does import sort work?](#how-does-import-sort-work)
   - [Options](#options)
     - [`importOrder`](#importorder)
-    - [`importOrderMergeDuplicateImports`](#importordermergeduplicateimports)
     - [`importOrderCombineTypeAndValueImports`](#importordercombinetypeandvalueimports)
     - [`importOrderParserPlugins`](#importorderparserplugins)
   - [Prevent imports from being sorted](#prevent-imports-from-being-sorted)
@@ -130,7 +129,6 @@ module.exports = {
     semi: true,
     importOrder: ['^@core/(.*)$', '', '^@server/(.*)$', '', '^@ui/(.*)$', '', '^[./]'],
     importOrderParserPlugins: ['typescript', 'jsx', 'decorators-legacy'],
-    importOrderMergeDuplicateImports: true,
     importOrderCombineTypeAndValueImports: true,
 };
 ```
@@ -218,14 +216,6 @@ _Note:_ If you want to separate some groups from others, you can add an empty st
     "^[./]"
 ],
 ```
-
-#### `importOrderMergeDuplicateImports`
-
-**type**: `boolean`
-
-**default value:** `false`
-
-When `true`, multiple import statements from the same module will be combined into a single import.
 
 #### `importOrderCombineTypeAndValueImports`
 

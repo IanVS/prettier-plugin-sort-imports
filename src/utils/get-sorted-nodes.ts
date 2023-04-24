@@ -29,11 +29,7 @@ import { mergeNodesWithMatchingImportFlavors } from './merge-nodes-with-matching
  * @returns A sorted array of the remaining import nodes
  */
 export const getSortedNodes: GetSortedNodes = (nodes, options) => {
-    const {
-        importOrder,
-        importOrderMergeDuplicateImports,
-        importOrderCombineTypeAndValueImports,
-    } = options;
+    const { importOrder, importOrderCombineTypeAndValueImports } = options;
 
     // Split nodes at each boundary between a side-effect node and a
     // non-side-effect node, keeping both types of nodes together.
@@ -68,11 +64,9 @@ export const getSortedNodes: GetSortedNodes = (nodes, options) => {
                 finalNodes.push(...chunk.nodes);
             }
         } else {
-            let nodes = importOrderMergeDuplicateImports
-                ? mergeNodesWithMatchingImportFlavors(chunk.nodes, {
-                      importOrderCombineTypeAndValueImports,
-                  })
-                : chunk.nodes;
+            let nodes = mergeNodesWithMatchingImportFlavors(chunk.nodes, {
+                importOrderCombineTypeAndValueImports,
+            });
             // If type ordering is specified explicitly, we need to break apart type and value specifiers
             if (
                 importOrder.some((group) => group.includes(TYPES_SPECIAL_WORD))

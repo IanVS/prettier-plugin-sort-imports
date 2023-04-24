@@ -39,13 +39,6 @@ export interface PluginConfig {
     importOrder?: string[];
 
     /**
-     * When `true`, multiple import statements from the same module will be combined into a single import.
-     *
-     * @default false
-     */
-    importOrderMergeDuplicateImports?: boolean;
-
-    /**
      * A boolean value to control merging `import type` expressions into `import {…}`.
      *
      * ```diff

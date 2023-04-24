@@ -9,22 +9,9 @@ import { getExperimentalParserPlugins } from '../utils/get-experimental-parser-p
 import { getSortedNodes } from '../utils/get-sorted-nodes';
 
 export function preprocessor(code: string, options: PrettierOptions): string {
-    const {
-        importOrderParserPlugins,
-        importOrder,
-        importOrderMergeDuplicateImports,
-    } = options;
+    const { importOrderParserPlugins, importOrder } = options;
 
     let { importOrderCombineTypeAndValueImports } = options;
-
-    if (
-        importOrderCombineTypeAndValueImports &&
-        !importOrderMergeDuplicateImports
-    ) {
-        console.warn(
-            '[@ianvs/prettier-plugin-sort-imports]: The option importOrderCombineTypeAndValueImports will have no effect since importOrderMergeDuplicateImports is not also enabled.',
-        );
-    }
 
     if (
         importOrderCombineTypeAndValueImports &&
@@ -65,7 +52,6 @@ export function preprocessor(code: string, options: PrettierOptions): string {
 
     const nodesToOutput = getSortedNodes(allOriginalImportNodes, {
         importOrder,
-        importOrderMergeDuplicateImports,
         importOrderCombineTypeAndValueImports,
     });
 
