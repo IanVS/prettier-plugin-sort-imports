@@ -7,7 +7,6 @@ import { getSortedNodes } from '../get-sorted-nodes';
 
 const defaultOptions = {
     importOrder: [''], // Separate side-effect and ignored chunks, for easier test readability
-    importOrderCaseInsensitive: false,
     importOrderGroupNamespaceSpecifiers: false,
     importOrderMergeDuplicateImports: false,
     importOrderCombineTypeAndValueImports: false,
