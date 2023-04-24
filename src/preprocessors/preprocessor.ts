@@ -13,7 +13,6 @@ export function preprocessor(code: string, options: PrettierOptions): string {
         importOrderParserPlugins,
         importOrder,
         importOrderMergeDuplicateImports,
-        importOrderSortSpecifiers,
     } = options;
 
     let { importOrderCombineTypeAndValueImports } = options;
@@ -68,7 +67,6 @@ export function preprocessor(code: string, options: PrettierOptions): string {
         importOrder,
         importOrderMergeDuplicateImports,
         importOrderCombineTypeAndValueImports,
-        importOrderSortSpecifiers,
     });
 
     return getCodeFromAst({

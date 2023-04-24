@@ -37,7 +37,6 @@ export type GetSortedNodes = (
         | 'importOrder'
         | 'importOrderMergeDuplicateImports'
         | 'importOrderCombineTypeAndValueImports'
-        | 'importOrderSortSpecifiers'
     >,
 ) => ImportOrLine[];
 

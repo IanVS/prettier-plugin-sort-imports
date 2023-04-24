@@ -32,7 +32,6 @@ test('it returns all sorted nodes, preserving the order side effect nodes', () =
         importOrder: [],
         importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
-        importOrderSortSpecifiers: false,
     }) as ImportDeclaration[];
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
         'se3',
@@ -63,8 +62,8 @@ test('it returns all sorted nodes, preserving the order side effect nodes', () =
         [],
         ['c', 'cD'],
         ['g'],
-        ['k', 'kE', 'kB'],
-        ['tC', 'tA', 'tB'],
+        ['k', 'kB', 'kE'],
+        ['tA', 'tB', 'tC'],
         ['z'],
         [],
         [],

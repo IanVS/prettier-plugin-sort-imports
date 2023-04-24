@@ -19,7 +19,6 @@ import { getSortedNodesGroup } from './get-sorted-nodes-group';
  */
 export const getSortedNodesByImportOrder: GetSortedNodes = (nodes, options) => {
     let { importOrder } = options;
-    const { importOrderSortSpecifiers } = options;
 
     const originalNodes = nodes.map(clone);
     const finalNodes: ImportOrLine[] = [];
@@ -81,11 +80,7 @@ export const getSortedNodesByImportOrder: GetSortedNodes = (nodes, options) => {
         const sortedInsideGroup = getSortedNodesGroup(groupNodes);
 
         // Sort the import specifiers
-        if (importOrderSortSpecifiers) {
-            sortedInsideGroup.forEach((node) =>
-                getSortedImportSpecifiers(node),
-            );
-        }
+        sortedInsideGroup.forEach((node) => getSortedImportSpecifiers(node));
 
         finalNodes.push(...sortedInsideGroup);
     }

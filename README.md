@@ -31,7 +31,6 @@ Since then more critical features & fixes have been added, and the options have 
   - [How does import sort work?](#how-does-import-sort-work)
   - [Options](#options)
     - [`importOrder`](#importorder)
-    - [`importOrderSortSpecifiers`](#importordersortspecifiers)
     - [`importOrderMergeDuplicateImports`](#importordermergeduplicateimports)
     - [`importOrderCombineTypeAndValueImports`](#importordercombinetypeandvalueimports)
     - [`importOrderParserPlugins`](#importorderparserplugins)
@@ -133,7 +132,6 @@ module.exports = {
     importOrderParserPlugins: ['typescript', 'jsx', 'decorators-legacy'],
     importOrderMergeDuplicateImports: true,
     importOrderCombineTypeAndValueImports: true,
-    importOrderSortSpecifiers: true,
 };
 ```
 
@@ -219,26 +217,6 @@ _Note:_ If you want to separate some groups from others, you can add an empty st
     "",  // use empty strings to separate groups with empty lines
     "^[./]"
 ],
-```
-
-#### `importOrderSortSpecifiers`
-
-**type**: `boolean`
-
-**default value:** `false`
-
-A boolean value to enable or disable sorting of the specifiers in an import declarations. If enabled, type imports will be sorted after value imports.
-
-Before:
-
-```ts
-import Default, {type Bravo, delta as echo, charlie, type Alpha} from 'source';
-```
-
-After:
-
-```ts
-import Default, {charlie, delta as echo, type Alpha, type Bravo} from 'source';
 ```
 
 #### `importOrderMergeDuplicateImports`

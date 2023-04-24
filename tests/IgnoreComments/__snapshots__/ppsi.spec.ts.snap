@@ -70,7 +70,7 @@ import { type h, h2 } from "h";
 // prettier-ignore
 import { g, type g2 } from "g";
 import { d1, type d, type d2 } from "d";
-import { type e, e2 } from "e";
+import { e2, type e } from "e";
 import { f, type f2 } from "f";
 
 export const foo = 42;
