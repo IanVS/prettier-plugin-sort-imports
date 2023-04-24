@@ -37,12 +37,6 @@ export const options: Record<
         default: [{ value: ['typescript', 'jsx'] }],
         description: 'Provide a list of plugins for special syntax',
     },
-    importOrderSortSpecifiers: {
-        type: 'boolean',
-        category: 'Global',
-        default: false,
-        description: 'Should specifiers be sorted?',
-    },
     importOrderMergeDuplicateImports: {
         type: 'boolean',
         category: 'Global',

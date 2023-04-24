@@ -13,7 +13,6 @@ const getSortedImportNodes = (code: string, options?: ParserOptions) => {
         importOrder: [],
         importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
-        importOrderSortSpecifiers: false,
     });
 };
 

@@ -20,7 +20,6 @@ import a from 'a';
         importOrder: [],
         importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
-        importOrderSortSpecifiers: false,
     });
     const formatted = getCodeFromAst({
         nodesToOutput: sortedNodes,
@@ -58,7 +57,6 @@ import type {See} from 'c';
         importOrder: [],
         importOrderMergeDuplicateImports: true,
         importOrderCombineTypeAndValueImports: false,
-        importOrderSortSpecifiers: false,
     });
     const formatted = getCodeFromAst({
         nodesToOutput: sortedNodes,

@@ -7,5 +7,4 @@ module.exports = {
     semi: true,
     plugins: [require('./lib/src/index.js')],
     importOrder: ['', '<THIRD_PARTY_MODULES>', '', '^[./]'],
-    importOrderSortSpecifiers: true,
 };

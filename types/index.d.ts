@@ -67,13 +67,6 @@ export interface PluginConfig {
     importOrderCombineTypeAndValueImports?: boolean;
 
     /**
-     * A boolean value to enable or disable sorting of the specifiers in an import declarations.
-     *
-     * @default false
-     */
-    importOrderSortSpecifiers?: boolean;
-
-    /**
      * A collection of plugins for babel parser. The plugin passes this list to babel parser, so it can understand the syntaxes
      * used in the file being formatted. The plugin uses prettier itself to figure out the parser it needs to use but if that fails,
      * you can use this field to enforce the usage of the plugins' babel parser needs.

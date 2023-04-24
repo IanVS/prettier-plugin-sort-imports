@@ -9,7 +9,6 @@ const defaultOptions = {
     importOrder: [''], // Separate side-effect and ignored chunks, for easier test readability
     importOrderMergeDuplicateImports: false,
     importOrderCombineTypeAndValueImports: false,
-    importOrderSortSpecifiers: true,
 };
 
 test('should merge duplicate imports within a given chunk', () => {
