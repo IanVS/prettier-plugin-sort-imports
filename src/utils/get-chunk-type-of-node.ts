@@ -1,5 +1,5 @@
 import { chunkTypeOther, chunkTypeUnsortable } from '../constants';
-import { GetChunkTypeOfNode } from '../types';
+import type { GetChunkTypeOfNode } from '../types';
 import { hasIgnoreNextNode } from './has-ignore-next-node';
 
 /**

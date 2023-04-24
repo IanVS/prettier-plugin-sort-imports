@@ -5,7 +5,7 @@ import {
     newLineNode,
     THIRD_PARTY_MODULES_SPECIAL_WORD,
 } from '../constants';
-import { GetSortedNodes, ImportGroups, ImportOrLine } from '../types';
+import type { GetSortedNodes, ImportGroups, ImportOrLine } from '../types';
 import { getImportNodesMatchedGroup } from './get-import-nodes-matched-group';
 import { getSortedImportSpecifiers } from './get-sorted-import-specifiers';
 import { getSortedNodesGroup } from './get-sorted-nodes-group';

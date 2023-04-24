@@ -1,4 +1,4 @@
-import { ImportDeclaration } from '@babel/types';
+import type { ImportDeclaration } from '@babel/types';
 import { expect, test } from 'vitest';
 
 import { getImportNodes } from '../get-import-nodes';
