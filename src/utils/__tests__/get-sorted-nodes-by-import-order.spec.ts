@@ -29,7 +29,6 @@ test('it returns all sorted nodes', () => {
     const result = getImportNodes(code);
     const sorted = getSortedNodesByImportOrder(result, {
         importOrder: ['^[./]'],
-        importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
         importOrderSortSpecifiers: false,
@@ -81,7 +80,6 @@ test('it returns all sorted nodes case-insensitive', () => {
     const result = getImportNodes(code);
     const sorted = getSortedNodesByImportOrder(result, {
         importOrder: ['^[./]'],
-        importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
         importOrderSortSpecifiers: false,
@@ -133,7 +131,6 @@ test('it returns all sorted nodes with sort order', () => {
     const result = getImportNodes(code);
     const sorted = getSortedNodesByImportOrder(result, {
         importOrder: ['^a$', '^t$', '^k$', '^B', '^[./]'],
-        importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
         importOrderSortSpecifiers: false,
@@ -184,7 +181,6 @@ test('it returns all sorted nodes with sort order case-insensitive', () => {
     const result = getImportNodes(code);
     const sorted = getSortedNodesByImportOrder(result, {
         importOrder: ['^a$', '^t$', '^k$', '^B', '^[./]'],
-        importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
         importOrderSortSpecifiers: false,
@@ -235,7 +231,6 @@ test('it returns all sorted import nodes with sorted import specifiers', () => {
     const result = getImportNodes(code);
     const sorted = getSortedNodesByImportOrder(result, {
         importOrder: ['^a$', '^t$', '^k$', '^B', '^[./]'],
-        importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
         importOrderSortSpecifiers: true,
@@ -286,7 +281,6 @@ test('it returns all sorted import nodes with sorted import specifiers with case
     const result = getImportNodes(code);
     const sorted = getSortedNodesByImportOrder(result, {
         importOrder: ['^a$', '^t$', '^k$', '^B', '^[./]'],
-        importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
         importOrderSortSpecifiers: true,
@@ -333,40 +327,10 @@ test('it returns all sorted import nodes with sorted import specifiers with case
     ]);
 });
 
-test('it returns all sorted nodes with namespace specifiers at the top (under builtins)', () => {
-    const result = getImportNodes(code);
-    const sorted = getSortedNodesByImportOrder(result, {
-        importOrder: ['^[./]'],
-        importOrderGroupNamespaceSpecifiers: true,
-        importOrderMergeDuplicateImports: false,
-        importOrderCombineTypeAndValueImports: false,
-        importOrderSortSpecifiers: false,
-    }) as ImportDeclaration[];
-
-    expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
-        'node:fs/promises',
-        'node:url',
-        'path',
-        'a',
-        'x',
-        'Ba',
-        'BY',
-        'c',
-        'g',
-        'k',
-        't',
-        'Xa',
-        'XY',
-        'z',
-        './local',
-    ]);
-});
-
 test('it returns all sorted nodes with builtin specifiers at the top', () => {
     const result = getImportNodes(code);
     const sorted = getSortedNodesByImportOrder(result, {
         importOrder: ['^[./]'],
-        importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
         importOrderSortSpecifiers: false,
@@ -395,7 +359,6 @@ test('it returns all sorted nodes with custom third party modules and builtins a
     const result = getImportNodes(code);
     const sorted = getSortedNodesByImportOrder(result, {
         importOrder: ['^a$', '<THIRD_PARTY_MODULES>', '^t$', '^k$', '^[./]'],
-        importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
         importOrderSortSpecifiers: false,
@@ -430,7 +393,6 @@ test('it returns all sorted nodes with custom separation', () => {
             '^k$',
             '^[./]',
         ],
-        importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
         importOrderSortSpecifiers: false,
@@ -468,7 +430,6 @@ test('it does not add multiple custom import separators', () => {
             '^k$',
             '^[./]',
         ],
-        importOrderGroupNamespaceSpecifiers: false,
         importOrderMergeDuplicateImports: false,
         importOrderCombineTypeAndValueImports: false,
         importOrderSortSpecifiers: false,

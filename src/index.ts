@@ -37,13 +37,6 @@ export const options: Record<
         default: [{ value: ['typescript', 'jsx'] }],
         description: 'Provide a list of plugins for special syntax',
     },
-    importOrderGroupNamespaceSpecifiers: {
-        type: 'boolean',
-        category: 'Global',
-        default: false,
-        description:
-            'Should namespace specifiers be grouped at the top of their group?',
-    },
     importOrderSortSpecifiers: {
         type: 'boolean',
         category: 'Global',

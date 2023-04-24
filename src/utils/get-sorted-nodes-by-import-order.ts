@@ -22,8 +22,7 @@ export const getSortedNodesByImportOrder: GetSortedNodes = (nodes, options) => {
     naturalSort.insensitive = true;
 
     let { importOrder } = options;
-    const { importOrderSortSpecifiers, importOrderGroupNamespaceSpecifiers } =
-        options;
+    const { importOrderSortSpecifiers } = options;
 
     const originalNodes = nodes.map(clone);
     const finalNodes: ImportOrLine[] = [];
@@ -82,9 +81,7 @@ export const getSortedNodesByImportOrder: GetSortedNodes = (nodes, options) => {
 
         if (groupNodes.length === 0) continue;
 
-        const sortedInsideGroup = getSortedNodesGroup(groupNodes, {
-            importOrderGroupNamespaceSpecifiers,
-        });
+        const sortedInsideGroup = getSortedNodesGroup(groupNodes);
 
         // Sort the import specifiers
         if (importOrderSortSpecifiers) {
