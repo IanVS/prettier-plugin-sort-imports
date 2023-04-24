@@ -34,9 +34,7 @@ export type GetSortedNodes = (
     nodes: ImportDeclaration[],
     options: Pick<
         PrettierOptions,
-        | 'importOrder'
-        | 'importOrderMergeDuplicateImports'
-        | 'importOrderCombineTypeAndValueImports'
+        'importOrder' | 'importOrderCombineTypeAndValueImports'
     >,
 ) => ImportOrLine[];
 
