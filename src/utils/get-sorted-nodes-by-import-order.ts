@@ -5,7 +5,6 @@ import {
     newLineNode,
     THIRD_PARTY_MODULES_SPECIAL_WORD,
 } from '../constants';
-import { naturalSort } from '../natural-sort';
 import { GetSortedNodes, ImportGroups, ImportOrLine } from '../types';
 import { getImportNodesMatchedGroup } from './get-import-nodes-matched-group';
 import { getSortedImportSpecifiers } from './get-sorted-import-specifiers';
@@ -19,8 +18,6 @@ import { getSortedNodesGroup } from './get-sorted-nodes-group';
  * @param options Options to influence the behavior of the sorting algorithm.
  */
 export const getSortedNodesByImportOrder: GetSortedNodes = (nodes, options) => {
-    naturalSort.insensitive = true;
-
     let { importOrder } = options;
     const { importOrderSortSpecifiers } = options;
 
