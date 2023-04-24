@@ -1,9 +1,9 @@
-import { clone } from 'lodash';
+import clone from 'lodash.clone';
 
 import {
     BUILTIN_MODULES,
-    THIRD_PARTY_MODULES_SPECIAL_WORD,
     newLineNode,
+    THIRD_PARTY_MODULES_SPECIAL_WORD,
 } from '../constants';
 import { GetSortedNodes, ImportGroups, ImportOrLine } from '../types';
 import { getImportNodesMatchedGroup } from './get-import-nodes-matched-group';
@@ -19,13 +19,8 @@ import { getSortedNodesGroup } from './get-sorted-nodes-group';
  */
 export const getSortedNodesByImportOrder: GetSortedNodes = (nodes, options) => {
     let { importOrder } = options;
-    const {
-        importOrderCaseInsensitive,
-        importOrderSeparation,
-        importOrderSortSpecifiers,
-        importOrderGroupNamespaceSpecifiers,
-        importOrderBuiltinModulesToTop,
-    } = options;
+    const { importOrderSortSpecifiers, importOrderGroupNamespaceSpecifiers } =
+        options;
 
     const originalNodes = nodes.map(clone);
     const finalNodes: ImportOrLine[] = [];
@@ -34,9 +29,8 @@ export const getSortedNodesByImportOrder: GetSortedNodes = (nodes, options) => {
         importOrder = [THIRD_PARTY_MODULES_SPECIAL_WORD, ...importOrder];
     }
 
-    if (importOrderBuiltinModulesToTop) {
-        importOrder = [BUILTIN_MODULES, ...importOrder];
-    }
+    // IDEA: We could make built-ins a special word, if people do not want them up top
+    importOrder = [BUILTIN_MODULES, ...importOrder];
 
     const importOrderGroups = importOrder.reduce<ImportGroups>(
         (groups, regexp) =>
@@ -68,8 +62,13 @@ export const getSortedNodesByImportOrder: GetSortedNodes = (nodes, options) => {
     for (const group of importOrder) {
         // If it's a custom separator, all we need to do is add a newline
         if (isCustomGroupSeparator(group)) {
+            const lastNode = finalNodes[finalNodes.length - 1];
+            // Avoid empty new line if first group is empty
+            if (!lastNode) {
+                continue;
+            }
             // Don't add multiple newlines
-            if (isLastNodeANewline(finalNodes)) {
+            if (isNodeANewline(lastNode)) {
                 continue;
             }
             finalNodes.push(newLineNode);
@@ -82,7 +81,6 @@ export const getSortedNodesByImportOrder: GetSortedNodes = (nodes, options) => {
 
         const sortedInsideGroup = getSortedNodesGroup(groupNodes, {
             importOrderGroupNamespaceSpecifiers,
-            importOrderCaseInsensitive,
         });
 
         // Sort the import specifiers
@@ -93,10 +91,6 @@ export const getSortedNodesByImportOrder: GetSortedNodes = (nodes, options) => {
         }
 
         finalNodes.push(...sortedInsideGroup);
-
-        if (importOrderSeparation) {
-            finalNodes.push(newLineNode);
-        }
     }
 
     return finalNodes;
@@ -106,11 +100,10 @@ export const getSortedNodesByImportOrder: GetSortedNodes = (nodes, options) => {
  * isCustomGroupSeparator checks if the provided pattern is intended to be used
  * as an import separator, rather than an actual group of imports.
  */
-function isCustomGroupSeparator(pattern: string) {
-    return pattern.trim() === '';
+export function isCustomGroupSeparator(pattern?: string) {
+    return pattern?.trim() === '';
 }
 
-function isLastNodeANewline(nodes: ImportOrLine[]) {
-    const lastNode = nodes[nodes.length - 1];
-    return lastNode?.type === 'ExpressionStatement';
+function isNodeANewline(node: ImportOrLine) {
+    return node.type === 'ExpressionStatement';
 }

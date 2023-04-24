@@ -1,4 +1,4 @@
-import { ParserOptions, parse as babelParser } from '@babel/parser';
+import { parse as babelParser, ParserOptions } from '@babel/parser';
 import traverse, { NodePath } from '@babel/traverse';
 import { ImportDeclaration, isTSModuleDeclaration } from '@babel/types';
 

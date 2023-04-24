@@ -1,4 +1,5 @@
 import { ImportDeclaration } from '@babel/types';
+import { expect, test } from 'vitest';
 
 import { getImportNodes } from '../get-import-nodes';
 import { getSortedNodes } from '../get-sorted-nodes';
@@ -29,13 +30,11 @@ test('it returns all sorted nodes, preserving the order side effect nodes', () =
     const result = getImportNodes(code);
     const sorted = getSortedNodes(result, {
         importOrder: [],
-        importOrderCaseInsensitive: false,
-        importOrderSeparation: false,
         importOrderGroupNamespaceSpecifiers: false,
+        importOrderMergeDuplicateImports: false,
+        importOrderCombineTypeAndValueImports: false,
         importOrderSortSpecifiers: false,
-        importOrderBuiltinModulesToTop: false,
     }) as ImportDeclaration[];
-
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
         'se3',
         'c',
@@ -45,13 +44,13 @@ test('it returns all sorted nodes, preserving the order side effect nodes', () =
         'z',
         'se4',
         'se1',
-        'BY',
-        'Ba',
-        'XY',
-        'Xa',
+        'path', // Builtins are not sorted past side-effects either
         'a',
-        'path',
+        'Ba',
+        'BY',
         'x',
+        'Xa',
+        'XY',
         'se2',
         '',
     ]);
@@ -70,13 +69,13 @@ test('it returns all sorted nodes, preserving the order side effect nodes', () =
         ['z'],
         [],
         [],
-        ['BY'],
-        ['Ba'],
-        ['XY'],
-        ['Xa'],
-        ['a'],
         ['path'],
+        ['a'],
+        ['Ba'],
+        ['BY'],
         ['x'],
+        ['Xa'],
+        ['XY'],
         [],
     ]);
 });

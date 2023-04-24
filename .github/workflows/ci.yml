@@ -1,15 +1,18 @@
 name: ci
 on: [push, pull_request]
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: [14.x, 16.x, 18.x]
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node }}
-      - run: yarn --frozen-lockfile
-      - run: yarn test
+    build:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                node: [14.x, 16.x, 18.x]
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v2
+              with:
+                  node-version: ${{ matrix.node }}
+            - run: yarn --frozen-lockfile
+            - name: Test
+              run: yarn test
+            - name: Check formatting
+              run: yarn format:check

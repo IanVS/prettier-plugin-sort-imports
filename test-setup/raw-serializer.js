@@ -1,8 +1,10 @@
 'use strict';
 
+import { expect } from 'vitest';
+
 const RAW = Symbol.for('raw');
 
-module.exports = {
+expect.addSnapshotSerializer({
     print(val) {
         return val[RAW];
     },
@@ -13,4 +15,4 @@ module.exports = {
             typeof val[RAW] === 'string'
         );
     },
-};
+});

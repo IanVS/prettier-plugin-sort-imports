@@ -1,12 +1,14 @@
-import type { NaturalSortOptions } from '../../natural-sort';
+import { expect, test } from 'vitest';
+
+import { NaturalSortOptions } from "../../natural-sort";
+
 import { getImportNodes } from '../get-import-nodes';
 import { getSortedImportSpecifiers } from '../get-sorted-import-specifiers';
 import { getSortedNodesModulesNames } from '../get-sorted-nodes-modules-names';
 
-const defaultSortOptions: NaturalSortOptions = {
-    importOrderCaseInsensitive: false,
-};
-it('should return correct sorted nodes', () => {
+const defaultSortOptions: NaturalSortOptions = {}
+
+test('should return correct sorted nodes', () => {
     const code = `import { filter, reduce, eventHandler } from '@server/z';`;
     const [importNode] = getImportNodes(code);
     const sortedImportSpecifiers = getSortedImportSpecifiers(
@@ -20,7 +22,7 @@ it('should return correct sorted nodes', () => {
     expect(specifiersList).toEqual(['eventHandler', 'filter', 'reduce']);
 });
 
-it('should return correct sorted nodes with default import', () => {
+test('should return correct sorted nodes with default import', () => {
     const code = `import Component, { filter, reduce, eventHandler } from '@server/z';`;
     const [importNode] = getImportNodes(code);
     const sortedImportSpecifiers = getSortedImportSpecifiers(
@@ -36,5 +38,25 @@ it('should return correct sorted nodes with default import', () => {
         'eventHandler',
         'filter',
         'reduce',
+    ]);
+});
+
+test('should group type imports after value imports', () => {
+    const code = `import Component, { type TypeB, filter, type TypeA, reduce, eventHandler } from '@server/z';`;
+    const [importNode] = getImportNodes(code, {
+        plugins: ['typescript'],
+    });
+    const sortedImportSpecifiers = getSortedImportSpecifiers(importNode, defaultSortOptions);
+    const specifiersList = getSortedNodesModulesNames(
+        sortedImportSpecifiers.specifiers,
+    );
+
+    expect(specifiersList).toEqual([
+        'Component',
+        'eventHandler',
+        'filter',
+        'reduce',
+        'TypeA',
+        'TypeB',
     ]);
 });

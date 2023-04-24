@@ -1,8 +1,17 @@
-import { chunkTypeUnsortable, newLineNode } from '../constants';
+import {
+    chunkTypeUnsortable,
+    newLineNode,
+    TYPES_SPECIAL_WORD,
+} from '../constants';
 import { GetSortedNodes, ImportChunk, ImportOrLine } from '../types';
 import { adjustCommentsOnSortedNodes } from './adjust-comments-on-sorted-nodes';
+import { explodeTypeAndValueSpecifiers } from './explode-type-and-value-specifiers';
 import { getChunkTypeOfNode } from './get-chunk-type-of-node';
-import { getSortedNodesByImportOrder } from './get-sorted-nodes-by-import-order';
+import {
+    getSortedNodesByImportOrder,
+    isCustomGroupSeparator,
+} from './get-sorted-nodes-by-import-order';
+import { mergeNodesWithMatchingImportFlavors } from './merge-nodes-with-matching-flavors';
 
 /**
  * This function returns the given nodes, sorted in the order as indicated by
@@ -16,12 +25,15 @@ import { getSortedNodesByImportOrder } from './get-sorted-nodes-by-import-order'
  * between the side effect nodes according to the given options.
  * @param nodes All import nodes that should be sorted.
  * @param options Options to influence the behavior of the sorting algorithm.
+ *
+ * @returns A sorted array of the remaining import nodes
  */
-export const getSortedNodes: GetSortedNodes = (
-    nodes,
-    options,
-): ImportOrLine[] => {
-    const { importOrderSeparation } = options;
+export const getSortedNodes: GetSortedNodes = (nodes, options) => {
+    const {
+        importOrder,
+        importOrderMergeDuplicateImports,
+        importOrderCombineTypeAndValueImports,
+    } = options;
 
     // Split nodes at each boundary between a side-effect node and a
     // non-side-effect node, keeping both types of nodes together.
@@ -41,23 +53,39 @@ export const getSortedNodes: GetSortedNodes = (
 
     const finalNodes: ImportOrLine[] = [];
 
-    // Sort each chunk of side-effect and non-side-effect nodes, and insert new
-    // lines according the importOrderSeparation option.
+    // Sort each chunk of side-effect and non-side-effect nodes
     for (const chunk of splitBySideEffectNodes) {
+        // do not sort side effect nodes
         if (chunk.type === chunkTypeUnsortable) {
-            // do not sort side effect nodes
-            finalNodes.push(...chunk.nodes);
+            // If the first item in importOrder is a newline, add newlines around the side effect node
+            if (isCustomGroupSeparator(importOrder[0])) {
+                // Add newline before chunk if it has no leading comment
+                if (!chunk.nodes[0].leadingComments?.length) {
+                    finalNodes.push(newLineNode);
+                }
+                finalNodes.push(...chunk.nodes, newLineNode);
+            } else {
+                finalNodes.push(...chunk.nodes);
+            }
         } else {
+            let nodes = importOrderMergeDuplicateImports
+                ? mergeNodesWithMatchingImportFlavors(chunk.nodes, {
+                      importOrderCombineTypeAndValueImports,
+                  })
+                : chunk.nodes;
+            // If type ordering is specified explicitly, we need to break apart type and value specifiers
+            if (
+                importOrder.some((group) => group.includes(TYPES_SPECIAL_WORD))
+            ) {
+                nodes = explodeTypeAndValueSpecifiers(nodes);
+            }
             // sort non-side effect nodes
-            const sorted = getSortedNodesByImportOrder(chunk.nodes, options);
+            const sorted = getSortedNodesByImportOrder(nodes, options);
             finalNodes.push(...sorted);
-        }
-        if (importOrderSeparation) {
-            finalNodes.push(newLineNode);
         }
     }
 
-    if (finalNodes.length > 0 && !importOrderSeparation) {
+    if (finalNodes.length > 0) {
         finalNodes.push(newLineNode);
     }
 

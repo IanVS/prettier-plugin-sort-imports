@@ -1,3 +1,5 @@
+import { expect, test } from 'vitest';
+
 import type { ImportOrLine } from '../../types';
 import { adjustCommentsOnSortedNodes } from '../adjust-comments-on-sorted-nodes';
 import { getImportNodes } from '../get-import-nodes';

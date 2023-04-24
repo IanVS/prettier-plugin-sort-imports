@@ -1,22 +1,32 @@
+import type { RequiredOptions as PrettierRequiredOptions } from 'prettier';
 import { parsers as babelParsers } from 'prettier/parser-babel';
 import { parsers as flowParsers } from 'prettier/parser-flow';
+import { parsers as htmlParsers } from 'prettier/parser-html';
 import { parsers as typescriptParsers } from 'prettier/parser-typescript';
 
-import { preprocessor } from './preprocessor';
+import { defaultPreprocessor } from './preprocessors/default';
+import { vuePreprocessor } from './preprocessors/vue';
+import type { PrettierOptions } from './types';
 
-const options = {
+// Not sure what the type from Prettier should be, but this is a good enough start.
+interface PrettierOptionSchema {
+    type: string;
+    category: 'Global';
+    array?: boolean;
+    default: unknown;
+    description: string;
+}
+
+export const options: Record<
+    Exclude<keyof PrettierOptions, keyof PrettierRequiredOptions>,
+    PrettierOptionSchema
+> = {
     importOrder: {
         type: 'path',
         category: 'Global',
         array: true,
         default: [{ value: [] }],
         description: 'Provide an order to sort imports.',
-    },
-    importOrderCaseInsensitive: {
-        type: 'boolean',
-        category: 'Global',
-        default: false,
-        description: 'Provide a case sensitivity boolean flag',
     },
     importOrderParserPlugins: {
         type: 'path',
@@ -26,12 +36,6 @@ const options = {
         // we take that option
         default: [{ value: ['typescript', 'jsx'] }],
         description: 'Provide a list of plugins for special syntax',
-    },
-    importOrderSeparation: {
-        type: 'boolean',
-        category: 'Global',
-        default: false,
-        description: 'Should imports be separated by new line?',
     },
     importOrderGroupNamespaceSpecifiers: {
         type: 'boolean',
@@ -46,28 +50,36 @@ const options = {
         default: false,
         description: 'Should specifiers be sorted?',
     },
-    importOrderBuiltinModulesToTop: {
+    importOrderMergeDuplicateImports: {
         type: 'boolean',
         category: 'Global',
         default: false,
-        description: 'Should node-builtins be hoisted to the top?',
+        description: 'Should duplicate imports be merged?',
+    },
+    importOrderCombineTypeAndValueImports: {
+        type: 'boolean',
+        category: 'Global',
+        default: false,
+        description:
+            'Should import-type expressions be merged into import-value expressions?',
     },
 };
 
-module.exports = {
-    parsers: {
-        babel: {
-            ...babelParsers.babel,
-            preprocess: preprocessor,
-        },
-        flow: {
-            ...flowParsers.flow,
-            preprocess: preprocessor,
-        },
-        typescript: {
-            ...typescriptParsers.typescript,
-            preprocess: preprocessor,
-        },
+export const parsers = {
+    babel: {
+        ...babelParsers.babel,
+        preprocess: defaultPreprocessor,
     },
-    options,
+    flow: {
+        ...flowParsers.flow,
+        preprocess: defaultPreprocessor,
+    },
+    typescript: {
+        ...typescriptParsers.typescript,
+        preprocess: defaultPreprocessor,
+    },
+    vue: {
+        ...htmlParsers.vue,
+        preprocess: vuePreprocessor,
+    },
 };

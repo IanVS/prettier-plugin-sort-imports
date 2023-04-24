@@ -1,4 +1,4 @@
-import { ImportDeclaration, addComments, removeComments } from '@babel/types';
+import { addComments, ImportDeclaration, removeComments } from '@babel/types';
 import clone from 'lodash.clone';
 import isEqual from 'lodash.isequal';
 

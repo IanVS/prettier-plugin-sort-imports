@@ -7,7 +7,7 @@
 You can define the RegEx in the `importOrder`. For
 example if you want to sort the following imports:
 
-```ecmascript 6
+```javascript
 import React from 'react';
 import classnames from 'classnames';
 import z from '@server/z';
@@ -20,7 +20,7 @@ import q from '@ui/q';
 then the `importOrder` would be `["^@ui/(.*)$","^@server/(.*)$", '^[./]']`.
 Now, the final output would be as follows:
 
-```ecmascript 6
+```javascript
 import classnames from 'classnames';
 import React from 'react';
 import p from '@ui/p';
@@ -35,7 +35,7 @@ import s from './';
 You can define the `<THIRD_PARTY_MODULES>` special word in the `importOrder`. For example above, the `importOrder` would be like `["^@ui/(.*)$", "^@server/(.*)$", "<THIRD_PARTY_MODULES>", '^[./]']`.
 Now, the final output would be as follows:
 
-```ecmascript 6
+```javascript
 import p from '@ui/p';
 import q from '@ui/q';
 import a from '@server/a';
@@ -107,3 +107,7 @@ module.exports = {
     plugins: [require('@ianvs/prettier-plugin-sort-imports')],
 };
 ```
+
+#### Q. Why are my .vue sfc files not being formatted?
+
+Be sure that you have `@vue/compiler-sfc` installed in your project, (run `npm ls @vue/compiler-sfc` to double-check). If it's not there, install it and try formatting again.

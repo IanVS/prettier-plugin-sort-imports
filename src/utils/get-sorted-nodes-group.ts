@@ -7,7 +7,7 @@ export const getSortedNodesGroup = (
     imports: ImportDeclaration[],
     options: Pick<
         PrettierOptions,
-        'importOrderGroupNamespaceSpecifiers' | 'importOrderCaseInsensitive'
+        'importOrderGroupNamespaceSpecifiers'
     >,
 ) => {
     return imports.sort((a, b) => {

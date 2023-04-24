@@ -4,7 +4,10 @@ import { NaturalSortOptions, naturalSort } from '../natural-sort';
 
 /**
  * This function returns import nodes with alphabetically sorted module
- * specifiers
+ * specifiers.
+ *
+ * type imports are sorted separately, and placed after value imports.
+ *
  * @param node Import declaration node
  */
 export const getSortedImportSpecifiers = (
@@ -14,6 +17,13 @@ export const getSortedImportSpecifiers = (
     node.specifiers.sort((a, b) => {
         if (a.type !== b.type) {
             return a.type === 'ImportDefaultSpecifier' ? -1 : 1;
+        }
+        if (
+            a.type === 'ImportSpecifier' &&
+            b.type === 'ImportSpecifier' &&
+            a.importKind !== b.importKind
+        ) {
+            return a.importKind === 'value' ? -1 : 1;
         }
 
         return naturalSort(a.local.name, b.local.name, options);
