@@ -1,4 +1,4 @@
-import { ImportDeclaration } from '@babel/types';
+import type { ImportDeclaration } from '@babel/types';
 import { expect, test } from 'vitest';
 
 import { getImportNodes } from '../get-import-nodes';
@@ -30,7 +30,7 @@ test('it returns all sorted nodes, preserving the order side effect nodes', () =
     const result = getImportNodes(code);
     const sorted = getSortedNodes(result, {
         importOrder: [],
-        importOrderCombineTypeAndValueImports: false,
+        importOrderCombineTypeAndValueImports: true,
     }) as ImportDeclaration[];
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
         'se3',

@@ -1,4 +1,4 @@
-import { ImportDeclaration } from '@babel/types';
+import type { ImportDeclaration } from '@babel/types';
 import { expect, test } from 'vitest';
 
 import { getImportNodes } from '../get-import-nodes';
@@ -29,7 +29,7 @@ test('it returns all sorted nodes', () => {
     const result = getImportNodes(code);
     const sorted = getSortedNodesByImportOrder(result, {
         importOrder: ['^[./]'],
-        importOrderCombineTypeAndValueImports: false,
+        importOrderCombineTypeAndValueImports: true,
     }) as ImportDeclaration[];
 
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
@@ -78,7 +78,7 @@ test('it returns all sorted nodes with sort order', () => {
     const result = getImportNodes(code);
     const sorted = getSortedNodesByImportOrder(result, {
         importOrder: ['^a$', '^t$', '^k$', '^B', '^[./]'],
-        importOrderCombineTypeAndValueImports: false,
+        importOrderCombineTypeAndValueImports: true,
     }) as ImportDeclaration[];
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
         'node:fs/promises',
@@ -134,7 +134,7 @@ import {type B, A} from 'z';
     });
     const sorted = getSortedNodesByImportOrder(result, {
         importOrder: ['^[./]'],
-        importOrderCombineTypeAndValueImports: false,
+        importOrderCombineTypeAndValueImports: true,
     }) as ImportDeclaration[];
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual(['k', 't', 'z']);
     expect(
@@ -154,7 +154,7 @@ test('it returns all sorted nodes with builtin specifiers at the top', () => {
     const result = getImportNodes(code);
     const sorted = getSortedNodesByImportOrder(result, {
         importOrder: ['^[./]'],
-        importOrderCombineTypeAndValueImports: false,
+        importOrderCombineTypeAndValueImports: true,
     }) as ImportDeclaration[];
 
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
@@ -180,7 +180,7 @@ test('it returns all sorted nodes with custom third party modules and builtins a
     const result = getImportNodes(code);
     const sorted = getSortedNodesByImportOrder(result, {
         importOrder: ['^a$', '<THIRD_PARTY_MODULES>', '^t$', '^k$', '^[./]'],
-        importOrderCombineTypeAndValueImports: false,
+        importOrderCombineTypeAndValueImports: true,
     }) as ImportDeclaration[];
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
         'node:fs/promises',
@@ -212,7 +212,7 @@ test('it returns all sorted nodes with custom separation', () => {
             '^k$',
             '^[./]',
         ],
-        importOrderCombineTypeAndValueImports: false,
+        importOrderCombineTypeAndValueImports: true,
     }) as ImportDeclaration[];
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
         'node:fs/promises',
@@ -247,7 +247,7 @@ test('it does not add multiple custom import separators', () => {
             '^k$',
             '^[./]',
         ],
-        importOrderCombineTypeAndValueImports: false,
+        importOrderCombineTypeAndValueImports: true,
     }) as ImportDeclaration[];
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
         'node:fs/promises',

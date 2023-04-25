@@ -1,4 +1,4 @@
-import { ExpressionStatement, ImportDeclaration } from '@babel/types';
+import type { ExpressionStatement, ImportDeclaration } from '@babel/types';
 
 /**
  * Test helper, to verify sort order and newline placement

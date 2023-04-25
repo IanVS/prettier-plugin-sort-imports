@@ -3,7 +3,7 @@ import {
     newLineNode,
     TYPES_SPECIAL_WORD,
 } from '../constants';
-import { GetSortedNodes, ImportChunk, ImportOrLine } from '../types';
+import type { GetSortedNodes, ImportChunk, ImportOrLine } from '../types';
 import { adjustCommentsOnSortedNodes } from './adjust-comments-on-sorted-nodes';
 import { explodeTypeAndValueSpecifiers } from './explode-type-and-value-specifiers';
 import { getChunkTypeOfNode } from './get-chunk-type-of-node';

@@ -37,12 +37,12 @@ export const options: Record<
         default: [{ value: ['typescript', 'jsx'] }],
         description: 'Provide a list of plugins for special syntax',
     },
-    importOrderCombineTypeAndValueImports: {
-        type: 'boolean',
+    importOrderTypeScriptVersion: {
+        type: 'string',
         category: 'Global',
-        default: false,
+        default: '1.0.0',
         description:
-            'Should import-type expressions be merged into import-value expressions?',
+            'Version of TypeScript in use in the project.  Determines some output syntax when using TypeScript.',
     },
 };
 

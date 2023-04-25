@@ -1,5 +1,10 @@
 import generate from '@babel/generator';
-import { Directive, file, InterpreterDirective, Statement } from '@babel/types';
+import {
+    file,
+    type Directive,
+    type InterpreterDirective,
+    type Statement,
+} from '@babel/types';
 
 import { newLineCharacters } from '../constants';
 import { getAllCommentsFromNodes } from './get-all-comments-from-nodes';

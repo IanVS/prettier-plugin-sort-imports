@@ -1,4 +1,4 @@
-import { ImportDeclaration } from '@babel/types';
+import type { ImportDeclaration } from '@babel/types';
 
 import { naturalSort } from '../natural-sort';
 

@@ -1,4 +1,9 @@
-import { CommentBlock, CommentLine, Directive, Statement } from '@babel/types';
+import type {
+    CommentBlock,
+    CommentLine,
+    Directive,
+    Statement,
+} from '@babel/types';
 
 export const getAllCommentsFromNodes = (nodes: (Directive | Statement)[]) =>
     nodes.reduce((acc, node) => {

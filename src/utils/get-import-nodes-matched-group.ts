@@ -1,4 +1,4 @@
-import { ImportDeclaration } from '@babel/types';
+import type { ImportDeclaration } from '@babel/types';
 
 import {
     THIRD_PARTY_MODULES_SPECIAL_WORD,

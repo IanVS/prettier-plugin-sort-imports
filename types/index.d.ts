@@ -39,25 +39,9 @@ export interface PluginConfig {
     importOrder?: string[];
 
     /**
-     * A boolean value to control merging `import type` expressions into `import {…}`.
      *
-     * ```diff
-     * - import type { C1 } from 'c';
-     * - import { C2 } from 'c';
-     * + import { type C1, C2 } from "c";
-     *
-     * - import { D1 } from 'd';
-     * - import type { D2 } from 'd';
-     * + import { D1, type D2 } from "d";
-     *
-     * - import type { A1 } from 'a';
-     * - import type { A2 } from 'a';
-     * + import type { A1, A2 } from "a";
-     * ```
-     *
-     * @default false
      */
-    importOrderCombineTypeAndValueImports?: boolean;
+    importOrderTypeScriptVersion?: string;
 
     /**
      * A collection of plugins for babel parser. The plugin passes this list to babel parser, so it can understand the syntaxes

@@ -1,6 +1,6 @@
 import { builtinModules } from 'module';
 
-import { ParserPlugin } from '@babel/parser';
+import type { ParserPlugin } from '@babel/parser';
 import { expressionStatement, stringLiteral } from '@babel/types';
 
 export const flow: ParserPlugin = 'flow';

@@ -14,7 +14,7 @@ Since then more critical features & fixes have been added, and the options have 
 
 -   Do not re-order across side-effect imports
 -   Combine imports from the same source
--   Combine type and value imports ([`importOrderCombineTypeAndValueImports`](#importordercombinetypeandvalueimports))
+-   Combine type and value imports
 -   Type import grouping with `<TYPES>` keyword
 -   Sorts node.js builtin modules to top
 -   Custom import order separation
@@ -31,7 +31,7 @@ Since then more critical features & fixes have been added, and the options have 
   - [How does import sort work?](#how-does-import-sort-work)
   - [Options](#options)
     - [`importOrder`](#importorder)
-    - [`importOrderCombineTypeAndValueImports`](#importordercombinetypeandvalueimports)
+    - [`importOrderTypeScriptVersion`](#importordertypescriptversion)
     - [`importOrderParserPlugins`](#importorderparserplugins)
   - [Prevent imports from being sorted](#prevent-imports-from-being-sorted)
 - [FAQ / Troubleshooting](#faq--troubleshooting)
@@ -129,11 +129,9 @@ module.exports = {
     semi: true,
     importOrder: ['^@core/(.*)$', '', '^@server/(.*)$', '', '^@ui/(.*)$', '', '^[./]'],
     importOrderParserPlugins: ['typescript', 'jsx', 'decorators-legacy'],
-    importOrderCombineTypeAndValueImports: true,
+    importOrderTypeScriptVersion: '5.0.0',
 };
 ```
-
-_Note: all flags are off by default, so explore your options [below](#options)_
 
 ### How does import sort work?
 
@@ -217,27 +215,13 @@ _Note:_ If you want to separate some groups from others, you can add an empty st
 ],
 ```
 
-#### `importOrderCombineTypeAndValueImports`
+#### `importOrderTypeScriptVersion`
 
-**type**: `boolean`
+**type**: `string`
 
-**default value:** `false`
+**default value:** `1.0.0`
 
-A boolean value to control merging `import type` expressions into `import {…}`.
-
-```diff
-- import type { C1 } from 'c';
-- import { C2 } from 'c';
-+ import { type C1, C2 } from "c";
-
-- import { D1 } from 'd';
-- import type { D2 } from 'd';
-+ import { D1, type D2 } from "d";
-
-- import type { A1 } from 'a';
-- import type { A2 } from 'a';
-+ import type { A1, A2 } from "a";
-```
+When using TypeScript, some import syntax can only be used in newer versions of TypeScript.  If you would like to enable modern features like mixed type and value imports, set this option to the semver version string of the TypeScript in use in your project.
 
 #### `importOrderParserPlugins`
 
