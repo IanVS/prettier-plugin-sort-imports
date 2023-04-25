@@ -31,7 +31,7 @@ Since then more critical features & fixes have been added, and the options have 
   - [How does import sort work?](#how-does-import-sort-work)
   - [Options](#options)
     - [`importOrder`](#importorder)
-    - [`importOrderCombineTypeAndValueImports`](#importordercombinetypeandvalueimports)
+    - [`importOrderTypeScriptVersion`](#importordertypescriptversion)
     - [`importOrderParserPlugins`](#importorderparserplugins)
   - [Prevent imports from being sorted](#prevent-imports-from-being-sorted)
 - [FAQ / Troubleshooting](#faq--troubleshooting)
@@ -129,7 +129,7 @@ module.exports = {
     semi: true,
     importOrder: ['^@core/(.*)$', '', '^@server/(.*)$', '', '^@ui/(.*)$', '', '^[./]'],
     importOrderParserPlugins: ['typescript', 'jsx', 'decorators-legacy'],
-    importOrderCombineTypeAndValueImports: false, // Disable if using TS 4.4 or below
+    importOrderTypeScriptVersion: '5.0.0',
 };
 ```
 
