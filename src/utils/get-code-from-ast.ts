@@ -70,7 +70,7 @@ export const getCodeFromAst = ({
 
     const { code } = generate(newAST);
 
-    let replacedCode = code.replace(injectNewlinesRegex, newLineCharacters);
+    const replacedCode = code.replace(injectNewlinesRegex, newLineCharacters);
 
     const trailingCode = codeWithoutImportsAndInterpreter.trim();
 
