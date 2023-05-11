@@ -28,6 +28,7 @@ import a from 'a';
     expect(format(formatted, { parser: 'babel' })).toEqual(
         `// first comment
 // second comment
+
 import a from "a";
 import c from "c";
 import g from "g";
@@ -65,6 +66,7 @@ import type {See} from 'c';
     expect(format(formatted, { parser: 'babel' })).toEqual(
         `// first comment
 // second comment
+
 import a, { b, type Bee } from "a";
 import c, { type C, type See } from "c";
 import g from "g";

@@ -27,6 +27,7 @@ function add(a,b) {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 <script setup>
 // I am top level comment in this file.
+
 import thirdParty from "third-party";
 import { defineComponent } from "vue";
 import z from "z";
@@ -81,6 +82,7 @@ export default defineComponent({
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 <script>
 // I am top level comment in this file.
+
 import thirdParty from "third-party";
 import { defineComponent } from "vue";
 import z from "z";
@@ -132,6 +134,7 @@ export default defineComponent({
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 <script lang="ts">
 // I am top level comment in this file.
+
 import thirdParty from "third-party";
 import { defineComponent } from "vue";
 import z from "z";
@@ -186,6 +189,7 @@ export default defineComponent({
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 <script lang="tsx">
 // I am top level comment in this file.
+
 import thirdParty from "third-party";
 import { defineComponent } from "vue";
 import z from "z";
