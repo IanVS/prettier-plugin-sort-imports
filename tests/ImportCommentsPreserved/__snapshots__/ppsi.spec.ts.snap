@@ -3,12 +3,12 @@
 exports[`import-comments-babel-pulling-single-line-bug.ts - typescript-verify > import-comments-babel-pulling-single-line-bug.ts 1`] = `
 
 import B from "b";
-// Trailing comment 1 (not supposed to be on same line)
+// Trailing comment (not supposed to be on same line)
 // Bottom of imports single-line comment
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import B from "b";
-// Trailing comment 1 (not supposed to be on same line)
+// Trailing comment (not supposed to be on same line)
 
 // Bottom of imports single-line comment
 
