@@ -1,6 +1,5 @@
 import { expect, test } from 'vitest';
 
-import { PATCH_BABEL_GENERATOR_DOUBLE_COMMENTS_ON_ONE_LINE_ISSUE } from '../../constants';
 import type { ImportOrLine } from '../../types';
 import { adjustCommentsOnSortedNodes } from '../adjust-comments-on-sorted-nodes';
 import { getImportNodes } from '../get-import-nodes';
@@ -104,11 +103,6 @@ test('it does not affect comments after all import declarations', () => {
     // "final 1" is attached as a trailing-comment for import from "a"
     // but "final 2" is detached so it stays with the bottom-of-imports
     const expectedNode1TrailingComments = [' comment final 1'];
-    if (PATCH_BABEL_GENERATOR_DOUBLE_COMMENTS_ON_ONE_LINE_ISSUE) {
-        expectedNode1TrailingComments.unshift(
-            'PRETTIER_PLUGIN_SORT_IMPORTS_SINGLE_LINE_COMMENTS_PATCH',
-        );
-    }
     expect(trailingComments(adjustedNodes[1])).toEqual(
         expectedNode1TrailingComments,
     );

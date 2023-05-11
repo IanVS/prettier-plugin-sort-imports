@@ -6,12 +6,7 @@ import {
     type Statement,
 } from '@babel/types';
 
-import {
-    forceANewlineForImportsWithAttachedSingleLineCommentsRegex,
-    injectNewlinesRegex,
-    newLineCharacters,
-    PATCH_BABEL_GENERATOR_DOUBLE_COMMENTS_ON_ONE_LINE_ISSUE,
-} from '../constants';
+import { injectNewlinesRegex, newLineCharacters } from '../constants';
 import { getAllCommentsFromNodes } from './get-all-comments-from-nodes';
 import { removeNodesFromOriginalCode } from './remove-nodes-from-original-code';
 
@@ -76,12 +71,6 @@ export const getCodeFromAst = ({
     const { code } = generate(newAST);
 
     let replacedCode = code.replace(injectNewlinesRegex, newLineCharacters);
-    if (PATCH_BABEL_GENERATOR_DOUBLE_COMMENTS_ON_ONE_LINE_ISSUE) {
-        replacedCode = replacedCode.replace(
-            forceANewlineForImportsWithAttachedSingleLineCommentsRegex,
-            '',
-        );
-    }
 
     const trailingCode = codeWithoutImportsAndInterpreter.trim();
 
