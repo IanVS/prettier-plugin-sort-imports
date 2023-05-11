@@ -27,9 +27,9 @@ import { bar } from "a";
 
 function baz() {
 }~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-import { bar } from "a";
-
 /* foo */
+
+import { bar } from "a";
 import { foo } from "c";
 
 function baz() {}

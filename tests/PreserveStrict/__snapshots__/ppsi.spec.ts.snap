@@ -15,11 +15,10 @@ import type { Period } from './Period'
 function foo() {
 }~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Comment above
-
 /* foo
-   bar  */
-"use strict"; // Comment below
+   bar  */ "use strict";
 
+// Comment below
 "another directive";
 
 import "./SetupEnvironment";
@@ -68,8 +67,8 @@ function foo() {
 }~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // below is a directive prologue
 "use custom";
-/* more directives... */
 
+/* more directives... */
 "enable typecheck";
 "forbid IE";
 
