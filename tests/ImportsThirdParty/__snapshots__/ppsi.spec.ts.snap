@@ -60,6 +60,7 @@ export const a = 1;
 exports[`imports-with-comments.ts - typescript-verify > imports-with-comments.ts 1`] = `
 // I am top level comment in this file.
 // I am second line of top level comment in this file.
+
 import './commands';
 
 // Comment
@@ -71,6 +72,7 @@ function add(a:number,b:number) {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // I am top level comment in this file.
 // I am second line of top level comment in this file.
+
 import "./commands";
 
 // Comment
@@ -85,6 +87,7 @@ function add(a: number, b: number) {
 exports[`imports-with-comments-and-third-party.ts - typescript-verify > imports-with-comments-and-third-party.ts 1`] = `
 // I am top level comment in this file.
 // I am second line of top level comment in this file.
+
 import './commands';
 import React from 'react';
 // Comment
@@ -96,6 +99,7 @@ function add(a:number,b:number) {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // I am top level comment in this file.
 // I am second line of top level comment in this file.
+
 import "./commands";
 import React from "react";
 
@@ -111,6 +115,7 @@ function add(a: number, b: number) {
 exports[`imports-with-comments-on-top.ts - typescript-verify > imports-with-comments-on-top.ts 1`] = `
 // I am top level comment in this file.
 // I am second line of top level comment in this file.
+
 import z from 'z';
 import threeLevelRelativePath from "../../../threeLevelRelativePath";
 import sameLevelRelativePath from "./sameLevelRelativePath";
@@ -131,6 +136,7 @@ function add(a:number,b:number) {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // I am top level comment in this file.
 // I am second line of top level comment in this file.
+
 import abc from "@core/abc";
 import otherthing from "@core/otherthing";
 import qwerty from "@server/qwerty";
@@ -154,6 +160,7 @@ function add(a: number, b: number) {
 exports[`imports-with-file-level-comments.ts - typescript-verify > imports-with-file-level-comments.ts 1`] = `
 //@ts-ignore
 // I am file top level comments
+
 import threeLevelRelativePath from "../../../threeLevelRelativePath";
 // I am stick to sameLevelRelativePath
 import sameLevelRelativePath from "./sameLevelRelativePath";
@@ -188,6 +195,7 @@ function add(a:number,b:number) {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //@ts-ignore
 // I am file top level comments
+
 import otherthing from "@core/otherthing";
 import something from "@server/something";
 import component from "@ui/hello";
@@ -257,6 +265,7 @@ function add(a: number, b: number) {
 
 exports[`imports-without-third-party.ts - typescript-verify > imports-without-third-party.ts 1`] = `
 // I am top level comment
+
 import otherthing from "@core/otherthing";
 import abc from "@core/abc";
 // I am comment
@@ -266,6 +275,7 @@ import fourLevelRelativePath from "../../../../fourLevelRelativePath";
 import something from "@server/something";
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // I am top level comment
+
 import abc from "@core/abc";
 import otherthing from "@core/otherthing";
 import something from "@server/something";
@@ -321,6 +331,7 @@ import './commands';
 // You can read more here:
 // https://on.cypress.io/configuration
 // ***********************************************************
+
 // Import commands.js using ES2015 syntax:
 import "./commands";
 

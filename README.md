@@ -271,6 +271,18 @@ This will keep the `zealand` import at the top instead of moving it below the `a
 entire import statements can be ignored, line comments (`// prettier-ignore`) are recommended over inline comments
 (`/* prettier-ignore */`).
 
+### Commented Lines inside of Imports
+
+We make the following attempts at keeping comments in your imports clean, but there's some pain points when imports are shuffled.
+
+Specific cases we handle:
+
+- If you leave a gap after a comment at the top of your file, we will avoid moving it around if the imports below it shift.
+- If you have comments that come after after your last import (with a gap); that comment and following code will stay below the imports.
+- In general, if you place a single-line `CommentLine` (eg. `// …`) on the same line as an `ImportDeclaration` or `ImportSpecifier`, we will keep it attached to that same specifier if that line moves around (due to mergers, or sorting changes due to newly inserted imports).
+- Multi-line-capable `CommentBlocks` (eg. `/** … */`) are automatically formatted to be on a new line by Prettier, so we do not change this behavior.
+- Other comments are preserved, and are generally considered `leadingComments` for the subsequent `ImportDeclaration` or `ImportSpecifier`
+
 ## FAQ / Troubleshooting
 
 Having some trouble or an issue? You can check [FAQ / Troubleshooting section](./docs/TROUBLESHOOTING.md).

@@ -6,8 +6,7 @@ import { getSortedNodes } from '../get-sorted-nodes';
 import { getSortedNodesModulesNames } from '../get-sorted-nodes-modules-names';
 import { getSortedNodesNamesAndNewlines } from '../get-sorted-nodes-names-and-newlines';
 
-const code = `// first comment
-// second comment
+const code = `
 import "se3";
 import z from 'z';
 import c, { cD } from 'c';

@@ -3,6 +3,7 @@
 exports[`setup.vue - vue-verify > setup.vue 1`] = `
 <script setup>
 // I am top level comment in this file.
+
 import z from 'z';
 import threeLevelRelativePath from "../../../threeLevelRelativePath";
 import sameLevelRelativePath from "./sameLevelRelativePath";
@@ -27,6 +28,7 @@ function add(a,b) {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 <script setup>
 // I am top level comment in this file.
+
 import thirdParty from "third-party";
 import { defineComponent } from "vue";
 import z from "z";
@@ -59,6 +61,7 @@ function add(a, b) {
 exports[`sfc.vue - vue-verify > sfc.vue 1`] = `
 <script>
 // I am top level comment in this file.
+
 import z from 'z';
 import threeLevelRelativePath from "../../../threeLevelRelativePath";
 import sameLevelRelativePath from "./sameLevelRelativePath";
@@ -81,6 +84,7 @@ export default defineComponent({
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 <script>
 // I am top level comment in this file.
+
 import thirdParty from "third-party";
 import { defineComponent } from "vue";
 import z from "z";
@@ -110,6 +114,7 @@ export default defineComponent({});
 exports[`ts.vue - vue-verify > ts.vue 1`] = `
 <script lang="ts">
 // I am top level comment in this file.
+
 import z from 'z';
 import threeLevelRelativePath from "../../../threeLevelRelativePath";
 import sameLevelRelativePath from "./sameLevelRelativePath";
@@ -132,6 +137,7 @@ export default defineComponent({
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 <script lang="ts">
 // I am top level comment in this file.
+
 import thirdParty from "third-party";
 import { defineComponent } from "vue";
 import z from "z";
@@ -161,6 +167,7 @@ export default defineComponent({});
 exports[`tsx.vue - vue-verify > tsx.vue 1`] = `
 <script lang="tsx">
 // I am top level comment in this file.
+
 import z from 'z';
 import threeLevelRelativePath from "../../../threeLevelRelativePath";
 import sameLevelRelativePath from "./sameLevelRelativePath";
@@ -186,6 +193,7 @@ export default defineComponent({
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 <script lang="tsx">
 // I am top level comment in this file.
+
 import thirdParty from "third-party";
 import { defineComponent } from "vue";
 import z from "z";
