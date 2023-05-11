@@ -22,7 +22,6 @@ export const adjustCommentsOnSortedNodes = (
     originalDeclarationNodes: ImportDeclaration[],
     finalNodes: ImportOrLine[],
 ) => {
-
     const outputDeclarationNodes: ImportDeclaration[] = finalNodes.filter(
         (n) => n.type === 'ImportDeclaration',
     ) as ImportDeclaration[];
@@ -43,7 +42,6 @@ export const adjustCommentsOnSortedNodes = (
             ).map((s) => removeComments(s));
         }
         return noDirectCommentsNode;
-
     });
 
     attachCommentsToOutputNodes(registry, finalNodesClone);
