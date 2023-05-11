@@ -7,9 +7,9 @@ import {
 } from '@babel/types';
 
 import {
-    newLineCharacters,
-    injectNewlinesRegex,
     forceANewlineForImportsWithAttachedSingleLineCommentsRegex,
+    injectNewlinesRegex,
+    newLineCharacters,
     PATCH_BABEL_GENERATOR_DOUBLE_COMMENTS_ON_ONE_LINE_ISSUE,
 } from '../constants';
 import { getAllCommentsFromNodes } from './get-all-comments-from-nodes';

@@ -5,11 +5,11 @@ import {
 } from '@babel/types';
 
 import {
-    newLineNode,
     forceANewlineForImportsWithAttachedSingleLineComments,
+    newLineNode,
     PATCH_BABEL_GENERATOR_DOUBLE_COMMENTS_ON_ONE_LINE_ISSUE,
 } from '../constants';
-import { ImportOrLine, SomeSpecifier, ImportRelated } from '../types';
+import { ImportOrLine, ImportRelated, SomeSpecifier } from '../types';
 
 const SpecifierTypes = [
     'ImportSpecifier',
