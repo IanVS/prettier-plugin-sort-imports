@@ -1,8 +1,4 @@
-import {
-    addComments,
-    removeComments,
-    type ImportDeclaration,
-} from '@babel/types';
+import { removeComments, type ImportDeclaration } from '@babel/types';
 
 import { ImportOrLine } from '../types';
 import {
@@ -22,14 +18,20 @@ export const adjustCommentsOnSortedNodes = (
     originalDeclarationNodes: ImportDeclaration[],
     finalNodes: ImportOrLine[],
 ) => {
-    const outputDeclarationNodes: ImportDeclaration[] = finalNodes.filter(
+    const outputNodes: ImportDeclaration[] = finalNodes.filter(
         (n) => n.type === 'ImportDeclaration',
     ) as ImportDeclaration[];
+    if (originalDeclarationNodes.length === 0 || outputNodes.length === 0) {
+        // Nothing to do, because there are no ImportDeclarations!
+        return finalNodes;
+    }
 
-    const registry = getCommentRegistryFromImportDeclarations(
-        outputDeclarationNodes,
-        originalDeclarationNodes[0],
-    );
+    const registry = getCommentRegistryFromImportDeclarations({
+        outputNodes,
+        firstImport: originalDeclarationNodes[0],
+        lastImport:
+            originalDeclarationNodes[originalDeclarationNodes.length - 1],
+    });
 
     // Make a copy of the nodes for easier debugging & remove the existing comments to reattach them
     // (removeComments clones the nodes internally, so we don't need to do that ourselves)

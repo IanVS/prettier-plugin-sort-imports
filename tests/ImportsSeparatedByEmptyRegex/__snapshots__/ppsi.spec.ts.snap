@@ -227,7 +227,7 @@ import thirdParty from "third-party";
 import {
     random // inner comment
 } from './random';
-// leading comment
+// trailing comment for import-random (export statement is code that will be sorted to below imports, and so doesn't have precedence over the import-comment-attachment rules!)
 export {
     random // inner comment
 } from './random';
@@ -271,10 +271,10 @@ import oneLevelRelativePath from "../oneLevelRelativePath";
 import {
     random, // inner comment
 } from "./random";
+// trailing comment for import-random (export statement is code that will be sorted to below imports, and so doesn't have precedence over the import-comment-attachment rules!)
 // I am stick to sameLevelRelativePath
 import sameLevelRelativePath from "./sameLevelRelativePath";
 
-// leading comment
 export {
     random, // inner comment
 } from "./random";

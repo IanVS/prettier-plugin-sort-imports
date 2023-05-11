@@ -34,29 +34,18 @@ export const TYPES_SPECIAL_WORD = '<TYPES>';
 const PRETTIER_PLUGIN_SORT_IMPORTS_NEW_LINE =
     'PRETTIER_PLUGIN_SORT_IMPORTS_NEW_LINE';
 
+/** Use this to force a newline at top-level scope (good for newlines generated between import blocks) */
 export const newLineNode = expressionStatement(
     stringLiteral(PRETTIER_PLUGIN_SORT_IMPORTS_NEW_LINE),
 );
-export const injectNewlinesRegex = /"PRETTIER_PLUGIN_SORT_IMPORTS_NEW_LINE";/gi;
-
-/**
- * If you have a trailing single-line comment on an ImportSpecifier, and attached to
- *  the following ImportSpecifier you have a leading single-line comment,
- * Then Babel's code-generator might render the two comments on the same line.
- *
- * Additionally, if you have a single-line-comment trailing an ImportDeclaration,
- *  babel might pull
- *
- * This probably should be reported upstream, but for now we have a workaround.
- */
-export const PATCH_BABEL_GENERATOR_DOUBLE_COMMENTS_ON_ONE_LINE_ISSUE = true;
-
-export const forceANewlineForImportsWithAttachedSingleLineComments = () => ({
+/** Use this if you want to force a newline, but you're attaching to leading/inner/trailing Comments */
+export const forceANewlineUsingACommentStatement = () => ({
     type: 'CommentLine' as const,
-    value: 'PRETTIER_PLUGIN_SORT_IMPORTS_SINGLE_LINE_COMMENTS_PATCH',
+    value: 'PRETTIER_PLUGIN_SORT_IMPORTS_NEWLINE_COMMENT',
     start: -1,
     end: -1,
     loc: { start: { line: -1, column: -1 }, end: { line: -1, column: -1 } },
 });
-export const forceANewlineForImportsWithAttachedSingleLineCommentsRegex =
-    /\/\/PRETTIER_PLUGIN_SORT_IMPORTS_SINGLE_LINE_COMMENTS_PATCH/gi;
+
+export const injectNewlinesRegex =
+    /("PRETTIER_PLUGIN_SORT_IMPORTS_NEW_LINE";|\/\/PRETTIER_PLUGIN_SORT_IMPORTS_NEWLINE_COMMENT)/gi;

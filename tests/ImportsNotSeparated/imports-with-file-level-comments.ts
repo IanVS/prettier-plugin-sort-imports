@@ -10,7 +10,7 @@ import thirdParty from "third-party";
 import {
     random // inner comment
 } from './random';
-// leading comment
+// trailing comment for import-random (export statement is code that will be sorted to below imports, and so doesn't have precedence over the import-comment-attachment rules!)
 export {
     random // inner comment
 } from './random';

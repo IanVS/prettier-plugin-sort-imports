@@ -4,11 +4,7 @@ import {
     type ImportDeclaration,
 } from '@babel/types';
 
-import {
-    forceANewlineForImportsWithAttachedSingleLineComments,
-    newLineNode,
-    PATCH_BABEL_GENERATOR_DOUBLE_COMMENTS_ON_ONE_LINE_ISSUE,
-} from '../constants';
+import { newLineNode } from '../constants';
 import { ImportOrLine, ImportRelated, SomeSpecifier } from '../types';
 
 const SpecifierTypes = [
@@ -26,7 +22,7 @@ function nodeId(node: Comment | ImportRelated): string {
         }`;
     }
     if (node.type === 'CommentLine') {
-        return `${node.type}::${node.start}::${node.loc.start.line}`;
+        return `${node.type}::${node.start}::${node.loc?.start.line}`;
     }
     return `${node.type}::${node.start}`;
 }
@@ -95,7 +91,8 @@ const attachCommentsToRegistryMap = <
     comments,
 
     owner,
-    firstImportDeclaration,
+    firstImport,
+    lastImport,
 }: {
     commentRegistry: Map<string, CommentEntry>;
     /**
@@ -108,7 +105,10 @@ const attachCommentsToRegistryMap = <
 
     owner: T;
 
-    firstImportDeclaration: ImportDeclaration;
+    /** Original declaration, not the re-sorted output-node! */
+    firstImport: ImportDeclaration;
+    /** Original declaration, not the re-sorted output-node! */
+    lastImport: ImportDeclaration;
 }) => {
     let commentCounter = 0;
 
@@ -140,18 +140,20 @@ const attachCommentsToRegistryMap = <
             continue;
         }
 
+        const currentOwnerIsFirstImport = nodeId(owner) === nodeId(firstImport);
+        const currentOwnerIsLastImport = nodeId(owner) === nodeId(lastImport);
+
         const isSameLineAsCurrentOwner =
             commentIsSingleLineType && // Prettier doesn't allow block comments to stay on same line as expressions
             owner.loc?.start.line === comment.loc?.start.line;
 
-        // If there's a gap, but this is the first-import, don't treat this line as "attached to the next node"
+        // LeadingGap is used with firstImport to protect top-of-file comments, and pick the right ImportSpecifier when Specifiers are re-sorted
         const hasLeadingGap =
-            nodeId(owner) === nodeId(firstImportDeclaration) &&
-            comment.loc?.start.line < (owner.loc?.start.line || 0) - 1;
+            (comment.loc?.start.line || 0) < (owner.loc?.start.line || 0) - 1;
 
-        // If it's not on the same line, don't treat this line as "attached to the previous node"
+        // TrailingGap is used with lastImport to protect bottom-of-imports comments, and pick the right ImportSpecifier when Specifiers are re-sorted
         const hasTrailingGap =
-            comment.loc?.start.line > (owner.loc?.start.line || 0) + 1;
+            (comment.loc?.start.line || 0) > (owner.loc?.start.line || 0) + 1;
 
         if (attachmentKey === 'trailingComments') {
             // Trailing comments might be on the same line "attached"
@@ -171,7 +173,14 @@ const attachCommentsToRegistryMap = <
             } else if (hasTrailingGap) {
                 // This comment is either a leading comment on the next node, or it's an unrelated comment following the imports
                 // Trailing comment, not on the same line, so either it will get attached correctly, or it will be dropped below imports
-                // [Intentional empty block]
+                if (currentOwnerIsLastImport) {
+                    // [Intentional empty block] will automatically be attached from other nodes, or will fall to bottom
+                } else {
+                    // This is a specifier or a non-last import.
+                    commentEntry.processingPriority +=
+                        DeferredCommentClaimPriorityAdjustment.trailingNonSameLine;
+                    deferredCommentClaims.push(commentEntry);
+                }
             } else {
                 // This comment should be kept close to the ImportDeclaration it follows
                 commentEntry.processingPriority +=
@@ -180,7 +189,7 @@ const attachCommentsToRegistryMap = <
             }
             continue; // Unnecessary, but explicit
         } else if (attachmentKey === 'leadingComments') {
-            if (hasLeadingGap) {
+            if (currentOwnerIsFirstImport && hasLeadingGap) {
                 debugLog?.('Found a disconnected leading comment', {
                     comment,
                     owner,
@@ -236,12 +245,20 @@ const attachCommentsToRegistryMap = <
  * Utility that walks ImportDeclarations and the associated comment nodes
  * It returns a list of CommentEntry objects that tell you which nodes comments should be associated with
  */
-export const getCommentRegistryFromImportDeclarations = (
-    outputNodes: ImportDeclaration[],
-    /** Original first import declaration, not the output-node! */
-    firstImportDeclaration: ImportDeclaration,
-) => {
-    if (outputNodes.length === 0 || !firstImportDeclaration) {
+export const getCommentRegistryFromImportDeclarations = ({
+    firstImport,
+    lastImport,
+    outputNodes,
+}: {
+    /** Original declaration, not the re-sorted output-node! */
+    firstImport: ImportDeclaration;
+    /** Original declaration, not the re-sorted output-node! */
+    lastImport: ImportDeclaration;
+
+    /** Constructed Output Nodes */
+    outputNodes: ImportDeclaration[];
+}) => {
+    if ((outputNodes.length === 0 || !firstImport, !lastImport)) {
         return [];
     }
 
@@ -264,16 +281,9 @@ export const getCommentRegistryFromImportDeclarations = (
             specifierRegistry.set(specifier.loc?.start.line || 0, specifier);
         });
 
-    // debugLog?.({
-    //     specifierRegistry: [...specifierRegistry.values()].map((s) => ({
-    //         line: s?.loc?.start.line,
-    //         name: (s as any).imported,
-    //     })),
-    // });
-
     // Detach all comments, but keep their state.
     // The babel renderer would otherwise move them around based on their original attachment.
-    // Register them in a specific order (inner, trailing, leading) so that they attach appropriately (ImportDeclarations)
+    // Register them in a specific order (inner, trailing, leading) so that the our best attachment gets priority
 
     for (const attachmentKey of orderedCommentKeysToRegister) {
         debugLog?.(
@@ -287,7 +297,8 @@ export const getCommentRegistryFromImportDeclarations = (
                 attachmentKey,
                 comments: Array.from(declarationNode[attachmentKey] || []),
                 owner: declarationNode,
-                firstImportDeclaration,
+                firstImport,
+                lastImport,
             });
 
             for (const specifierNode of declarationNode.specifiers) {
@@ -297,7 +308,8 @@ export const getCommentRegistryFromImportDeclarations = (
                     attachmentKey,
                     comments: Array.from(specifierNode[attachmentKey] || []),
                     owner: specifierNode,
-                    firstImportDeclaration,
+                    firstImport,
+                    lastImport,
                 });
             }
         }
@@ -331,34 +343,15 @@ export const getCommentRegistryFromImportDeclarations = (
                 const targetAssociation = shouldPatchAssociation
                     ? CommentAssociation.trailing
                     : entry.association;
-                if (shouldPatchAssociation) {
-                    debugLog?.(
-                        'Reattaching orphaned specifier comment to new owner',
-                        {
-                            old_line: line,
-                            old_association: entry.association,
-                            targetAssociation,
-                            old_owner: entry.owner,
-                            owner,
-                        },
-                    );
-                    debugLog?.({
-                        owner_loc: owner.loc?.start,
-                        comment_loc: entry.comment.loc.start,
-                    });
-                }
 
                 debugLog?.(
-                    'Reattaching2',
+                    'Reattaching',
                     id,
                     entry.association,
                     targetAssociation,
                     entry.comment.value,
                     { hasNewOwner, owner, entry_owner: entry.owner },
                 );
-                if (entry.comment.value === ' h3 leading single-line-comment') {
-                    debugLog?.(entry.comment);
-                }
 
                 commentRegistry.set(id, {
                     ...entry,
@@ -431,54 +424,11 @@ export function attachCommentsToOutputNodes(
         (commentCollection as Comment[]).push(comment);
     }
 
-    // console.debug(
-    //     'outputNodes!',
-    //     outputNodes.map((n) =>
-    //         (n as any).specifiers?.map((s: SomeSpecifier) => ({
-    //             name: s.imported?.name,
-    //             leading: JSON.stringify(s.leadingComments),
-    //             trailing: JSON.stringify(s.trailingComments),
-    //         })),
-    //     ),
-    // );
-
-    if (PATCH_BABEL_GENERATOR_DOUBLE_COMMENTS_ON_ONE_LINE_ISSUE) {
-        outputNodes
-            .filter((n) => n.type === 'ImportDeclaration')
-            .map((n) => {
-                // Patching up another bug: babel will pull up a single-line trailing-comment
-                //  that follows an ImportDeclaration even if it wasn't supposed to be on the same line
-                const trailingComments = n.trailingComments;
-                if (
-                    Array.isArray(trailingComments) &&
-                    trailingComments.length >= 1
-                ) {
-                    if (
-                        trailingComments[0].type === 'CommentLine' &&
-                        trailingComments[0].loc?.start.line !== n.loc?.end.line
-                    ) {
-                        // This comment is on a different line, let's make sure there's a newline
-                        trailingComments.unshift(
-                            forceANewlineForImportsWithAttachedSingleLineComments(),
-                        );
-                    }
-                }
-                return n;
-            })
-            .map((n) => (n as ImportDeclaration).specifiers || [])
-            .flat()
-            .forEach((s) => {
-                (s.leadingComments as Comment[])?.unshift(
-                    forceANewlineForImportsWithAttachedSingleLineComments(),
-                );
-            });
-    }
-
     if (Array.isArray(outputNodes[0].leadingComments)) {
         if (outputNodes[0].leadingComments.length > 0) {
             // Convert this to a newline node!
             outputNodes[0] = {
-                ...newLineNode,
+                ...newLineNode, // Inject a newline after top-of-file comments
                 leadingComments: outputNodes[0].leadingComments,
             };
         } else {

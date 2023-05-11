@@ -279,9 +279,8 @@ Specific cases we handle:
 
 - If you leave a gap after a comment at the top of your file, we will avoid moving it around if the imports below it shift.
 - If you have comments that come after after your last import (with a gap); that comment and following code will stay below the imports.
-- In general, if you place a single-line `CommentLine` (eg. `// …`) on the same line as an `ImportDeclaration` or `ImportSpecifier`, we will keep it attached to that same specifier if that line moves around (due to mergers, or sorting changes due to newly inserted imports).
-- Multi-line-capable `CommentBlocks` (eg. `/** … */`) are automatically formatted to be on a new line by Prettier, so we do not change this behavior.
-- Other comments are preserved, and are generally considered `leadingComments` for the subsequent `ImportDeclaration` or `ImportSpecifier`
+- In general, if you place a single-line comment on the same line as an Import `Declaration` or `*Specifier`, we will keep it attached to that same specifier if that line moves around (due to mergers, or sorting changes due to newly inserted imports).
+- Other comments are preserved, and are generally considered `leadingComments` for the subsequent Import `Declaration` or `*Specifier`
 
 ## FAQ / Troubleshooting
 
