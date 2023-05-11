@@ -1,4 +1,9 @@
-import { ExpressionStatement, ImportDeclaration } from '@babel/types';
+import {
+    EmptyStatement,
+    ExpressionStatement,
+    ImportDeclaration,
+    ImportSpecifier,
+} from '@babel/types';
 import { RequiredOptions } from 'prettier';
 
 import { PluginConfig } from '../types';
@@ -28,7 +33,10 @@ export interface ImportChunk {
 }
 
 export type ImportGroups = Record<string, ImportDeclaration[]>;
-export type ImportOrLine = ImportDeclaration | ExpressionStatement;
+export type ImportOrLine =
+    | ImportDeclaration
+    | ExpressionStatement
+    | EmptyStatement;
 
 export type GetSortedNodes = (
     nodes: ImportDeclaration[],
