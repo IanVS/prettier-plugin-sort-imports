@@ -1,5 +1,19 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`import-comments-babel-pulling-single-line-bug.ts - typescript-verify > import-comments-babel-pulling-single-line-bug.ts 1`] = `
+
+import B from "b";
+// Trailing comment 1 (not supposed to be on same line)
+// Bottom of imports single-line comment
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import B from "b";
+// Trailing comment 1 (not supposed to be on same line)
+
+// Bottom of imports single-line comment
+
+`;
+
 exports[`import-comments-document-top-test1.ts - typescript-verify > import-comments-document-top-test1.ts 1`] = `
 // This is part of multiple-lines at document-top
 // Second line followed by a gap

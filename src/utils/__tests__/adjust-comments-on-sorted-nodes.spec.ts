@@ -1,5 +1,6 @@
 import { expect, test } from 'vitest';
 
+import { PATCH_BABEL_GENERATOR_DOUBLE_COMMENTS_ON_ONE_LINE_ISSUE } from '../../constants';
 import type { ImportOrLine } from '../../types';
 import { adjustCommentsOnSortedNodes } from '../adjust-comments-on-sorted-nodes';
 import { getImportNodes } from '../get-import-nodes';
@@ -23,13 +24,13 @@ test('it preserves the single leading comment for each import declaration', () =
     expect(importNodes).toHaveLength(3);
     const finalNodes = [importNodes[2], importNodes[1], importNodes[0]];
     const adjustedNodes = adjustCommentsOnSortedNodes(importNodes, finalNodes);
-    expect(adjustedNodes).toHaveLength(3);
-    expect(leadingComments(adjustedNodes[0])).toEqual([' comment a']);
-    expect(trailingComments(adjustedNodes[0])).toEqual([]);
-    expect(leadingComments(adjustedNodes[1])).toEqual([' comment b']);
+    expect(adjustedNodes).toHaveLength(4);
+    expect(leadingComments(adjustedNodes[1])).toEqual([' comment a']);
     expect(trailingComments(adjustedNodes[1])).toEqual([]);
-    expect(leadingComments(adjustedNodes[2])).toEqual([]);
+    expect(leadingComments(adjustedNodes[2])).toEqual([' comment b']);
     expect(trailingComments(adjustedNodes[2])).toEqual([]);
+    expect(leadingComments(adjustedNodes[3])).toEqual([]);
+    expect(trailingComments(adjustedNodes[3])).toEqual([]);
 });
 
 test('it preserves multiple leading comments for each import declaration', () => {
@@ -47,21 +48,21 @@ test('it preserves multiple leading comments for each import declaration', () =>
     expect(importNodes).toHaveLength(3);
     const finalNodes = [importNodes[2], importNodes[1], importNodes[0]];
     const adjustedNodes = adjustCommentsOnSortedNodes(importNodes, finalNodes);
-    expect(adjustedNodes).toHaveLength(3);
-    expect(leadingComments(adjustedNodes[0])).toEqual([
+    expect(adjustedNodes).toHaveLength(4);
+    expect(leadingComments(adjustedNodes[1])).toEqual([
         ' comment a1',
         ' comment a2',
         ' comment a3',
     ]);
-    expect(trailingComments(adjustedNodes[0])).toEqual([]);
-    expect(leadingComments(adjustedNodes[1])).toEqual([
+    expect(trailingComments(adjustedNodes[1])).toEqual([]);
+    expect(leadingComments(adjustedNodes[2])).toEqual([
         ' comment b1',
         ' comment b2',
         ' comment b3',
     ]);
-    expect(trailingComments(adjustedNodes[1])).toEqual([]);
-    expect(leadingComments(adjustedNodes[2])).toEqual([]);
     expect(trailingComments(adjustedNodes[2])).toEqual([]);
+    expect(leadingComments(adjustedNodes[3])).toEqual([]);
+    expect(trailingComments(adjustedNodes[3])).toEqual([]);
 });
 
 test('it does not move comments at before all import declarations', () => {
@@ -75,16 +76,16 @@ test('it does not move comments at before all import declarations', () => {
     expect(importNodes).toHaveLength(3);
     const finalNodes = [importNodes[2], importNodes[1], importNodes[0]];
     const adjustedNodes = adjustCommentsOnSortedNodes(importNodes, finalNodes);
-    expect(adjustedNodes).toHaveLength(3);
-    expect(leadingComments(adjustedNodes[0])).toEqual([
-        ' comment c1',
-        ' comment c2',
-    ]);
-    expect(trailingComments(adjustedNodes[0])).toEqual([]);
-    expect(leadingComments(adjustedNodes[1])).toEqual([]);
-    expect(trailingComments(adjustedNodes[1])).toEqual([]);
+    expect(adjustedNodes).toHaveLength(4);
+    // Comment c1 is explicitly detached so it stays with the top-of-file
+    expect(leadingComments(adjustedNodes[0])).toEqual([' comment c1']);
+
     expect(leadingComments(adjustedNodes[2])).toEqual([]);
     expect(trailingComments(adjustedNodes[2])).toEqual([]);
+    expect(trailingComments(adjustedNodes[3])).toEqual([]);
+
+    // Comment c2 is attached to import from "c"
+    expect(leadingComments(adjustedNodes[3])).toEqual([' comment c2']);
 });
 
 test('it does not affect comments after all import declarations', () => {
@@ -98,11 +99,21 @@ test('it does not affect comments after all import declarations', () => {
     expect(importNodes).toHaveLength(3);
     const finalNodes = [importNodes[2], importNodes[1], importNodes[0]];
     const adjustedNodes = adjustCommentsOnSortedNodes(importNodes, finalNodes);
-    expect(adjustedNodes).toHaveLength(3);
-    expect(leadingComments(adjustedNodes[0])).toEqual([]);
-    expect(trailingComments(adjustedNodes[0])).toEqual([]);
+    expect(adjustedNodes).toHaveLength(4);
     expect(leadingComments(adjustedNodes[1])).toEqual([]);
-    expect(trailingComments(adjustedNodes[1])).toEqual([]);
+    // "final 1" is attached as a trailing-comment for import from "a"
+    // but "final 2" is detached so it stays with the bottom-of-imports
+    const expectedNode1TrailingComments = [' comment final 1'];
+    if (PATCH_BABEL_GENERATOR_DOUBLE_COMMENTS_ON_ONE_LINE_ISSUE) {
+        expectedNode1TrailingComments.unshift(
+            'PRETTIER_PLUGIN_SORT_IMPORTS_SINGLE_LINE_COMMENTS_PATCH',
+        );
+    }
+    expect(trailingComments(adjustedNodes[1])).toEqual(
+        expectedNode1TrailingComments,
+    );
     expect(leadingComments(adjustedNodes[2])).toEqual([]);
     expect(trailingComments(adjustedNodes[2])).toEqual([]);
+    expect(leadingComments(adjustedNodes[3])).toEqual([]);
+    expect(trailingComments(adjustedNodes[3])).toEqual([]);
 });

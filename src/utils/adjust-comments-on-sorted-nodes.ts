@@ -3,41 +3,50 @@ import {
     removeComments,
     type ImportDeclaration,
 } from '@babel/types';
-import clone from 'lodash.clone';
-import isEqual from 'lodash.isequal';
 
 import { ImportOrLine } from '../types';
+import {
+    attachCommentsToOutputNodes,
+    getCommentRegistryFromImportDeclarations,
+} from './get-comment-registry';
 
 /**
  * Takes the original nodes before sorting and the final nodes after sorting.
  * Adjusts the comments on the final nodes so that they match the comments as
  * they were in the original nodes.
- * @param nodes A list of nodes in the order as they were originally.
+ * @param originalDeclarationNodes A list of nodes in the order as they were originally.
  * @param finalNodes The same set of nodes, but in the final sorting order.
  * @returns A copied and adjusted set of nodes, containing comments
  */
 export const adjustCommentsOnSortedNodes = (
-    nodes: ImportDeclaration[],
+    originalDeclarationNodes: ImportDeclaration[],
     finalNodes: ImportOrLine[],
 ) => {
-    // We will mutate a copy of the finalNodes, and extract comments from the original
-    const finalNodesClone = finalNodes.map(clone);
 
-    const firstNodesComments = nodes[0].leadingComments;
+    const outputDeclarationNodes: ImportDeclaration[] = finalNodes.filter(
+        (n) => n.type === 'ImportDeclaration',
+    ) as ImportDeclaration[];
 
-    // Remove all comments from sorted nodes
-    finalNodesClone.forEach(removeComments);
+    const registry = getCommentRegistryFromImportDeclarations(
+        outputDeclarationNodes,
+        originalDeclarationNodes[0],
+    );
 
-    // insert comments other than the first comments
-    finalNodesClone.forEach((node, index) => {
-        if (isEqual(nodes[0].loc, node.loc)) return;
+    // Make a copy of the nodes for easier debugging & remove the existing comments to reattach them
+    // (removeComments clones the nodes internally, so we don't need to do that ourselves)
+    const finalNodesClone = finalNodes.map((n) => {
+        const noDirectCommentsNode = removeComments(n);
+        if (noDirectCommentsNode.type === 'ImportDeclaration') {
+            // Remove comments isn't recursive, so we need to clone/modify the specifiers manually
+            noDirectCommentsNode.specifiers = (
+                noDirectCommentsNode.specifiers || []
+            ).map((s) => removeComments(s));
+        }
+        return noDirectCommentsNode;
 
-        addComments(node, 'leading', finalNodes[index].leadingComments || []);
     });
 
-    if (firstNodesComments) {
-        addComments(finalNodesClone[0], 'leading', firstNodesComments);
-    }
+    attachCommentsToOutputNodes(registry, finalNodesClone);
 
     return finalNodesClone;
 };

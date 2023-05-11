@@ -50,13 +50,14 @@ test('it returns all sorted nodes, preserving the order side effect nodes', () =
         'se2',
         '',
     ]);
-    expect(
-        sorted
-            .filter((node) => node.type === 'ImportDeclaration')
-            .map((importDeclaration) =>
-                getSortedNodesModulesNames(importDeclaration.specifiers),
-            ),
-    ).toEqual([
+
+    const result2 = sorted
+        .filter((node) => node.type === 'ImportDeclaration')
+        .map((importDeclaration) =>
+            getSortedNodesModulesNames(importDeclaration.specifiers),
+        );
+
+    expect(result2).toEqual([
         [],
         ['c', 'cD'],
         ['g'],
