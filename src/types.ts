@@ -1,8 +1,10 @@
 import {
-    EmptyStatement,
-    ExpressionStatement,
-    ImportDeclaration,
-    ImportSpecifier,
+    type EmptyStatement,
+    type ExpressionStatement,
+    type ImportDeclaration,
+    type ImportDefaultSpecifier,
+    type ImportNamespaceSpecifier,
+    type ImportSpecifier,
 } from '@babel/types';
 import { RequiredOptions } from 'prettier';
 
@@ -37,6 +39,12 @@ export type ImportOrLine =
     | ImportDeclaration
     | ExpressionStatement
     | EmptyStatement;
+
+export type SomeSpecifier =
+    | ImportSpecifier
+    | ImportDefaultSpecifier
+    | ImportNamespaceSpecifier;
+export type ImportRelated = ImportOrLine | SomeSpecifier;
 
 export type GetSortedNodes = (
     nodes: ImportDeclaration[],

@@ -37,3 +37,23 @@ const PRETTIER_PLUGIN_SORT_IMPORTS_NEW_LINE =
 export const newLineNode = expressionStatement(
     stringLiteral(PRETTIER_PLUGIN_SORT_IMPORTS_NEW_LINE),
 );
+export const injectNewlinesRegex = /"PRETTIER_PLUGIN_SORT_IMPORTS_NEW_LINE";/gi;
+
+/**
+ * If you have a trailing single-line comment on an ImportSpecifier, and attached to
+ *  the following ImportSpecifier you have a leading single-line comment,
+ * Then Babel's code-generator might render the two comments on the same line.
+ *
+ * This probably should be reported upstream, but for now we have a workaround.
+ */
+export const PATCH_BABEL_GENERATOR_DOUBLE_COMMENTS_ON_ONE_LINE_ISSUE = true;
+
+export const forceANewlineForImportSpecifiersWithLeadingComments = () => ({
+    type: 'CommentLine' as const,
+    value: 'PRETTIER_PLUGIN_SORT_IMPORTS_SPECIFIER_LEADING_COMMENT_PATCH',
+    start: -1,
+    end: -1,
+    loc: { start: { line: -1, column: -1 }, end: { line: -1, column: -1 } },
+});
+export const forceANewlineForImportSpecifiersWithLeadingCommentsRegex =
+    /\/\/PRETTIER_PLUGIN_SORT_IMPORTS_SPECIFIER_LEADING_COMMENT_PATCH/gi;
