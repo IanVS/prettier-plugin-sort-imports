@@ -100,12 +100,7 @@ test('it does not affect comments after all import declarations', () => {
     const adjustedNodes = adjustCommentsOnSortedNodes(importNodes, finalNodes);
     expect(adjustedNodes).toHaveLength(4);
     expect(leadingComments(adjustedNodes[1])).toEqual([]);
-    // "final 1" is attached as a trailing-comment for import from "a"
-    // but "final 2" is detached so it stays with the bottom-of-imports
-    const expectedNode1TrailingComments = [' comment final 1'];
-    expect(trailingComments(adjustedNodes[1])).toEqual(
-        expectedNode1TrailingComments,
-    );
+    expect(trailingComments(adjustedNodes[1])).toEqual([]);
     expect(leadingComments(adjustedNodes[2])).toEqual([]);
     expect(trailingComments(adjustedNodes[2])).toEqual([]);
     expect(leadingComments(adjustedNodes[3])).toEqual([]);

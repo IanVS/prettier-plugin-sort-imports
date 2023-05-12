@@ -147,13 +147,13 @@ const attachCommentsToRegistryMap = <
             commentIsSingleLineType && // Prettier doesn't allow block comments to stay on same line as expressions
             owner.loc?.start.line === comment.loc?.start.line;
 
-        // LeadingGap is used with firstImport to protect top-of-file comments, and pick the right ImportSpecifier when Specifiers are re-sorted
-        const hasLeadingGap =
+        // endsMoreThanOneLineAboveOwner is used with firstImport to protect top-of-file comments, and pick the right ImportSpecifier when Specifiers are re-sorted
+        const endsMoreThanOneLineAboveOwner =
             (comment.loc?.end.line || 0) < (owner.loc?.start.line || 0) - 1;
 
-        // TrailingGap is used with lastImport to protect bottom-of-imports comments, and pick the right ImportSpecifier when Specifiers are re-sorted
-        const hasTrailingGap =
-            (comment.loc?.start.line || 0) > (owner.loc?.end.line || 0) + 1;
+        // startsBelowOwner is used with lastImport to protect bottom-of-imports comments, and pick the right ImportSpecifier when Specifiers are re-sorted
+        const startsBelowOwner =
+            (comment.loc?.start.line || 0) > (owner.loc?.end.line || 0);
 
         if (attachmentKey === 'trailingComments') {
             // Trailing comments might be on the same line "attached"
@@ -162,25 +162,19 @@ const attachCommentsToRegistryMap = <
 
             debugLog?.({
                 isSameLineAsCurrentOwner,
-                hasLeadingGap,
-                hasTrailingGap,
+                endsMoreThanOneLineAboveOwner,
+                startsBelowOwner,
                 owner,
                 comment,
             });
 
             if (isSameLineAsCurrentOwner) {
                 commentRegistry.set(commentId, commentEntry);
-            } else if (hasTrailingGap) {
+            } else if (startsBelowOwner) {
                 // This comment is either a leading comment on the next node, or it's an unrelated comment following the imports
                 // Trailing comment, not on the same line, so either it will get attached correctly, or it will be dropped below imports
-                if (currentOwnerIsLastImport) {
-                    // [Intentional empty block] will automatically be attached from other nodes, or will fall to bottom
-                } else {
-                    // This is a specifier or a non-last import.
-                    commentEntry.processingPriority +=
-                        DeferredCommentClaimPriorityAdjustment.trailingNonSameLine;
-                    deferredCommentClaims.push(commentEntry);
-                }
+                // -- will automatically be attached from other nodes, or will fall to bottom of imports
+                // [Intentional empty block]
             } else {
                 // This comment should be kept close to the ImportDeclaration it follows
                 commentEntry.processingPriority +=
@@ -189,7 +183,7 @@ const attachCommentsToRegistryMap = <
             }
             continue; // Unnecessary, but explicit
         } else if (attachmentKey === 'leadingComments') {
-            if (currentOwnerIsFirstImport && hasLeadingGap) {
+            if (currentOwnerIsFirstImport && endsMoreThanOneLineAboveOwner) {
                 debugLog?.('Found a disconnected leading comment', {
                     comment,
                     owner,

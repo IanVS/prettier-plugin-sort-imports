@@ -277,8 +277,8 @@ We make the following attempts at keeping comments in your imports clean, but th
 
 Specific cases we handle:
 
-- If you leave a gap after a comment at the top of your file, we will avoid moving it around if the imports below it shift.
-- If you have comments that come after after your last import (with a gap); that comment and following code will stay below the imports.
+- If you have one or more comments that end above the line immediately preceding your first import, we will treat them as top-of-file comment(s) and avoid moving them when the first-import moves down.
+- If you have comments that come after after your last import; those comments and following code will stay below the imports. (Runtime-code between imports will be moved below all the imports)
 - In general, if you place a single-line comment on the same line as an Import `Declaration` or `*Specifier`, we will keep it attached to that same specifier if that line moves around (due to mergers, or sorting changes due to newly inserted imports).
 - Other comments are preserved, and are generally considered `leadingComments` for the subsequent Import `Declaration` or `*Specifier`
 

@@ -8,8 +8,8 @@ import B from "b";
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import B from "b";
-// Trailing comment (not supposed to be on same line)
 
+// Trailing comment (not supposed to be on same line)
 // Bottom of imports single-line comment
 
 `;
@@ -32,7 +32,7 @@ import b from "b";
 exports[`import-comments-document-top-test2.ts - typescript-verify > import-comments-document-top-test2.ts 1`] = `
 /**
  * This is part of multiple-lines at document-top
- * Second line of text, comment is followed by a gap (gap gets eaten)
+ * Second line of text, comment is followed by a gap
  */
 
 import b from "b";
@@ -40,26 +40,7 @@ import a from "a";
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
  * This is part of multiple-lines at document-top
- * Second line of text, comment is followed by a gap (gap gets eaten)
- */
-
-import a from "a";
-import b from "b";
-
-`;
-
-exports[`import-comments-document-top-test3.ts - typescript-verify > import-comments-document-top-test3.ts 1`] = `
-/**
- * This comment is before the whole block,
- * it is not attached to the following import.
- */
-
-import b from "b";
-import a from "a";
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/**
- * This comment is before the whole block,
- * it is not attached to the following import.
+ * Second line of text, comment is followed by a gap
  */
 
 import a from "a";
@@ -71,26 +52,26 @@ exports[`import-comments-outer-comments-block-comments.ts - typescript-verify > 
 // Loose leading comment before imports (should not be dragged down with B)
 
 /* Leading comment before B */
-import B from "b"; /* Trailing comment on same-line as B (babel doesn't like CommentBlocks on same-line as anything else, so it will be shifted to a clean line) */
-/* Trailing comment on first line after B (This is treated as a leading comment for next import A!) */
+import B from "b"; /* Trailing comment on same-line as B */
+/* Trailing comment on first line after B (this is treated as a leading comment for next import A!) */
 
 
 /* Leading comment before A */
-import A from "a"; /* Trailing comment on same-line as A (babel doesn't like CommentBlocks on same-line as anything else, so it will be shifted to a clean line) */
-/* Trailing comment on first line after A (will initially, because this is "close" to last-import 'a' */
+import A from "a"; /* Trailing comment on same-line as A */
+/* Trailing comment on first line after A (this is treated as a "bottom-of-imports comment) */
 
 // Loose trailing comment after imports (should not be dragged up with A)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Loose leading comment before imports (should not be dragged down with B)
 
-/* Trailing comment on same-line as B (babel doesn't like CommentBlocks on same-line as anything else, so it will be shifted to a clean line) */
-/* Trailing comment on first line after B (This is treated as a leading comment for next import A!) */
+/* Trailing comment on first line after B (this is treated as a leading comment for next import A!) */
 
 /* Leading comment before A */
-import A from "a"; /* Trailing comment on same-line as A (babel doesn't like CommentBlocks on same-line as anything else, so it will be shifted to a clean line) */
-/* Trailing comment on first line after A (will initially, because this is "close" to last-import 'a' */
+import A from "a"; /* Trailing comment on same-line as A */
 /* Leading comment before B */
-import B from "b";
+import B from "b"; /* Trailing comment on same-line as B */
+
+/* Trailing comment on first line after A (this is treated as a "bottom-of-imports comment) */
 
 // Loose trailing comment after imports (should not be dragged up with A)
 
@@ -101,23 +82,24 @@ exports[`import-comments-outer-comments-single-line.ts - typescript-verify > imp
 
 // Leading comment before B
 import B from "b"; // Trailing comment on same-line as B
-// Trailing comment on first line after B (This is treated as a leading comment for next import A!)
+// Trailing comment on first line after B (this is treated as a leading comment for next import A!)
 
 // Leading comment before A
 import A from "a"; // Trailing comment on same-line as A
-// Trailing comment on first line after A (will follow A initially, because this is "close" to last-import 'a')
+// Trailing comment on first line after A (this is treated as a "bottom-of-imports comment)
 
 // Loose trailing comment after imports (should not be dragged up with A)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Loose leading comment before imports (should not be dragged down with B)
 
-// Trailing comment on first line after B (This is treated as a leading comment for next import A!)
+// Trailing comment on first line after B (this is treated as a leading comment for next import A!)
 
 // Leading comment before A
 import A from "a"; // Trailing comment on same-line as A
-// Trailing comment on first line after A (will follow A initially, because this is "close" to last-import 'a')
 // Leading comment before B
 import B from "b"; // Trailing comment on same-line as B
+
+// Trailing comment on first line after A (this is treated as a "bottom-of-imports comment)
 
 // Loose trailing comment after imports (should not be dragged up with A)
 
