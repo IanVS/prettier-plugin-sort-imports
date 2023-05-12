@@ -51,6 +51,9 @@ import b from "b";
 exports[`import-comments-outer-comments-block-comments.ts - typescript-verify > import-comments-outer-comments-block-comments.ts 1`] = `
 // Loose leading comment before imports (should not be dragged down with B)
 
+import C from "c" /* trailing comment that spans
+                     onto the following line */
+
 /* Leading comment before B */
 import B from "b"; /* Trailing comment on same-line as B */
 /* Trailing comment on first line after B (this is treated as a leading comment for next import A!) */
@@ -70,6 +73,8 @@ import A from "a"; /* Trailing comment on same-line as A */
 import A from "a"; /* Trailing comment on same-line as A */
 /* Leading comment before B */
 import B from "b"; /* Trailing comment on same-line as B */
+import C from "c"; /* trailing comment that spans
+                      onto the following line */
 
 /* Trailing comment on first line after A (this is treated as a "bottom-of-imports comment) */
 

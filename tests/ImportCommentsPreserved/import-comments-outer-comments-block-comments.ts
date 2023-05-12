@@ -1,5 +1,8 @@
 // Loose leading comment before imports (should not be dragged down with B)
 
+import C from "c" /* trailing comment that spans
+                     onto the following line */
+
 /* Leading comment before B */
 import B from "b"; /* Trailing comment on same-line as B */
 /* Trailing comment on first line after B (this is treated as a leading comment for next import A!) */
