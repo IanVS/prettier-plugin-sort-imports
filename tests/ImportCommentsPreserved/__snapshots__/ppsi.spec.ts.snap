@@ -61,6 +61,23 @@ import b from "b";
 
 `;
 
+exports[`import-comments-document-top-test3.ts - typescript-verify > import-comments-document-top-test3.ts 1`] = `
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable react/jsx-key */
+/* eslint-disable jsx-a11y/alt-text */
+
+import { useState } from "react";
+import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable react/jsx-key */
+/* eslint-disable jsx-a11y/alt-text */
+
+import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
+import { useState } from "react";
+
+`;
+
 exports[`import-comments-outer-comments-block-comments.ts - typescript-verify > import-comments-outer-comments-block-comments.ts 1`] = `
 // Loose leading comment before imports (should not be dragged down with B)
 
