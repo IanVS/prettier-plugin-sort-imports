@@ -864,7 +864,7 @@ postcss@^8.1.10, postcss@^8.4.23:
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
-prettier@^3.0.0-alpha.4:
+prettier@3.0.0-alpha.4:
   version "3.0.0-alpha.4"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-3.0.0-alpha.4.tgz#eee71d6b520b970f44e4045f2dc772bf6f80815f"
   integrity sha512-+KeqJv4E5kaRsDRgSx9IeVygLKGHRmcoPvRJvPFp3bC1mw8opsva555gGb8TaJzUiHXoLZcus1EX+nlHPda7Pw==
