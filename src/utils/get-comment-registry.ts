@@ -149,11 +149,11 @@ const attachCommentsToRegistryMap = <
 
         // LeadingGap is used with firstImport to protect top-of-file comments, and pick the right ImportSpecifier when Specifiers are re-sorted
         const hasLeadingGap =
-            (comment.loc?.start.line || 0) < (owner.loc?.start.line || 0) - 1;
+            (comment.loc?.end.line || 0) < (owner.loc?.start.line || 0) - 1;
 
         // TrailingGap is used with lastImport to protect bottom-of-imports comments, and pick the right ImportSpecifier when Specifiers are re-sorted
         const hasTrailingGap =
-            (comment.loc?.start.line || 0) > (owner.loc?.start.line || 0) + 1;
+            (comment.loc?.start.line || 0) > (owner.loc?.end.line || 0) + 1;
 
         if (attachmentKey === 'trailingComments') {
             // Trailing comments might be on the same line "attached"
