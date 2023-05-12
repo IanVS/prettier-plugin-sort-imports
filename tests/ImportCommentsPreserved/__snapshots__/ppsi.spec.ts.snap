@@ -14,6 +14,19 @@ import B from "b";
 
 `;
 
+exports[`import-comments-directives.ts - typescript-verify > import-comments-directives.ts 1`] = `
+/** @jsxImportSource @emotion/react */
+"use client";
+
+import * as React from "react";
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/** @jsxImportSource @emotion/react */
+"use client";
+
+import * as React from "react";
+
+`;
+
 exports[`import-comments-document-top-test1.ts - typescript-verify > import-comments-document-top-test1.ts 1`] = `
 // This is part of multiple-lines at document-top
 // Second line followed by a gap
