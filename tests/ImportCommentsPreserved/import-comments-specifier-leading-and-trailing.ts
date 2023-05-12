@@ -10,8 +10,10 @@ import {
 import {
     /** i3 leading comment
       */ i3,
-    i2, /* i2 same-line will be treated as leading comment for i1 */
-    i1, /* i1 same-line will be treated as trailing comment for i1 */
+    i2, /* i2 same-line block */
+    i4, /* i4 multi-line
+        block */
+    i1, /* i1 same-line block */
 } from "i";
 
 import {
