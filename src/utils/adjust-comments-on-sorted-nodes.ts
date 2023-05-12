@@ -29,8 +29,6 @@ export const adjustCommentsOnSortedNodes = (
     const registry = getCommentRegistryFromImportDeclarations({
         outputNodes,
         firstImport: originalDeclarationNodes[0],
-        lastImport:
-            originalDeclarationNodes[originalDeclarationNodes.length - 1],
     });
 
     // Make a copy of the nodes for easier debugging & remove the existing comments to reattach them

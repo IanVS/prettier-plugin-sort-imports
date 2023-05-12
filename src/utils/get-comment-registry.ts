@@ -68,8 +68,7 @@ const MAX_COUNT_OF_LIKELY_IMPORT_STATEMENTS = 10000;
 /** Lower number priority will be processed earlier! */
 enum DeferredCommentClaimPriorityAdjustment {
     leadingSpecifier = MAX_COUNT_OF_LIKELY_IMPORT_STATEMENTS * 1,
-    trailingNonSameLine = MAX_COUNT_OF_LIKELY_IMPORT_STATEMENTS * 2,
-    leadingAboveAllImports = MAX_COUNT_OF_LIKELY_IMPORT_STATEMENTS * 3,
+    leadingAboveAllImports = MAX_COUNT_OF_LIKELY_IMPORT_STATEMENTS * 2,
 }
 
 const debugLog: typeof console.debug | undefined = undefined as any; // undefined as any, because typescript is too smart
@@ -81,9 +80,7 @@ const debugLog: typeof console.debug | undefined = undefined as any; // undefine
  * Walking the AST can find the same comment in multiple places,
  *  so we need to collect them all, and attach them in our preferred order.
  */
-const attachCommentsToRegistryMap = <
-    T extends ImportDeclaration | SomeSpecifier,
->({
+const attachCommentsToRegistryMap = ({
     commentRegistry,
     deferredCommentClaims,
 
@@ -92,7 +89,6 @@ const attachCommentsToRegistryMap = <
 
     owner,
     firstImport,
-    lastImport,
 }: {
     commentRegistry: Map<string, CommentEntry>;
     /**
@@ -103,12 +99,10 @@ const attachCommentsToRegistryMap = <
     attachmentKey: (typeof orderedCommentKeysToRegister)[number];
     comments: Comment[];
 
-    owner: T;
+    owner: ImportDeclaration | SomeSpecifier;
 
     /** Original declaration, not the re-sorted output-node! */
     firstImport: ImportDeclaration;
-    /** Original declaration, not the re-sorted output-node! */
-    lastImport: ImportDeclaration;
 }) => {
     let commentCounter = 0;
 
@@ -119,11 +113,9 @@ const attachCommentsToRegistryMap = <
             debugLog?.('Comment already registered', commentId);
             continue;
         }
-
-        // This node is needs to be attached somewhere.
+        // This comment node is needs to be attached somewhere.
 
         const ownerIsSpecifier = SpecifierTypes.includes(owner.type);
-        const commentIsSingleLineType = comment.type === 'CommentLine';
 
         const commentEntry: CommentEntry = {
             owner,
@@ -138,50 +130,38 @@ const attachCommentsToRegistryMap = <
             // InnerComments are always attached to their original owner
             commentRegistry.set(commentId, commentEntry);
             continue;
-        }
-
-        const currentOwnerIsFirstImport = nodeId(owner) === nodeId(firstImport);
-        const currentOwnerIsLastImport = nodeId(owner) === nodeId(lastImport);
-
-        const isSameLineAsCurrentOwner =
-            owner.loc?.start.line === comment.loc?.start.line;
-
-        // endsMoreThanOneLineAboveOwner is used with firstImport to protect top-of-file comments, and pick the right ImportSpecifier when Specifiers are re-sorted
-        const endsMoreThanOneLineAboveOwner =
-            (comment.loc?.end.line || 0) < (owner.loc?.start.line || 0) - 1;
-
-        // startsBelowOwner is used with lastImport to protect bottom-of-imports comments, and pick the right ImportSpecifier when Specifiers are re-sorted
-        const startsBelowOwner =
-            (comment.loc?.start.line || 0) > (owner.loc?.end.line || 0);
-
-        if (attachmentKey === 'trailingComments') {
+        } else if (attachmentKey === 'trailingComments') {
             // Trailing comments might be on the same line "attached"
             // Detect if this comment is on same line as the owner
             // Or they might be double-counted (once in trailingComments and once in leadingComments of the next node)
 
+            const isSameLineAsCurrentOwner =
+                owner.loc?.start.line === comment.loc?.start.line;
+
             debugLog?.({
                 isSameLineAsCurrentOwner,
-                endsMoreThanOneLineAboveOwner,
-                startsBelowOwner,
                 owner,
                 comment,
             });
 
             if (isSameLineAsCurrentOwner) {
                 commentRegistry.set(commentId, commentEntry);
-            } else if (startsBelowOwner) {
+            } else {
                 // This comment is either a leading comment on the next node, or it's an unrelated comment following the imports
                 // Trailing comment, not on the same line, so either it will get attached correctly, or it will be dropped below imports
                 // -- will automatically be attached from other nodes, or will fall to bottom of imports
                 // [Intentional empty block]
-            } else {
-                // This comment should be kept close to the ImportDeclaration it follows
-                commentEntry.processingPriority +=
-                    DeferredCommentClaimPriorityAdjustment.trailingNonSameLine;
-                deferredCommentClaims.push(commentEntry);
             }
             continue; // Unnecessary, but explicit
         } else if (attachmentKey === 'leadingComments') {
+            const currentOwnerIsFirstImport =
+                nodeId(owner) === nodeId(firstImport);
+
+            // endsMoreThanOneLineAboveOwner is used with firstImport to protect top-of-file comments,
+            // and pick the right ImportSpecifier when Specifiers are re-sorted
+            const endsMoreThanOneLineAboveOwner =
+                (comment.loc?.end.line || 0) < (owner.loc?.start.line || 0) - 1;
+
             if (currentOwnerIsFirstImport && endsMoreThanOneLineAboveOwner) {
                 debugLog?.('Found a disconnected leading comment', {
                     comment,
@@ -240,18 +220,15 @@ const attachCommentsToRegistryMap = <
  */
 export const getCommentRegistryFromImportDeclarations = ({
     firstImport,
-    lastImport,
     outputNodes,
 }: {
     /** Original declaration, not the re-sorted output-node! */
     firstImport: ImportDeclaration;
-    /** Original declaration, not the re-sorted output-node! */
-    lastImport: ImportDeclaration;
 
     /** Constructed Output Nodes */
     outputNodes: ImportDeclaration[];
 }) => {
-    if ((outputNodes.length === 0 || !firstImport, !lastImport)) {
+    if (outputNodes.length === 0 || !firstImport) {
         return [];
     }
 
@@ -276,7 +253,8 @@ export const getCommentRegistryFromImportDeclarations = ({
 
     // Detach all comments, but keep their state.
     // The babel renderer would otherwise move them around based on their original attachment.
-    // Register them in a specific order (inner, trailing, leading) so that the our best attachment gets priority
+    // Register them in a specific order: inner, trailing (i.e. same-line), leading
+    // so that our highest-confidence attachment gets priority
 
     for (const attachmentKey of orderedCommentKeysToRegister) {
         debugLog?.(
@@ -291,7 +269,6 @@ export const getCommentRegistryFromImportDeclarations = ({
                 comments: Array.from(declarationNode[attachmentKey] || []),
                 owner: declarationNode,
                 firstImport,
-                lastImport,
             });
 
             for (const specifierNode of declarationNode.specifiers) {
@@ -302,7 +279,6 @@ export const getCommentRegistryFromImportDeclarations = ({
                     comments: Array.from(specifierNode[attachmentKey] || []),
                     owner: specifierNode,
                     firstImport,
-                    lastImport,
                 });
             }
         }
