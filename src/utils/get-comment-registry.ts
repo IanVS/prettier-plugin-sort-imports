@@ -51,8 +51,10 @@ const orderedCommentKeysToRegister = [
 export interface CommentEntry {
     owner: ImportDeclaration | SomeSpecifier;
     ownerIsSpecifier: boolean;
-    // Special case for leaving comments at top-of-file
+    /** Special case for leaving comments at top-of-file */
     needsTopOfFileOwner?: boolean;
+    /** Comments that follow the last specifier must stay at the bottom of their import block! */
+    needsLastSpecifierOwner?: boolean;
 
     commentId: string;
     comment: Comment;
@@ -69,6 +71,8 @@ const MAX_COUNT_OF_LIKELY_IMPORT_STATEMENTS = 10000;
 enum DeferredCommentClaimPriorityAdjustment {
     leadingSpecifier = MAX_COUNT_OF_LIKELY_IMPORT_STATEMENTS * 1,
     leadingAboveAllImports = MAX_COUNT_OF_LIKELY_IMPORT_STATEMENTS * 2,
+    /** This must stay a trailing comment, because it might be a directive preceding `} from "./foo"` */
+    trailingCommentForSpecifier = MAX_COUNT_OF_LIKELY_IMPORT_STATEMENTS * 3,
 }
 
 const debugLog: typeof console.debug | undefined = undefined as any; // undefined as any, because typescript is too smart
@@ -147,10 +151,23 @@ const attachCommentsToRegistryMap = ({
             if (isSameLineAsCurrentOwner) {
                 commentRegistry.set(commentId, commentEntry);
             } else {
-                // This comment is either a leading comment on the next node, or it's an unrelated comment following the imports
-                // Trailing comment, not on the same line, so either it will get attached correctly, or it will be dropped below imports
-                // -- will automatically be attached from other nodes, or will fall to bottom of imports
-                // [Intentional empty block]
+                // This comment is actually either a leading comment on the next node,
+                //  or it's an unrelated comment following the imports
+                //  or it's a trailing comment on the last specifier inside a declaration
+
+                if (ownerIsSpecifier) {
+                    // Specifier comments will just vanish if not present on an output node.
+                    deferredCommentClaims.push({
+                        ...commentEntry,
+                        needsLastSpecifierOwner: true,
+                        processingPriority:
+                            commentEntry.processingPriority +
+                            DeferredCommentClaimPriorityAdjustment.trailingCommentForSpecifier,
+                    });
+                } else {
+                    // [Intentional empty block] - top-level comments will be attached as a leading attachment,
+                    //  on another node or will be preserved automatically by babel & fall to bottom of imports
+                }
             }
             continue; // Unnecessary, but explicit
         } else if (attachmentKey === 'leadingComments') {
@@ -362,23 +379,54 @@ export function attachCommentsToOutputNodes(
         outputNodes.unshift(emptyStatement());
     }
 
+    /** Store a mapping of Specifier to ImportDeclaration */
+    const parentNodeId = (specifier: SomeSpecifier) =>
+        `parent::${nodeId(specifier)}`;
+
     const outputRegistry = new Map<string, ImportRelated>();
     for (const outputNode of outputNodes) {
         outputRegistry.set(nodeId(outputNode), outputNode);
         if (outputNode.type === 'ImportDeclaration') {
             for (const specifier of outputNode.specifiers) {
                 outputRegistry.set(nodeId(specifier), specifier);
+                outputRegistry.set(parentNodeId(specifier), outputNode);
             }
         }
     }
 
     for (const commentEntry of commentEntriesFromRegistry) {
-        const { owner, comment, association, needsTopOfFileOwner } =
-            commentEntry;
+        const {
+            owner,
+            comment,
+            association,
+            needsTopOfFileOwner,
+            needsLastSpecifierOwner,
+        } = commentEntry;
 
-        const ownerNode = needsTopOfFileOwner
+        let ownerNode = needsTopOfFileOwner
             ? outputNodes[0]
             : outputRegistry.get(nodeId(owner));
+
+        if (needsLastSpecifierOwner) {
+            const parentDeclaration = outputRegistry.get(
+                parentNodeId(owner as SomeSpecifier),
+            ) as ImportDeclaration | undefined;
+
+            if (
+                !parentDeclaration ||
+                (parentDeclaration.specifiers?.length || 0) === 0
+            ) {
+                throw new Error(
+                    "Fatal Internal Error: Couldn't find parent declaration for a specifier",
+                );
+            }
+            const lastSpecifier =
+                parentDeclaration.specifiers[
+                    parentDeclaration.specifiers.length - 1
+                ];
+
+            ownerNode = lastSpecifier;
+        }
 
         if (!ownerNode) {
             // Shouldn't be possible if you called this helper with the right inputs!
