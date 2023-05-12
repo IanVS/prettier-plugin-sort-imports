@@ -11,8 +11,8 @@ jobs:
             - uses: actions/setup-node@v3
               with:
                   node-version: ${{ matrix.node }}
-                  cache: 'yarn'
-                  cache-dependency-path: 'yarn.lock'
+                  #   cache: 'yarn'
+                  #   cache-dependency-path: 'yarn.lock' # Something weird was happening?
             - run: yarn install --frozen-lockfile --non-interactive
             - name: Test
               run: yarn test
