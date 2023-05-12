@@ -8,6 +8,8 @@ import { naturalSort } from '../natural-sort';
  *
  * type imports are sorted separately, and placed after value imports.
  *
+ * Comments need to be fixed up so they attach to the right objects.
+ *
  * @param node Import declaration node
  */
 export const getSortedImportSpecifiers = (node: ImportDeclaration) => {

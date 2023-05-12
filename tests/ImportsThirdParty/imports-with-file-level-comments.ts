@@ -1,5 +1,6 @@
 //@ts-ignore
 // I am file top level comments
+
 import threeLevelRelativePath from "../../../threeLevelRelativePath";
 // I am stick to sameLevelRelativePath
 import sameLevelRelativePath from "./sameLevelRelativePath";
@@ -9,7 +10,7 @@ import thirdParty from "third-party";
 import {
     random // inner comment
 } from './random';
-// leading comment
+// leading comment for export from random
 export {
     random // inner comment
 } from './random';

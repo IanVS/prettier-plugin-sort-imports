@@ -6,8 +6,7 @@ import { getSortedNodes } from '../get-sorted-nodes';
 import { getSortedNodesModulesNames } from '../get-sorted-nodes-modules-names';
 import { getSortedNodesNamesAndNewlines } from '../get-sorted-nodes-names-and-newlines';
 
-const code = `// first comment
-// second comment
+const code = `
 import "se3";
 import z from 'z';
 import c, { cD } from 'c';
@@ -51,13 +50,14 @@ test('it returns all sorted nodes, preserving the order side effect nodes', () =
         'se2',
         '',
     ]);
-    expect(
-        sorted
-            .filter((node) => node.type === 'ImportDeclaration')
-            .map((importDeclaration) =>
-                getSortedNodesModulesNames(importDeclaration.specifiers),
-            ),
-    ).toEqual([
+
+    const result2 = sorted
+        .filter((node) => node.type === 'ImportDeclaration')
+        .map((importDeclaration) =>
+            getSortedNodesModulesNames(importDeclaration.specifiers),
+        );
+
+    expect(result2).toEqual([
         [],
         ['c', 'cD'],
         ['g'],

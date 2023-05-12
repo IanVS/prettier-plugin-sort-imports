@@ -2,6 +2,7 @@
 
 exports[`imports-with-comments.js - babel-verify > imports-with-comments.js 1`] = `
 // I am top level comment in this file.
+
 import z from 'z';
 import threeLevelRelativePath from "../../../threeLevelRelativePath";
 import sameLevelRelativePath from "./sameLevelRelativePath";
@@ -42,6 +43,7 @@ function add(a, b) {
 
 exports[`imports-with-side-effect-imports.js - babel-verify > imports-with-side-effect-imports.js 1`] = `
 // I am top level comment in this file.
+
 import thirdParty0 from "third-party0";
 import something3 from "@core/something3";
 import thirdDisco0 from "third-disco0";

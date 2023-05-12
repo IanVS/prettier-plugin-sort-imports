@@ -31,6 +31,7 @@ export function preprocessor(code: string, options: PrettierOptions): string {
     const allOriginalImportNodes: ImportDeclaration[] = [];
     const parserOptions: ParserOptions = {
         sourceType: 'module',
+        attachComment: true,
         plugins: getExperimentalParserPlugins(importOrderParserPlugins),
     };
 

@@ -60,6 +60,7 @@ export const a = 1;
 exports[`imports-with-comments.ts - typescript-verify > imports-with-comments.ts 1`] = `
 // I am top level comment in this file.
 // I am second line of top level comment in this file.
+
 import './commands';
 
 // Comment
@@ -71,6 +72,7 @@ function add(a:number,b:number) {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // I am top level comment in this file.
 // I am second line of top level comment in this file.
+
 import "./commands";
 
 // Comment
@@ -85,6 +87,7 @@ function add(a: number, b: number) {
 exports[`imports-with-comments-and-third-party.ts - typescript-verify > imports-with-comments-and-third-party.ts 1`] = `
 // I am top level comment in this file.
 // I am second line of top level comment in this file.
+
 import './commands';
 import React from 'react';
 // Comment
@@ -96,6 +99,7 @@ function add(a:number,b:number) {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // I am top level comment in this file.
 // I am second line of top level comment in this file.
+
 import "./commands";
 import React from "react";
 
@@ -111,6 +115,7 @@ function add(a: number, b: number) {
 exports[`imports-with-comments-on-top.ts - typescript-verify > imports-with-comments-on-top.ts 1`] = `
 // I am top level comment in this file.
 // I am second line of top level comment in this file.
+
 import z from 'z';
 import threeLevelRelativePath from "../../../threeLevelRelativePath";
 import sameLevelRelativePath from "./sameLevelRelativePath";
@@ -155,6 +160,7 @@ function add(a: number, b: number) {
 exports[`imports-with-file-level-comments.ts - typescript-verify > imports-with-file-level-comments.ts 1`] = `
 //@ts-ignore
 // I am file top level comments
+
 import threeLevelRelativePath from "../../../threeLevelRelativePath";
 // I am stick to sameLevelRelativePath
 import sameLevelRelativePath from "./sameLevelRelativePath";
@@ -164,7 +170,7 @@ import thirdParty from "third-party";
 import {
     random // inner comment
 } from './random';
-// leading comment
+// leading comment for export from random
 export {
     random // inner comment
 } from './random';
@@ -209,7 +215,7 @@ import {
 // I am stick to sameLevelRelativePath
 import sameLevelRelativePath from "./sameLevelRelativePath";
 
-// leading comment
+// leading comment for export from random
 export {
     random, // inner comment
 } from "./random";
@@ -259,6 +265,7 @@ function add(a: number, b: number) {
 
 exports[`imports-without-third-party.ts - typescript-verify > imports-without-third-party.ts 1`] = `
 // I am top level comment
+
 import otherthing from "@core/otherthing";
 import abc from "@core/abc";
 // I am comment

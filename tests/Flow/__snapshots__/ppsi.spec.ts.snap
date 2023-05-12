@@ -6,6 +6,7 @@ exports[`imports-with-comments.js - flow-verify > imports-with-comments.js 1`] =
  */
 
 // I am top level comment in this file.
+
 import { type Something } from './__generated__/';
 import threeLevelRelativePath from "../../../threeLevelRelativePath";
 import sameLevelRelativePath from "./sameLevelRelativePath";
@@ -33,7 +34,6 @@ export function givesAFoo3Obj(): AliasFoo3 {
 /**
  * @flow
  */
-
 // I am top level comment in this file.
 
 import thirdParty from "third-party";
@@ -70,6 +70,7 @@ exports[`imports-with-side-effect-imports.js - flow-verify > imports-with-side-e
  */
 
 // I am top level comment in this file.
+
 import thirdParty0 from "third-party0";
 import something3 from "@core/something3";
 import thirdDisco0 from "third-disco0";
@@ -129,7 +130,6 @@ export function givesAFoo3Obj(): AliasFoo3 {
 /**
  * @flow
  */
-
 // I am top level comment in this file.
 
 import thirdDisco0 from "third-disco0";
@@ -196,6 +196,8 @@ import {fooValue} from './foo';
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /**
  * @flow
- */ import { fooValue, type Foo } from "./foo";
+ */
+
+import { fooValue, type Foo } from "./foo";
 
 `;

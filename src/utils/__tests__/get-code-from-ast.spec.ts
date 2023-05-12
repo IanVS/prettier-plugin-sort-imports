@@ -6,9 +6,7 @@ import { getImportNodes } from '../get-import-nodes';
 import { getSortedNodes } from '../get-sorted-nodes';
 
 test('sorts imports correctly', () => {
-    const code = `// first comment
-// second comment
-import z from 'z';
+    const code = `import z from 'z';
 import c from 'c';
 import g from 'g';
 import t from 't';
@@ -26,10 +24,7 @@ import a from 'a';
         directives: [],
     });
     expect(format(formatted, { parser: 'babel' })).toEqual(
-        `// first comment
-// second comment
-
-import a from "a";
+        `import a from "a";
 import c from "c";
 import g from "g";
 import k from "k";
@@ -40,9 +35,7 @@ import z from "z";
 });
 
 test('merges duplicate imports correctly', () => {
-    const code = `// first comment
-// second comment
-import z from 'z';
+    const code = `import z from 'z';
 import c from 'c';
 import g from 'g';
 import t from 't';
@@ -64,10 +57,7 @@ import type {See} from 'c';
         directives: [],
     });
     expect(format(formatted, { parser: 'babel' })).toEqual(
-        `// first comment
-// second comment
-
-import a, { b, type Bee } from "a";
+        `import a, { b, type Bee } from "a";
 import c, { type C, type See } from "c";
 import g from "g";
 import k from "k";

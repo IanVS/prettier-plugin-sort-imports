@@ -34,6 +34,7 @@ Since then more critical features & fixes have been added, and the options have 
     - [`importOrderTypeScriptVersion`](#importordertypescriptversion)
     - [`importOrderParserPlugins`](#importorderparserplugins)
   - [Prevent imports from being sorted](#prevent-imports-from-being-sorted)
+  - [Comments](#comments)
 - [FAQ / Troubleshooting](#faq--troubleshooting)
 - [Compatibility](#compatibility)
 - [Contribution](#contribution)
@@ -270,6 +271,15 @@ import { cars } from "austria";
 This will keep the `zealand` import at the top instead of moving it below the `austria` import. Note that since only
 entire import statements can be ignored, line comments (`// prettier-ignore`) are recommended over inline comments
 (`/* prettier-ignore */`).
+
+### Comments
+
+We make the following attempts at keeping comments in your imports clean:
+
+- If you have one or more comments at the top of the file, we will keep them at the top as long as there is a blank line before your first import statement.
+- Comments on lines after the final import statement will not be moved. (Runtime-code between imports will be moved below all the imports).
+- In general, if you place a comment on the same line as an Import `Declaration` or `*Specifier`, we will keep it attached to that same specifier if it moves around.
+- Other comments are preserved, and are generally considered "leading" comments for the subsequent Import `Declaration` or `*Specifier`.
 
 ## FAQ / Troubleshooting
 

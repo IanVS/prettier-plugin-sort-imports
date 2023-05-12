@@ -59,14 +59,12 @@
         "@babel/traverse": "^7.21.5",
         "@babel/types": "^7.21.5",
         "lodash.clone": "^4.5.0",
-        "lodash.isequal": "^4.5.0",
         "semver": "^7.5.0"
     },
     "devDependencies": {
         "@types/babel__generator": "^7.6.4",
         "@types/babel__traverse": "^7.18.3",
         "@types/lodash.clone": "4.5.7",
-        "@types/lodash.isequal": "4.5.6",
         "@types/node": "^18.15.13",
         "@types/prettier": "^2.7.2",
         "@types/semver": "^7.3.13",
