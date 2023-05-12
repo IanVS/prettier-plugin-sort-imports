@@ -315,14 +315,14 @@ export const getCommentRegistryFromImportDeclarations = ({
 
     // Merge in any comments that were orphaned, so they get reattached to their original owner
     for (const entry of deferredCommentClaims) {
-        const id = entry.commentId;
+        const { commentId } = entry;
         debugLog?.(
             'Processing deferred comment claim',
-            id,
+            commentId,
             entry.comment.value,
         );
 
-        if (!commentRegistry.has(id)) {
+        if (!commentRegistry.has(commentId)) {
             if (entry.ownerIsSpecifier) {
                 // Find the best specifier to attach to
                 const line = entry.comment.loc?.start.line || 0;
@@ -339,25 +339,25 @@ export const getCommentRegistryFromImportDeclarations = ({
 
                 debugLog?.(
                     'Reattaching',
-                    id,
+                    commentId,
                     entry.association,
                     targetAssociation,
                     entry.comment.value,
                     { hasNewOwner, owner, entry_owner: entry.owner },
                 );
 
-                commentRegistry.set(id, {
+                commentRegistry.set(commentId, {
                     ...entry,
                     owner,
                     association: targetAssociation,
                 });
             } else {
-                debugLog?.('Attaching orphan entry', id, entry);
-                commentRegistry.set(id, entry);
+                debugLog?.('Attaching orphan entry', commentId, entry);
+                commentRegistry.set(commentId, entry);
             }
         } else {
             debugLog?.(
-                `Skipping already-attached ${id} ${
+                `Skipping already-attached ${commentId} ${
                     entry.ownerIsSpecifier ? 'Specifier' : 'Declaration'
                 } ${entry.comment.value}`,
             );
