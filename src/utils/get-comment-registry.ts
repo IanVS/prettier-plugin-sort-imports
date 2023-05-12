@@ -144,7 +144,6 @@ const attachCommentsToRegistryMap = <
         const currentOwnerIsLastImport = nodeId(owner) === nodeId(lastImport);
 
         const isSameLineAsCurrentOwner =
-            commentIsSingleLineType && // Prettier doesn't allow block comments to stay on same line as expressions
             owner.loc?.start.line === comment.loc?.start.line;
 
         // endsMoreThanOneLineAboveOwner is used with firstImport to protect top-of-file comments, and pick the right ImportSpecifier when Specifiers are re-sorted
