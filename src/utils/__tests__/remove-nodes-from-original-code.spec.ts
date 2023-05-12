@@ -1,5 +1,6 @@
 import { parse as babelParser } from '@babel/parser';
 import { format } from 'prettier';
+import { expect, test } from 'vitest';
 
 import { getAllCommentsFromNodes } from '../get-all-comments-from-nodes';
 import { getImportNodes } from '../get-import-nodes';
@@ -23,13 +24,7 @@ test('it should remove nodes from the original code', async () => {
     const importNodes = getImportNodes(code);
     const sortedNodes = getSortedNodes(importNodes, {
         importOrder: [],
-        importOrderBuiltinModulesToTop: false,
-        importOrderCaseInsensitive: false,
-        importOrderGroupNamespaceSpecifiers: false,
-        importOrderMergeDuplicateImports: false,
-        importOrderCombineTypeAndValueImports: false,
-        importOrderSeparation: false,
-        importOrderSortSpecifiers: false,
+        importOrderCombineTypeAndValueImports: true,
     });
     const allCommentsFromImports = getAllCommentsFromNodes(sortedNodes);
 

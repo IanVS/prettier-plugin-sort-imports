@@ -2,11 +2,10 @@ import clone from 'lodash.clone';
 
 import {
     BUILTIN_MODULES,
-    THIRD_PARTY_MODULES_SPECIAL_WORD,
     newLineNode,
+    THIRD_PARTY_MODULES_SPECIAL_WORD,
 } from '../constants';
-import { naturalSort } from '../natural-sort';
-import { GetSortedNodes, ImportGroups, ImportOrLine } from '../types';
+import type { GetSortedNodes, ImportGroups, ImportOrLine } from '../types';
 import { getImportNodesMatchedGroup } from './get-import-nodes-matched-group';
 import { getSortedImportSpecifiers } from './get-sorted-import-specifiers';
 import { getSortedNodesGroup } from './get-sorted-nodes-group';
@@ -19,15 +18,7 @@ import { getSortedNodesGroup } from './get-sorted-nodes-group';
  * @param options Options to influence the behavior of the sorting algorithm.
  */
 export const getSortedNodesByImportOrder: GetSortedNodes = (nodes, options) => {
-    naturalSort.insensitive = options.importOrderCaseInsensitive;
-
     let { importOrder } = options;
-    const {
-        importOrderSeparation,
-        importOrderSortSpecifiers,
-        importOrderGroupNamespaceSpecifiers,
-        importOrderBuiltinModulesToTop,
-    } = options;
 
     const originalNodes = nodes.map(clone);
     const finalNodes: ImportOrLine[] = [];
@@ -36,9 +27,8 @@ export const getSortedNodesByImportOrder: GetSortedNodes = (nodes, options) => {
         importOrder = [THIRD_PARTY_MODULES_SPECIAL_WORD, ...importOrder];
     }
 
-    if (importOrderBuiltinModulesToTop) {
-        importOrder = [BUILTIN_MODULES, ...importOrder];
-    }
+    // IDEA: We could make built-ins a special word, if people do not want them up top
+    importOrder = [BUILTIN_MODULES, ...importOrder];
 
     const importOrderGroups = importOrder.reduce<ImportGroups>(
         (groups, regexp) =>
@@ -87,22 +77,12 @@ export const getSortedNodesByImportOrder: GetSortedNodes = (nodes, options) => {
 
         if (groupNodes.length === 0) continue;
 
-        const sortedInsideGroup = getSortedNodesGroup(groupNodes, {
-            importOrderGroupNamespaceSpecifiers,
-        });
+        const sortedInsideGroup = getSortedNodesGroup(groupNodes);
 
         // Sort the import specifiers
-        if (importOrderSortSpecifiers) {
-            sortedInsideGroup.forEach((node) =>
-                getSortedImportSpecifiers(node),
-            );
-        }
+        sortedInsideGroup.forEach((node) => getSortedImportSpecifiers(node));
 
         finalNodes.push(...sortedInsideGroup);
-
-        if (importOrderSeparation) {
-            finalNodes.push(newLineNode);
-        }
     }
 
     return finalNodes;
@@ -112,8 +92,8 @@ export const getSortedNodesByImportOrder: GetSortedNodes = (nodes, options) => {
  * isCustomGroupSeparator checks if the provided pattern is intended to be used
  * as an import separator, rather than an actual group of imports.
  */
-function isCustomGroupSeparator(pattern: string) {
-    return pattern.trim() === '';
+export function isCustomGroupSeparator(pattern?: string) {
+    return pattern?.trim() === '';
 }
 
 function isNodeANewline(node: ImportOrLine) {

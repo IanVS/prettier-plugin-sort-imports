@@ -3,10 +3,9 @@ module.exports = {
     tabWidth: 4,
     trailingComma: 'all',
     singleQuote: true,
-    jsxBracketSameLine: true,
+    bracketSameLine: true,
     semi: true,
     plugins: [require('./lib/src/index.js')],
-    importOrder: ['^[./]'],
-    importOrderSeparation: true,
-    importOrderSortSpecifiers: true,
+    importOrder: ['', '<THIRD_PARTY_MODULES>', '', '^[./]'],
+    importOrderTypeScriptVersion: '5.0.0',
 };

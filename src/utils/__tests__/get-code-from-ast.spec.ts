@@ -1,13 +1,12 @@
 import { format } from 'prettier';
+import { expect, test } from 'vitest';
 
 import { getCodeFromAst } from '../get-code-from-ast';
 import { getImportNodes } from '../get-import-nodes';
 import { getSortedNodes } from '../get-sorted-nodes';
 
-it('sorts imports correctly', async () => {
-    const code = `// first comment
-// second comment
-import z from 'z';
+test('sorts imports correctly', async () => {
+    const code = `import z from 'z';
 import c from 'c';
 import g from 'g';
 import t from 't';
@@ -17,13 +16,7 @@ import a from 'a';
     const importNodes = getImportNodes(code);
     const sortedNodes = getSortedNodes(importNodes, {
         importOrder: [],
-        importOrderBuiltinModulesToTop: false,
-        importOrderCaseInsensitive: false,
-        importOrderGroupNamespaceSpecifiers: false,
-        importOrderMergeDuplicateImports: false,
-        importOrderCombineTypeAndValueImports: false,
-        importOrderSeparation: false,
-        importOrderSortSpecifiers: false,
+        importOrderCombineTypeAndValueImports: true,
     });
     const formatted = getCodeFromAst({
         nodesToOutput: sortedNodes,
@@ -31,9 +24,7 @@ import a from 'a';
         directives: [],
     });
     expect(await format(formatted, { parser: 'babel' })).toEqual(
-        `// first comment
-// second comment
-import a from "a";
+        `import a from "a";
 import c from "c";
 import g from "g";
 import k from "k";
@@ -43,10 +34,8 @@ import z from "z";
     );
 });
 
-it('merges duplicate imports correctly', async () => {
-    const code = `// first comment
-// second comment
-import z from 'z';
+test('merges duplicate imports correctly', async () => {
+    const code = `import z from 'z';
 import c from 'c';
 import g from 'g';
 import t from 't';
@@ -59,13 +48,7 @@ import type {See} from 'c';
     const importNodes = getImportNodes(code, { plugins: ['typescript'] });
     const sortedNodes = getSortedNodes(importNodes, {
         importOrder: [],
-        importOrderBuiltinModulesToTop: false,
-        importOrderCaseInsensitive: false,
-        importOrderGroupNamespaceSpecifiers: false,
-        importOrderMergeDuplicateImports: true,
-        importOrderCombineTypeAndValueImports: false,
-        importOrderSeparation: false,
-        importOrderSortSpecifiers: false,
+        importOrderCombineTypeAndValueImports: true,
     });
     const formatted = getCodeFromAst({
         nodesToOutput: sortedNodes,
@@ -74,11 +57,8 @@ import type {See} from 'c';
         directives: [],
     });
     expect(await format(formatted, { parser: 'babel' })).toEqual(
-        `// first comment
-// second comment
-import a, { b, type Bee } from "a";
-import c from "c";
-import type { C, See } from "c";
+        `import a, { b, type Bee } from "a";
+import c, { type C, type See } from "c";
 import g from "g";
 import k from "k";
 import t from "t";

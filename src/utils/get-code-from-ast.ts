@@ -1,7 +1,12 @@
 import generate from '@babel/generator';
-import { Directive, InterpreterDirective, Statement, file } from '@babel/types';
+import {
+    file,
+    type Directive,
+    type InterpreterDirective,
+    type Statement,
+} from '@babel/types';
 
-import { newLineCharacters } from '../constants';
+import { injectNewlinesRegex, newLineCharacters } from '../constants';
 import { getAllCommentsFromNodes } from './get-all-comments-from-nodes';
 import { removeNodesFromOriginalCode } from './remove-nodes-from-original-code';
 
@@ -65,10 +70,9 @@ export const getCodeFromAst = ({
 
     const { code } = generate(newAST);
 
-    return (
-        code.replace(
-            /"PRETTIER_PLUGIN_SORT_IMPORTS_NEW_LINE";/gi,
-            newLineCharacters,
-        ) + codeWithoutImportsAndInterpreter.trim()
-    );
+    const replacedCode = code.replace(injectNewlinesRegex, newLineCharacters);
+
+    const trailingCode = codeWithoutImportsAndInterpreter.trim();
+
+    return replacedCode + trailingCode;
 };

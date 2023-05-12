@@ -1,4 +1,4 @@
-import {
+import type {
     CommentBlock,
     CommentLine,
     Directive,
@@ -11,7 +11,10 @@ import {
 type Range = readonly [start: number, end: number];
 
 /** An optional range between a start position (inclusive) and an end position (exclusive). */
-type OptionalRange = readonly [start: number | null, end: number | null];
+type OptionalRange = readonly [
+    start: number | null | undefined,
+    end: number | null | undefined,
+];
 
 /** Compares two range by their start position. */
 function compareRangesByStart(range1: Range, range2: Range): number {

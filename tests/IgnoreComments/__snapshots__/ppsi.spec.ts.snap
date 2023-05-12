@@ -1,0 +1,111 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ignore-next-node-comment-on-import.ts - typescript-verify > ignore-next-node-comment-on-import.ts 1`] = `
+// prettier-ignore
+import c from "c";
+import b from "b";
+import a from "a";
+
+// prettier-ignore
+import {h} from "h";
+// prettier-ignore
+import {g} from "g";
+
+import {f} from "f";
+import {d} from "d";
+import {e} from "e";
+
+// prettier-ignore
+// some other comments
+import z2 from "z2";
+import z3 from "z3";
+import z1 from "z1";
+
+export const foo = 42;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// prettier-ignore
+import c from "c";
+import a from "a";
+import b from "b";
+// prettier-ignore
+import { h } from "h";
+// prettier-ignore
+import { g } from "g";
+import { d } from "d";
+import { e } from "e";
+import { f } from "f";
+// prettier-ignore
+// some other comments
+import z2 from "z2";
+import z1 from "z1";
+import z3 from "z3";
+
+export const foo = 42;
+
+`;
+
+exports[`ignore-next-node-comment-on-import-with-type-modifier.ts - typescript-verify > ignore-next-node-comment-on-import-with-type-modifier.ts 1`] = `
+// prettier-ignore
+import c from "c";
+import b from "b";
+import a from "a";
+
+// prettier-ignore
+import {type h, h2} from "h";
+// prettier-ignore
+import {g, type g2} from "g";
+
+import {f, type f2} from "f";
+import {d1, type d, type d2} from "d";
+import {type e, e2} from "e";
+
+export const foo = 42;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// prettier-ignore
+import c from "c";
+import a from "a";
+import b from "b";
+// prettier-ignore
+import { type h, h2 } from "h";
+// prettier-ignore
+import { g, type g2 } from "g";
+import { d1, type d, type d2 } from "d";
+import { e2, type e } from "e";
+import { f, type f2 } from "f";
+
+export const foo = 42;
+
+`;
+
+exports[`ignore-next-node-comment-on-type-import.ts - typescript-verify > ignore-next-node-comment-on-type-import.ts 1`] = `
+// prettier-ignore
+import type c from "c";
+import type b from "b";
+import type a from "a";
+
+// prettier-ignore
+import type {h} from "h";
+// prettier-ignore
+import type {g} from "g";
+
+import type {f} from "f";
+import type {d} from "d";
+import type {e} from "e";
+
+export const foo = 42;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// prettier-ignore
+import type c from "c";
+import type a from "a";
+import type b from "b";
+// prettier-ignore
+import type { h } from "h";
+// prettier-ignore
+import type { g } from "g";
+import type { d } from "d";
+import type { e } from "e";
+import type { f } from "f";
+
+export const foo = 42;
+
+`;

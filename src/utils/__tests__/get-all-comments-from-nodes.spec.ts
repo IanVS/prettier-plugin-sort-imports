@@ -1,5 +1,10 @@
-import { ParserOptions } from '@babel/parser';
-import { CommentBlock, CommentLine, ImportDeclaration } from '@babel/types';
+import type { ParserOptions } from '@babel/parser';
+import type {
+    CommentBlock,
+    CommentLine,
+    ImportDeclaration,
+} from '@babel/types';
+import { expect, test } from 'vitest';
 
 import { getAllCommentsFromNodes } from '../get-all-comments-from-nodes';
 import { getImportNodes } from '../get-import-nodes';
@@ -10,13 +15,7 @@ const getSortedImportNodes = (code: string, options?: ParserOptions) => {
 
     return getSortedNodes(importNodes, {
         importOrder: [],
-        importOrderBuiltinModulesToTop: false,
-        importOrderCaseInsensitive: false,
-        importOrderGroupNamespaceSpecifiers: false,
-        importOrderMergeDuplicateImports: false,
-        importOrderCombineTypeAndValueImports: false,
-        importOrderSeparation: false,
-        importOrderSortSpecifiers: false,
+        importOrderCombineTypeAndValueImports: true,
     });
 };
 

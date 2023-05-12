@@ -1,0 +1,126 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`comments-on-directive-are-preserved.ts - typescript-verify > comments-on-directive-are-preserved.ts 1`] = `
+// Comment above
+/* foo
+   bar  */ "use strict" ;
+// Comment below
+"another directive";
+
+import './SetupEnvironment';
+import type { Period } from './Period'
+
+"this is not a directive prologue";
+
+function foo() {
+}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Comment above
+/* foo
+   bar  */ "use strict";
+
+// Comment below
+"another directive";
+
+import "./SetupEnvironment";
+import type { Period } from "./Period";
+
+("this is not a directive prologue");
+
+function foo() {}
+
+`;
+
+exports[`custom-directive-remains-at-top.ts - typescript-verify > custom-directive-remains-at-top.ts 1`] = `
+// below is a directive prologue
+'use custom'
+
+import './SetupEnvironment';
+import type { Period } from './Period'
+
+"this is not a directive prologue";
+
+function foo() {
+}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// below is a directive prologue
+"use custom";
+
+import "./SetupEnvironment";
+import type { Period } from "./Period";
+
+("this is not a directive prologue");
+
+function foo() {}
+
+`;
+
+exports[`multiple-directives-remain-at-top.ts - typescript-verify > multiple-directives-remain-at-top.ts 1`] = `
+// below is a directive prologue
+  'use custom' ; /* more directives... */ 'enable typecheck'
+                 'forbid IE'
+
+import './SetupEnvironment';
+import type { Period } from './Period'
+
+"this is not a directive prologue";
+
+function foo() {
+}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// below is a directive prologue
+"use custom";
+
+/* more directives... */
+"enable typecheck";
+"forbid IE";
+
+import "./SetupEnvironment";
+import type { Period } from "./Period";
+
+("this is not a directive prologue");
+
+function foo() {}
+
+`;
+
+exports[`strict-directive-remains-at-top.ts - typescript-verify > strict-directive-remains-at-top.ts 1`] = `
+// below is a directive prologue
+'use strict'
+
+import './SetupEnvironment';
+import type { Period } from './Period'
+
+"this is not a directive prologue";
+
+function foo() {
+}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// below is a directive prologue
+"use strict";
+
+import "./SetupEnvironment";
+import type { Period } from "./Period";
+
+("this is not a directive prologue");
+
+function foo() {}
+
+`;
+
+exports[`string-literal-at-top-is-pushed-down.ts - typescript-verify > string-literal-at-top-is-pushed-down.ts 1`] = `
+; 'use strict'
+
+import './SetupEnvironment';
+import type { Period } from './Period'
+
+"this is not a directive prologue";
+
+function foo() {
+}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import "./SetupEnvironment";
+import type { Period } from "./Period";
+
+("use strict");
+
+("this is not a directive prologue");
+
+function foo() {}
+
+`;

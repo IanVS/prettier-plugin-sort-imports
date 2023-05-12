@@ -1,3 +1,5 @@
+NOTE: These docs are for the upcoming version 4.0.  View the [3.X readme](https://github.com/IanVS/prettier-plugin-sort-imports/tree/main#readme) for the latest stable release, or the [migration guide](https://github.com/IanVS/prettier-plugin-sort-imports/blob/next/docs/MIGRATION.md#migrating-from-v3xx-to-v4xx) for the changes so far.
+
 # Prettier plugin sort imports <!-- omit in toc -->
 
 A prettier plugin to sort import declarations by provided Regular Expression order.
@@ -6,7 +8,16 @@ This was forked from [@trivago/prettier-plugin-sort-imports](https://github.com/
 
 The first change was preserving the order of [side-effect imports](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#import_a_module_for_its_side_effects_only) to avoid breaking situations where import-order has correctness implications (such as styles).
 
-Since then more critical features & fixes have been added. As a result, this repo intends to stay compatible with the upstream, but may continue to gain features not present in the original version of the plugin.
+Since then more critical features & fixes have been added, and the options have been simplified.
+
+**Features not currently supported by upstream:**
+
+-   Do not re-order across side-effect imports
+-   Combine imports from the same source
+-   Combine type and value imports
+-   Type import grouping with `<TYPES>` keyword
+-   Sorts node.js builtin modules to top
+-   Custom import order separation
 
 [We welcome contributions!](./CONTRIBUTING.md)
 
@@ -20,15 +31,10 @@ Since then more critical features & fixes have been added. As a result, this rep
   - [How does import sort work?](#how-does-import-sort-work)
   - [Options](#options)
     - [`importOrder`](#importorder)
-    - [`importOrderSeparation`](#importorderseparation)
-    - [`importOrderSortSpecifiers`](#importordersortspecifiers)
-    - [`importOrderGroupNamespaceSpecifiers`](#importordergroupnamespacespecifiers)
-    - [`importOrderCaseInsensitive`](#importordercaseinsensitive)
-    - [`importOrderMergeDuplicateImports`](#importordermergeduplicateimports)
-    - [`importOrderCombineTypeAndValueImports`](#importordercombinetypeandvalueimports)
+    - [`importOrderTypeScriptVersion`](#importordertypescriptversion)
     - [`importOrderParserPlugins`](#importorderparserplugins)
-    - [`importOrderBuiltinModulesToTop`](#importorderbuiltinmodulestotop)
   - [Prevent imports from being sorted](#prevent-imports-from-being-sorted)
+  - [Comments](#comments)
 - [FAQ / Troubleshooting](#faq--troubleshooting)
 - [Compatibility](#compatibility)
 - [Contribution](#contribution)
@@ -106,31 +112,27 @@ or, using yarn
 yarn add --dev @ianvs/prettier-plugin-sort-imports
 ```
 
-**Note: If you are migrating from v2.x.x to v3.x.x, [Please Read Migration Guidelines](./docs/MIGRATION.md)**
+**Note: If you are migrating from v3.x.x to v4.x.x, [Please Read Migration Guidelines](./docs/MIGRATION.md)**
 
 ## Usage
 
 Add your preferred settings in your prettier config file.
 
-```javascript
-module.exports = {
-  "printWidth": 80,
-  "tabWidth": 4,
-  "trailingComma": "all",
-  "singleQuote": true,
-  "semi": true,
-  "importOrder": ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
-  "importOrderBuiltinModulesToTop": true,
-  "importOrderCaseInsensitive": true,
-  "importOrderParserPlugins": ["typescript", "jsx", "decorators-legacy"],
-  "importOrderMergeDuplicateImports": true,
-  "importOrderCombineTypeAndValueImports": true,
-  "importOrderSeparation": true,
-  "importOrderSortSpecifiers": true,
-}
-```
+```ts
+// @ts-check
 
-_Note: all flags are off by default, so explore your options [below](#options)_
+/** @type {import("@ianvs/prettier-plugin-sort-imports").PrettierConfig} */
+module.exports = {
+    printWidth: 80,
+    tabWidth: 4,
+    trailingComma: 'all',
+    singleQuote: true,
+    semi: true,
+    importOrder: ['^@core/(.*)$', '', '^@server/(.*)$', '', '^@ui/(.*)$', '', '^[./]'],
+    importOrderParserPlugins: ['typescript', 'jsx', 'decorators-legacy'],
+    importOrderTypeScriptVersion: '5.0.0',
+};
+```
 
 ### How does import sort work?
 
@@ -197,23 +199,15 @@ To move the third party imports at desired place, you can use `<THIRD_PARTY_MODU
 "importOrder": ["^@core/(.*)$", "<THIRD_PARTY_MODULES>", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
 ```
 
-#### `importOrderSeparation`
-
-**type**: `boolean`
-
-**default value**: `false`
-
-A boolean value to enable or disable the new line separation
-between sorted import declarations group. The separation takes place according to the `importOrder`.
+If you would like to order type imports differently from value imports, you can use the special `<TYPES>` string. This example will place third party types at the top, followed by local types, then third party value imports, and lastly local value imports:
 
 ```json
-"importOrderSeparation": true,
+"importOrder": ["<TYPES>", "<TYPES>^[./]", "<THIRD_PARTY_MODULES>", "^[./]"],
 ```
 
-_Note:_ If you want greater control over which groups are separated from others, you can add an empty string to your `importOrder` array to signify newlines. For example:
+_Note:_ If you want to separate some groups from others, you can add an empty string to your `importOrder` array to signify newlines. For example:
 
 ```js
-"importOrderSeparation": false,
 "importOrder": [
    "^react", // React will be placed at the top of third-party modules
     "<THIRD_PARTY_MODULES>",
@@ -222,84 +216,13 @@ _Note:_ If you want greater control over which groups are separated from others,
 ],
 ```
 
-#### `importOrderSortSpecifiers`
+#### `importOrderTypeScriptVersion`
 
-**type**: `boolean`
+**type**: `string`
 
-**default value:** `false`
+**default value:** `1.0.0`
 
-A boolean value to enable or disable sorting of the specifiers in an import declarations.  If enabled, type imports will be sorted after value imports.
-
-Before:
-```ts
-import Default, {type Bravo, delta as echo, charlie, type Alpha} from 'source';
-```
-
-After:
-```ts
-import Default, {charlie, delta as echo, type Alpha, type Bravo} from 'source';
-```
-
-#### `importOrderGroupNamespaceSpecifiers`
-
-**type**: `boolean`
-
-**default value:** `false`
-
-A boolean value to enable or disable sorting the namespace specifiers to the top of the import group.
-
-#### `importOrderCaseInsensitive`
-
-**type**: `boolean`
-
-**default value**: `false`
-
-A boolean value to enable case-insensitivity in the sorting algorithm
-used to order imports within each match group.
-
-For example, when false (or not specified):
-
-```javascript
-import ExampleView from './ExampleView';
-import ExamplesList from './ExamplesList';
-```
-
-compared with `"importOrderCaseInsensitive": true`:
-
-```javascript
-import ExamplesList from './ExamplesList';
-import ExampleView from './ExampleView';
-```
-
-#### `importOrderMergeDuplicateImports`
-
-**type**: `boolean`
-
-**default value:** `false`
-
-When `true`, multiple import statements from the same module will be combined into a single import.
-
-#### `importOrderCombineTypeAndValueImports`
-
-**type**: `boolean`
-
-**default value:** `false`
-
-A boolean value to control merging `import type` expressions into `import {…}`.
-
-```diff
-- import type { C1 } from 'c';
-- import { C2 } from 'c';
-+ import { type C1, C2 } from "c";
-
-- import { D1 } from 'd';
-- import type { D2 } from 'd';
-+ import { D1, type D2 } from "d";
-
-- import type { A1 } from 'a';
-- import type { A2 } from 'a';
-+ import type { A1, A2 } from "a";
-```
+When using TypeScript, some import syntax can only be used in newer versions of TypeScript.  If you would like to enable modern features like mixed type and value imports, set this option to the semver version string of the TypeScript in use in your project.
 
 #### `importOrderParserPlugins`
 
@@ -333,14 +256,6 @@ with options as a JSON string of the plugin array:
 "importOrderParserPlugins": []
 ```
 
-#### `importOrderBuiltinModulesToTop`
-
-**type**: `boolean`
-
-**default value:** `false`
-
-A boolean value to enable sorting of [`node builtins`](https://nodejs.org/api/module.html#modulebuiltinmodules) to the top of all import groups.
-
 ### Prevent imports from being sorted
 
 This plugin supports standard prettier ignore comments. By default, side-effect imports (like
@@ -357,20 +272,29 @@ This will keep the `zealand` import at the top instead of moving it below the `a
 entire import statements can be ignored, line comments (`// prettier-ignore`) are recommended over inline comments
 (`/* prettier-ignore */`).
 
+### Comments
+
+We make the following attempts at keeping comments in your imports clean:
+
+- If you have one or more comments at the top of the file, we will keep them at the top as long as there is a blank line before your first import statement.
+- Comments on lines after the final import statement will not be moved. (Runtime-code between imports will be moved below all the imports).
+- In general, if you place a comment on the same line as an Import `Declaration` or `*Specifier`, we will keep it attached to that same specifier if it moves around.
+- Other comments are preserved, and are generally considered "leading" comments for the subsequent Import `Declaration` or `*Specifier`.
+
 ## FAQ / Troubleshooting
 
 Having some trouble or an issue? You can check [FAQ / Troubleshooting section](./docs/TROUBLESHOOTING.md).
 
 ## Compatibility
 
-| Framework              | Supported                | Note                                             |
-| ---------------------- | ------------------------ | ------------------------------------------------ |
-| JS with ES Modules     | ✅ Everything            | -                                                |
-| NodeJS with ES Modules | ✅ Everything            | -                                                |
-| React                  | ✅ Everything            | -                                                |
-| Angular                | ✅ Everything            | Supported through `importOrderParserPlugins` API |
-| Vue                    | ⚠️ Soon to be supported. | Any contribution is welcome.                     |
-| Svelte                 | ⚠️ Soon to be supported. | Any contribution is welcome.                     |
+| Framework              | Supported     | Note                                             |
+| ---------------------- | ------------- | ------------------------------------------------ |
+| JS with ES Modules     | ✅ Everything | -                                                |
+| NodeJS with ES Modules | ✅ Everything | -                                                |
+| React                  | ✅ Everything | -                                                |
+| Angular                | ✅ Everything | Supported through `importOrderParserPlugins` API |
+| Vue                    | ✅ Everything | Peer dependency `@vue/compiler-sfc` is required  |
+| Svelte                 | ⚠️ Not yet    | Contributions are welcome                        |
 
 ## Contribution
 

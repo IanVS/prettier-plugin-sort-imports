@@ -1,0 +1,33 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`imports-with-mixed-declarations.ts - typescript-verify > imports-with-mixed-declarations.ts 1`] = `
+import a, {type LocalType} from './local-file';
+import type Another from './another-local-file';
+import value, {tp} from 'third-party';
+import {specifier, type ThirdPartyType} from 'third-party';
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import type { ThirdPartyType } from "third-party";
+import value, { specifier, tp } from "third-party";
+import a from "./local-file";
+import type Another from "./another-local-file";
+import type { LocalType } from "./local-file";
+
+`;
+
+exports[`imports-with-third-party-types.ts - typescript-verify > imports-with-third-party-types.ts 1`] = `
+import a from './local-file';
+import type LocalType from './local-file';
+import value from 'third-party';
+import {specifier} from 'third-party';
+import type ThirdPartyType from 'third-party';
+import type {LocalSpecifierType} from './local-file';
+import type {SpecifierType} from 'third-party';
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import type ThirdPartyType from "third-party";
+import type { SpecifierType } from "third-party";
+import value, { specifier } from "third-party";
+import a from "./local-file";
+import type LocalType from "./local-file";
+import type { LocalSpecifierType } from "./local-file";
+
+`;

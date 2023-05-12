@@ -1,4 +1,4 @@
-import {
+import type {
     ImportDefaultSpecifier,
     ImportNamespaceSpecifier,
     ImportSpecifier,

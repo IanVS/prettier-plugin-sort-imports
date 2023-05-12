@@ -1,6 +1,7 @@
-import { ParserPlugin } from '@babel/parser';
-import { expressionStatement, stringLiteral } from '@babel/types';
 import { builtinModules } from 'module';
+
+import type { ParserPlugin } from '@babel/parser';
+import { expressionStatement, stringLiteral } from '@babel/types';
 
 export const flow: ParserPlugin = 'flow';
 export const typescript: ParserPlugin = 'typescript';
@@ -26,12 +27,25 @@ export const mergeableImportFlavors = [
  * Used to mark the position between RegExps,
  * where the not matched imports should be placed
  */
-export const THIRD_PARTY_MODULES_SPECIAL_WORD = '<THIRD_PARTY_MODULES>';
 export const BUILTIN_MODULES = `^(?:node:)?(?:${builtinModules.join('|')})$`;
+export const THIRD_PARTY_MODULES_SPECIAL_WORD = '<THIRD_PARTY_MODULES>';
+export const TYPES_SPECIAL_WORD = '<TYPES>';
 
 const PRETTIER_PLUGIN_SORT_IMPORTS_NEW_LINE =
     'PRETTIER_PLUGIN_SORT_IMPORTS_NEW_LINE';
 
+/** Use this to force a newline at top-level scope (good for newlines generated between import blocks) */
 export const newLineNode = expressionStatement(
     stringLiteral(PRETTIER_PLUGIN_SORT_IMPORTS_NEW_LINE),
 );
+/** Use this if you want to force a newline, but you're attaching to leading/inner/trailing Comments */
+export const forceANewlineUsingACommentStatement = () => ({
+    type: 'CommentLine' as const,
+    value: 'PRETTIER_PLUGIN_SORT_IMPORTS_NEWLINE_COMMENT',
+    start: -1,
+    end: -1,
+    loc: { start: { line: -1, column: -1 }, end: { line: -1, column: -1 } },
+});
+
+export const injectNewlinesRegex =
+    /("PRETTIER_PLUGIN_SORT_IMPORTS_NEW_LINE";|\/\/PRETTIER_PLUGIN_SORT_IMPORTS_NEWLINE_COMMENT)/gi;

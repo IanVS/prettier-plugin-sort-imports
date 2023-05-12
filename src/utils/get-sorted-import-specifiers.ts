@@ -1,4 +1,4 @@
-import { ImportDeclaration } from '@babel/types';
+import { type ImportDeclaration } from '@babel/types';
 
 import { naturalSort } from '../natural-sort';
 
@@ -7,6 +7,8 @@ import { naturalSort } from '../natural-sort';
  * specifiers.
  *
  * type imports are sorted separately, and placed after value imports.
+ *
+ * Comments need to be fixed up so they attach to the right objects.
  *
  * @param node Import declaration node
  */

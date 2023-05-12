@@ -21,13 +21,13 @@ yarn run compile && node --inspect-brk ./node_modules/.bin/prettier --config exa
 You can set a `debugger` anywhere in the code and then use following command:
 
 ```shell
-node --inspect-brk ./node_modules/.bin/jest -i
+node --inspect-brk ./node_modules/.bin/vitest --run
 ```
 
 Or, to debug a single unit test file
 
 ```shell
- node --inspect-brk ./node_modules/.bin/jest -i <name-or-relative-path-of-the-file-file>
+ node --inspect-brk ./node_modules/.bin/vitest --run <name-or-relative-path-of-the-file-file>
 ```
 
 ### How to run prettier in any codebase using the plugin ?

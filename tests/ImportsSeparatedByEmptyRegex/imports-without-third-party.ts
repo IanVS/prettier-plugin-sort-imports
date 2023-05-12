@@ -1,4 +1,5 @@
 // I am top level comment
+
 import otherthing from "@core/otherthing";
 import abc from "@core/abc";
 // I am comment

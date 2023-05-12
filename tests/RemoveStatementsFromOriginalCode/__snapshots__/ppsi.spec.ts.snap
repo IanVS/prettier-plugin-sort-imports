@@ -1,0 +1,35 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`does-not-remove-content-in-string-literal.ts - typescript-verify > does-not-remove-content-in-string-literal.ts 1`] = `
+const exampleCode = \`
+
+import "./some-import";
+
+\`;
+
+import "./some-import";
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import "./some-import";
+
+const exampleCode = \`
+
+import "./some-import";
+
+\`;
+
+`;
+
+exports[`does-remove-import-after-inline-comment.ts - typescript-verify > does-remove-import-after-inline-comment.ts 1`] = `
+
+/* foo */ import { foo } from "c";
+
+import { bar } from "a";
+
+function baz() {
+}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import { bar } from "a";
+/* foo */ import { foo } from "c";
+
+function baz() {}
+
+`;
