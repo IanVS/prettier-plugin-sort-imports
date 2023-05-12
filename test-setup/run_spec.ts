@@ -1,9 +1,9 @@
 'use strict';
 
 import fs from 'fs';
-import { extname, join, resolve } from 'path';
+import { extname } from 'path';
 
-import prettier from 'prettier';
+import { format } from 'prettier';
 import { expect, test } from 'vitest';
 
 import * as plugin from '../src';
@@ -44,6 +44,7 @@ export async function run_spec(dirname, parsers, options) {
 
             for (const parserName of parsers.slice(1)) {
                 test(`${filename} - ${parserName}-verify`, async () => {
+                    const output = await prettyprint(source, path, mergedOptions);
                     const verifyOptions = Object.assign(mergedOptions, {
                         parser: parserName,
                     });
@@ -59,8 +60,8 @@ export async function run_spec(dirname, parsers, options) {
     }
 }
 
-function prettyprint(src, filename, options) {
-    return prettier.format(
+async function prettyprint(src, filename, options) {
+    return await format(
         src,
         Object.assign(
             {
