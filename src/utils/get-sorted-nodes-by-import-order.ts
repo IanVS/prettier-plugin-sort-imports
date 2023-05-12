@@ -1,5 +1,3 @@
-import clone from 'lodash.clone';
-
 import {
     BUILTIN_MODULES,
     newLineNode,
@@ -14,13 +12,15 @@ import { getSortedNodesGroup } from './get-sorted-nodes-group';
  * This function returns the given nodes, sorted in the order as indicated by
  * the importOrder array from the given options.
  * The plugin considers these import nodes as local import declarations.
- * @param nodes A subset of all import nodes that should be sorted.
+ * @param originalNodes A subset (of all import nodes) that should be sorted.
  * @param options Options to influence the behavior of the sorting algorithm.
  */
-export const getSortedNodesByImportOrder: GetSortedNodes = (nodes, options) => {
+export const getSortedNodesByImportOrder: GetSortedNodes = (
+    originalNodes,
+    options,
+) => {
     let { importOrder } = options;
 
-    const originalNodes = nodes.map(clone);
     const finalNodes: ImportOrLine[] = [];
 
     if (!importOrder.includes(THIRD_PARTY_MODULES_SPECIAL_WORD)) {
