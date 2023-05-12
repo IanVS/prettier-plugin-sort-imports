@@ -96,7 +96,7 @@ const attachCommentsToRegistryMap = ({
      */
     deferredCommentClaims: CommentEntry[];
 
-    attachmentKey: (typeof orderedCommentKeysToRegister)[number];
+    attachmentKey: typeof orderedCommentKeysToRegister[number];
     comments: Comment[];
 
     owner: ImportDeclaration | SomeSpecifier;

@@ -37,6 +37,8 @@ test('it should remove nodes from the original code', async () => {
         code,
         commentAndImportsToRemoveFromCode,
     );
-    const result = await format(codeWithoutImportDeclarations, { parser: 'babel' });
+    const result = await format(codeWithoutImportDeclarations, {
+        parser: 'babel',
+    });
     expect(result).toEqual('');
 });

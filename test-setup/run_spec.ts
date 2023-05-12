@@ -44,7 +44,11 @@ export async function run_spec(dirname, parsers, options) {
 
             for (const parserName of parsers.slice(1)) {
                 test(`${filename} - ${parserName}-verify`, async () => {
-                    const output = await prettyprint(source, path, mergedOptions);
+                    const output = await prettyprint(
+                        source,
+                        path,
+                        mergedOptions,
+                    );
                     const verifyOptions = Object.assign(mergedOptions, {
                         parser: parserName,
                     });
