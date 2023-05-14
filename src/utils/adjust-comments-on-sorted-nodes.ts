@@ -26,9 +26,11 @@ export const adjustCommentsOnSortedNodes = (
         return finalNodes;
     }
 
+    const firstImport = originalDeclarationNodes[0];
+
     const registry = getCommentRegistryFromImportDeclarations({
         outputNodes,
-        firstImport: originalDeclarationNodes[0],
+        firstImport,
     });
 
     // Make a copy of the nodes for easier debugging & remove the existing comments to reattach them
@@ -44,7 +46,7 @@ export const adjustCommentsOnSortedNodes = (
         return noDirectCommentsNode;
     });
 
-    attachCommentsToOutputNodes(registry, finalNodesClone);
+    attachCommentsToOutputNodes(registry, finalNodesClone, firstImport);
 
     return finalNodesClone;
 };

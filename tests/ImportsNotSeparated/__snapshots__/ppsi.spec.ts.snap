@@ -72,6 +72,7 @@ function add(a:number,b:number) {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // I am top level comment in this file.
 // I am second line of top level comment in this file.
+
 import "./commands";
 
 // Comment
@@ -98,6 +99,7 @@ function add(a:number,b:number) {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // I am top level comment in this file.
 // I am second line of top level comment in this file.
+
 import "./commands";
 import React from "react";
 
@@ -134,6 +136,7 @@ function add(a:number,b:number) {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // I am top level comment in this file.
 // I am second line of top level comment in this file.
+
 import thirdParty from "third-party";
 import z from "z";
 import abc from "@core/abc";
@@ -192,6 +195,7 @@ function add(a:number,b:number) {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //@ts-ignore
 // I am file top level comments
+
 import a from "a";
 import c from "c";
 // I am stick to third party comment
@@ -271,6 +275,7 @@ import fourLevelRelativePath from "../../../../fourLevelRelativePath";
 import something from "@server/something";
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // I am top level comment
+
 import abc from "@core/abc";
 import otherthing from "@core/otherthing";
 import something from "@server/something";

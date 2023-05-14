@@ -365,11 +365,18 @@ export const getCommentRegistryFromImportDeclarations = ({
 export function attachCommentsToOutputNodes(
     commentEntriesFromRegistry: CommentEntry[],
     outputNodes: ImportOrLine[],
+    /** Original declaration, not the re-sorted output-node! */
+    firstImport: ImportDeclaration,
 ) {
     if (outputNodes.length === 0) {
         // attachCommentsToOutputNodes implies that there's at least one output node so this shouldn't happen
         throw new Error(
             "Fatal Internal Error: Can't attach comments to empty output",
+        );
+    }
+    if (firstImport == null) {
+        throw new Error(
+            "Fatal Internal Error: Can't attach comments if there was no firstImport",
         );
     }
     if (outputNodes[0].type !== 'EmptyStatement') {
@@ -439,9 +446,30 @@ export function attachCommentsToOutputNodes(
         (commentCollection as Comment[]).push(comment);
     }
 
-    if (Array.isArray(outputNodes[0].leadingComments)) {
-        if (outputNodes[0].leadingComments.length === 0) {
+    const topOfFileNode = outputNodes[0];
+    if (
+        Array.isArray(topOfFileNode.leadingComments) &&
+        topOfFileNode.leadingComments.length > 0
+    ) {
+        const lastTopOfFileCommentEndLine =
+            topOfFileNode.leadingComments[
+                topOfFileNode.leadingComments.length - 1
+            ].loc?.end.line || 0;
+
+        const lastTopOfFileCommentWasFollowedByBlankLine =
+            lastTopOfFileCommentEndLine <=
+            (firstImport.loc?.start.line || 0) - 2;
+
+        if (topOfFileNode.leadingComments.length === 0) {
             outputNodes.shift(); // Remove the empty statement
+        } else if (lastTopOfFileCommentWasFollowedByBlankLine) {
+            // Convert this to a newline node!
+            outputNodes[0] = {
+                ...newLineNode,
+                leadingComments: topOfFileNode.leadingComments,
+            };
+        } else {
+            // topOfFileNode is an EmptyStatement with leading comments [We're all set, do nothing!]
         }
     }
 }
