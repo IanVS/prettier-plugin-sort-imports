@@ -174,12 +174,10 @@ const attachCommentsToRegistryMap = ({
             const currentOwnerIsFirstImport =
                 nodeId(owner) === nodeId(firstImport);
 
-            // endsMoreThanOneLineAboveOwner is used with firstImport to protect top-of-file comments,
-            // and pick the right ImportSpecifier when Specifiers are re-sorted
-            const endsMoreThanOneLineAboveOwner =
-                (comment.loc?.end.line || 0) < (owner.loc?.start.line || 0) - 1;
+            const endsBeforeOwner =
+                (comment.loc?.end.line || 0) <= (owner.loc?.start.line || 0);
 
-            if (currentOwnerIsFirstImport && endsMoreThanOneLineAboveOwner) {
+            if (currentOwnerIsFirstImport && endsBeforeOwner) {
                 debugLog?.('Found a disconnected leading comment', {
                     comment,
                     owner,
@@ -442,13 +440,7 @@ export function attachCommentsToOutputNodes(
     }
 
     if (Array.isArray(outputNodes[0].leadingComments)) {
-        if (outputNodes[0].leadingComments.length > 0) {
-            // Convert this to a newline node!
-            outputNodes[0] = {
-                ...newLineNode, // Inject a newline after top-of-file comments
-                leadingComments: outputNodes[0].leadingComments,
-            };
-        } else {
+        if (outputNodes[0].leadingComments.length === 0) {
             outputNodes.shift(); // Remove the empty statement
         }
     }

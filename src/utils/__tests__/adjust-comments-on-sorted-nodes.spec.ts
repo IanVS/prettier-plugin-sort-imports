@@ -82,14 +82,14 @@ test('it does not move comments more than one line before all import declaration
     const adjustedNodes = adjustCommentsOnSortedNodes(importNodes, finalNodes);
     expect(adjustedNodes).toHaveLength(4);
     // Comment c1 is more than one line above the first import, so it stays with the top-of-file
-    expect(leadingComments(adjustedNodes[0])).toEqual([' comment c1']);
+    expect(leadingComments(adjustedNodes[0])).toEqual([
+        ' comment c1',
+        ' comment c2',
+    ]);
 
     expect(leadingComments(adjustedNodes[2])).toEqual([]);
     expect(trailingComments(adjustedNodes[2])).toEqual([]);
     expect(trailingComments(adjustedNodes[3])).toEqual([]);
-
-    // Comment c2 is attached to import from "c"
-    expect(leadingComments(adjustedNodes[3])).toEqual([' comment c2']);
 });
 
 test('it does not affect comments after all import declarations', () => {

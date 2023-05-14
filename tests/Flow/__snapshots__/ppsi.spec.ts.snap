@@ -35,7 +35,6 @@ export function givesAFoo3Obj(): AliasFoo3 {
  * @flow
  */
 // I am top level comment in this file.
-
 import thirdParty from "third-party";
 import abc from "@core/abc";
 import otherthing from "@core/otherthing";
@@ -131,7 +130,6 @@ export function givesAFoo3Obj(): AliasFoo3 {
  * @flow
  */
 // I am top level comment in this file.
-
 import thirdDisco0 from "third-disco0";
 import thirdParty0 from "third-party0";
 import otherthing3 from "@core/otherthing3";

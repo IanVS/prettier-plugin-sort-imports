@@ -1,6 +1,6 @@
 // Loose leading comment before imports (should not be dragged down with B)
 
-// Leading comment before B
+// Leading comment before B (this is treated as top-of-file comment)
 import B from "b"; // Trailing comment on same-line as B
 // Trailing comment on first line after B (this is treated as a leading comment for next import A!)
 
