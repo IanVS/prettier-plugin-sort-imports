@@ -61,7 +61,6 @@ import { Junk } from "junk-group-1";
 import "./side-effects1";
 
 // C, E and D will be separated from A, B because side-effects in-between
-
 import { D, type C, type E } from "a";
 
 // prettier-ignore

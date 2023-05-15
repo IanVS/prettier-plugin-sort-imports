@@ -31,10 +31,30 @@ test('should return correct sorted nodes with default import', () => {
     ]);
 });
 
-test('should group type imports after value imports', () => {
+test('should group type imports after value imports - typescript', () => {
     const code = `import Component, { type TypeB, filter, type TypeA, reduce, eventHandler } from '@server/z';`;
     const [importNode] = getImportNodes(code, {
         plugins: ['typescript'],
+    });
+    const sortedImportSpecifiers = getSortedImportSpecifiers(importNode);
+    const specifiersList = getSortedNodesModulesNames(
+        sortedImportSpecifiers.specifiers,
+    );
+
+    expect(specifiersList).toEqual([
+        'Component',
+        'eventHandler',
+        'filter',
+        'reduce',
+        'TypeA',
+        'TypeB',
+    ]);
+});
+
+test.only('should group type imports after value imports - flow', () => {
+    const code = `import Component, { type TypeB, filter, type TypeA, reduce, eventHandler } from '@server/z';`;
+    const [importNode] = getImportNodes(code, {
+        plugins: ['flow'],
     });
     const sortedImportSpecifiers = getSortedImportSpecifiers(importNode);
     const specifiersList = getSortedNodesModulesNames(

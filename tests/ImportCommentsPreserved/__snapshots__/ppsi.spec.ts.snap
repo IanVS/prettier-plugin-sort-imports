@@ -46,9 +46,7 @@ import { a } from 'a';
  */
 
 // second comment
-
-import { a, type A } from "a";
-// a
+import { a, type A } from "a"; // a
 import { b } from "b";
 
 `;

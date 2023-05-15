@@ -135,14 +135,14 @@ function mergeIsSafe(
 /**
  * Mutates the modeToKeep, adding the import specifiers and comments from the nodeToForget.
  *
- * @returns (true to delete node | false to keep node)
+ * @returns (node to keep if we should delete the other node | null to keep everything)
  */
 function mergeNodes(
     nodeToKeep: ImportDeclaration,
     nodeToForget: ImportDeclaration,
 ) {
     if (!mergeIsSafe(nodeToKeep, nodeToForget)) {
-        return false;
+        return null;
     }
 
     if (
@@ -174,7 +174,7 @@ function mergeNodes(
         ...(nodeToForget.trailingComments || []),
     ];
 
-    return true;
+    return nodeToKeep;
 }
 
 /**
@@ -192,9 +192,26 @@ function mutateContextAndMerge({
     insertableNode: ImportDeclaration;
 }) {
     const source = selectNodeImportSource(insertableNode);
-    if (context[source]) {
-        if (mergeNodes(context[source], insertableNode)) {
-            nodesToDelete.push(insertableNode);
+    const existing = context[source];
+
+    if (existing) {
+        // Check if the existing is after the new one in the code.
+        // If so, we reverse the keep/delete so that the first node is kept.
+        // Important for top-of-file comment formatting.
+        if (
+            existing.start &&
+            insertableNode.start &&
+            existing.start > insertableNode.start
+        ) {
+            const merged = mergeNodes(insertableNode, existing);
+            if (merged) {
+                nodesToDelete.push(existing);
+                context[source] = merged;
+            }
+        } else {
+            if (mergeNodes(existing, insertableNode)) {
+                nodesToDelete.push(insertableNode);
+            }
         }
     } else {
         context[source] = insertableNode;
