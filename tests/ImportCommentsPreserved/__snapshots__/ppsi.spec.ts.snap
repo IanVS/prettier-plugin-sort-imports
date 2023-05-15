@@ -242,6 +242,12 @@ import {
 } from "c";
 
 import {
+    b4,
+    a4,
+    // @ts-expect-error
+} from "c2";
+
+import {
     b2,a2,
     // @ts-expect-error
 } from "b";
@@ -256,7 +262,6 @@ import {
 import {
     a1,
     b1,
-
     // @ts-expect-error
 } from "a";
 import {
@@ -265,5 +270,10 @@ import {
     // @ts-expect-error
 } from "b";
 import { a3, b3 } from /* @ts-expect-error*/ "c";
+import {
+    a4,
+    b4,
+    // @ts-expect-error
+} from "c2";
 
 `;
