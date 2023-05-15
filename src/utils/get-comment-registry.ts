@@ -175,7 +175,7 @@ const attachCommentsToRegistryMap = ({
                 nodeId(owner) === nodeId(firstImport);
 
             const endsBeforeOwner =
-                (comment.loc?.end.line || 0) <= (owner.loc?.start.line || 0);
+                (comment.loc?.end.line || 0) < (owner.loc?.start.line || 0);
 
             if (currentOwnerIsFirstImport && endsBeforeOwner) {
                 debugLog?.('Found a disconnected leading comment', {
