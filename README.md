@@ -31,6 +31,11 @@ Since then more critical features & fixes have been added, and the options have 
   - [How does import sort work?](#how-does-import-sort-work)
   - [Options](#options)
     - [`importOrder`](#importorder)
+      - [1. Put specific dependencies at the top](#1-put-specific-dependencies-at-the-top)
+      - [2. Keep css modules at the bottom](#2-keep-css-modules-at-the-bottom)
+      - [3. Add spaces between import groups](#3-add-spaces-between-import-groups)
+      - [4. Group type imports separately from values](#4-group-type-imports-separately-from-values)
+      - [5. Group aliases with local imports](#5-group-aliases-with-local-imports)
     - [`importOrderTypeScriptVersion`](#importordertypescriptversion)
     - [`importOrderParserPlugins`](#importorderparserplugins)
   - [Prevent imports from being sorted](#prevent-imports-from-being-sorted)
@@ -182,46 +187,111 @@ The _third party imports_ position (it's top by default) can be overridden using
 
 **type**: `Array<string>`
 
-A collection of Regular expressions in string format.
+The main way to control the import order and formatting, `importOrder` is a collection of Regular expressions in string format, along with a few "special case" strings that you can use.
 
-```json
-"importOrder": ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
-```
-
-_Default:_
+**default value**:
 
 ```js
 [
-            // built-ins are implicitly first
-    '<THIRD_PARTY_MODULES>',
+    // node.js built-ins are always first
+    '<THIRD_PARTY_MODULES>', // Non-relative imports
     '^[.]', // relative imports
 ],
 ```
 
-By default, this plugin sorts as documented on the line above.
+By default, this plugin sorts as documented on the line above, with Node.js built-in modules at the top, followed by non-relative imports, and lastly any relative import starting with a `.` character.
 
-The plugin moves the third party imports to the top which are not part of the `importOrder` list.
-To move the third party imports at desired place, you can use `<THIRD_PARTY_MODULES>` to assign third party imports to the appropriate position:
+Here are some common ways to configure `importOrder`:
 
-```json
-"importOrder": ["^@core/(.*)$", "<THIRD_PARTY_MODULES>", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
-```
+##### 1. Put specific dependencies at the top
 
-If you would like to order type imports differently from value imports, you can use the special `<TYPES>` string. This example will place third party types at the top, followed by local types, then third party value imports, and lastly local value imports:
+Some styles call for putting the import of `react` at the top of your imports, which you could accomplish like this:
 
 ```json
-"importOrder": ["<TYPES>", "<TYPES>^[./]", "<THIRD_PARTY_MODULES>", "^[./]"],
+"importOrder": ["react", "<THIRD_PARTY_MODULES>", "^[.]"]
 ```
 
-_Note:_ If you want to separate some groups from others, you can add an empty string to your `importOrder` array to signify newlines. For example:
+e.g.:
 
-```js
+```ts
+import * as React from 'react';
+import cn from 'classnames';
+import MyApp from './MyApp';
+```
+
+##### 2. Keep css modules at the bottom
+
+Imports of CSS files are often placed at the bottom of the list of imports, and can be accomplished like so:
+
+```json
+"importOrder": ["<THIRD_PARTY_MODULES>", "^(?!.*[.]css$)[./].*$", ".css$",]
+```
+
+e.g.:
+
+```ts
+import * as React from 'react';
+import MyApp from './MyApp';
+import styles from './global.css';
+```
+
+##### 3. Add spaces between import groups
+
+If you want to group your imports into "chunks" with blank lines between, you can add empty strings like this:
+
+```json
+"importOrder": ["", "<THIRD_PARTY_MODULES>", "", "^[.]",]
+```
+
+(Note the empty string at the start, to add a blank line after node.js built-ins)
+
+e.g.:
+
+```ts
+import fs from 'fs';
+
+import { debounce, reduce } from 'lodash';
+
+import MyApp from './MyApp';
+```
+
+##### 4. Group type imports separately from values
+
+If you're using Flow or TypeScript, you might want to separate out your type imports from imports of values.  And to be especially fancy, you can even group 3rd party types together, and your own local type imports separately:
+
+```json
+"importOrder": ["<TYPES>", "<TYPES>^[.]", "<THIRD_PARTY_MODULES>", "^[.]",]
+```
+
+e.g.:
+
+```ts
+import type { Logger } from '@tanstack/react-query';
+import type { Location } from 'history';
+import type {Props} from './App';
+import { QueryClient} from '@tanstack/react-query';
+import { createBrowserHistory } from 'history';
+import App from './App';
+```
+
+##### 5. Group aliases with local imports
+
+If you define non-relative aliases to refer to local files without long chains of `"../../../"`, you can include those aliases in your `importOrder` to keep them grouped with your local code.
+
+```json
 "importOrder": [
-   "^react", // React will be placed at the top of third-party modules
     "<THIRD_PARTY_MODULES>",
-    "",  // use empty strings to separate groups with empty lines
-    "^[./]"
-],
+    "^(@api|@assets|@ui)(/.*)$",
+    "^[.]"]
+```
+
+e.g.:
+
+```ts
+import { debounce, reduce } from 'lodash';
+import { Users } from '@api';
+import icon from '@assets/icon';
+import App from './App';
 ```
 
 #### `importOrderTypeScriptVersion`

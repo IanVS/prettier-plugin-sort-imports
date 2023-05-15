@@ -29,14 +29,14 @@ export const options: Record<
         default: [
             {
                 value: [
-                    // built-ins are implicitly first
-                    THIRD_PARTY_MODULES_SPECIAL_WORD,
+                    // node.js built-ins are always first
+                    THIRD_PARTY_MODULES_SPECIAL_WORD, // Everything not matching relative imports
                     '^[.]', // relative imports
                 ],
             },
         ],
         description:
-            'Provide an order to sort imports. [built-ins are always implicitly first]',
+            'Provide an order to sort imports. [node.js built-ins are always first]',
     },
     importOrderParserPlugins: {
         type: 'path',
