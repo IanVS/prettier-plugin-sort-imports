@@ -51,7 +51,7 @@ test('should group type imports after value imports - typescript', () => {
     ]);
 });
 
-test.only('should group type imports after value imports - flow', () => {
+test('should group type imports after value imports - flow', () => {
     const code = `import Component, { type TypeB, filter, type TypeA, reduce, eventHandler } from '@server/z';`;
     const [importNode] = getImportNodes(code, {
         plugins: ['flow'],
