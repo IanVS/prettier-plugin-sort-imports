@@ -1,16 +1,16 @@
 import {
     emptyStatement,
-    type ImportDeclaration,
-    type CommentBlock,
     stringLiteral,
+    type CommentBlock,
+    type ImportDeclaration,
 } from '@babel/types';
-import { expect, test, describe } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
 import {
-    getCommentRegistryFromImportDeclarations,
     attachCommentsToOutputNodes,
-    testingOnlyExports,
     CommentAssociation,
+    getCommentRegistryFromImportDeclarations,
+    testingOnlyExports,
 } from '../get-comment-registry';
 
 describe('getCommentRegistryFromImportDeclarations', () => {
