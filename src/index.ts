@@ -4,6 +4,7 @@ import { parsers as flowParsers } from 'prettier/parser-flow';
 import { parsers as htmlParsers } from 'prettier/parser-html';
 import { parsers as typescriptParsers } from 'prettier/parser-typescript';
 
+import { THIRD_PARTY_MODULES_SPECIAL_WORD } from './constants';
 import { defaultPreprocessor } from './preprocessors/default';
 import { vuePreprocessor } from './preprocessors/vue';
 import type { PrettierOptions } from './types';
@@ -25,8 +26,17 @@ export const options: Record<
         type: 'path',
         category: 'Global',
         array: true,
-        default: [{ value: [] }],
-        description: 'Provide an order to sort imports.',
+        default: [
+            {
+                value: [
+                    // built-ins are implicitly first
+                    THIRD_PARTY_MODULES_SPECIAL_WORD,
+                    '^[.]', // relative imports
+                ],
+            },
+        ],
+        description:
+            'Provide an order to sort imports. [built-ins are always implicitly first]',
     },
     importOrderParserPlugins: {
         type: 'path',

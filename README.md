@@ -188,9 +188,17 @@ A collection of Regular expressions in string format.
 "importOrder": ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
 ```
 
-_Default:_ `[]`
+_Default:_
 
-By default, this plugin will not move any imports. To separate third party from relative imports, use `["^[./]"]`. This will become the default in the next major version.
+```js
+[
+            // built-ins are implicitly first
+    '<THIRD_PARTY_MODULES>',
+    '^[.]', // relative imports
+],
+```
+
+By default, this plugin sorts as documented on the line above.
 
 The plugin moves the third party imports to the top which are not part of the `importOrder` list.
 To move the third party imports at desired place, you can use `<THIRD_PARTY_MODULES>` to assign third party imports to the appropriate position:
