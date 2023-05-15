@@ -244,7 +244,7 @@ export const getCommentRegistryFromImportDeclarations = ({
     /** Constructed Output Nodes */
     outputNodes: ImportDeclaration[];
 }) => {
-    if (outputNodes.length === 0 || !firstImport) {
+    if (outputNodes?.length === 0 || !firstImport) {
         return [];
     }
 
@@ -369,7 +369,12 @@ export function attachCommentsToOutputNodes(
     /** Original declaration, not the re-sorted output-node! */
     firstImport: ImportDeclaration,
 ) {
-    if (outputNodes.length === 0) {
+    if (!Array.isArray(commentEntriesFromRegistry)) {
+        throw new Error(
+            'Fatal Internal Error: Expected a list of commentEntriesFromRegistry',
+        );
+    }
+    if (outputNodes == null || outputNodes.length === 0) {
         // attachCommentsToOutputNodes implies that there's at least one output node so this shouldn't happen
         throw new Error(
             "Fatal Internal Error: Can't attach comments to empty output",
@@ -539,3 +544,6 @@ function getHeightOfLeadingComments(node: ImportOrLine) {
     }
     return 0;
 }
+export const testingOnlyExports = {
+    nodeId,
+};
