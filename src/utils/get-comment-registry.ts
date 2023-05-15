@@ -426,6 +426,14 @@ export function attachCommentsToOutputNodes(
                 ];
 
             ownerNode = lastSpecifier;
+
+            // Start the comment on the line below the owner, to avoid gaps
+            if (
+                comment.loc?.start.line !== undefined &&
+                ownerNode.loc?.end.line
+            ) {
+                comment.loc.start.line = ownerNode.loc?.end.line + 1;
+            }
         }
 
         if (!ownerNode) {
