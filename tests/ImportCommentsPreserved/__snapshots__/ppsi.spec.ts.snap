@@ -197,3 +197,47 @@ import {
 // Rest of file below here
 
 `;
+
+exports[`import-comments-trailing-specifier-comment-lost.ts - typescript-verify > import-comments-trailing-specifier-comment-lost.ts 1`] = `
+import {
+    b3,
+    a3,
+    /* @ts-expect-error*/
+} from "c";
+
+import {
+    b4,
+    a4,
+    // @ts-expect-error
+} from "c2";
+
+import {
+    b2,a2,
+    // @ts-expect-error
+} from "b";
+
+import {
+    b1,
+    a1,
+
+    // @ts-expect-error
+} from "a";
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import {
+    a1,
+    b1,
+    // @ts-expect-error
+} from "a";
+import {
+    a2,
+    b2,
+    // @ts-expect-error
+} from "b";
+import { a3, b3 } from /* @ts-expect-error*/ "c";
+import {
+    a4,
+    b4,
+    // @ts-expect-error
+} from "c2";
+
+`;
