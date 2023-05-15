@@ -98,23 +98,6 @@ import { useState } from "react";
 
 `;
 
-exports[`import-comments-document-top-test4.ts - typescript-verify > import-comments-document-top-test4.ts 1`] = `
-/**
- * This is part of multiple-lines at document-top
- * Second line of text, comment should not be followed by a gap
- */
-import b from "b";
-import a from "a";
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/**
- * This is part of multiple-lines at document-top
- * Second line of text, comment should not be followed by a gap
- */
-import a from "a";
-import b from "b";
-
-`;
-
 exports[`import-comments-outer-comments-block-comments.ts - typescript-verify > import-comments-outer-comments-block-comments.ts 1`] = `
 // Loose leading comment before imports (should not be dragged down with B)
 
@@ -163,7 +146,9 @@ import A from "a"; // Trailing comment on same-line as A
 // Loose trailing comment after imports (should not be dragged up with A)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Loose leading comment before imports (should not be dragged down with B)
+
 // Leading comment before B (this is treated as top-of-file comment)
+
 // Trailing comment on first line after B (this is treated as a leading comment for next import A!)
 
 // Leading comment before A

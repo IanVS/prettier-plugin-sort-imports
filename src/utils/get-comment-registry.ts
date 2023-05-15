@@ -379,10 +379,6 @@ export function attachCommentsToOutputNodes(
             "Fatal Internal Error: Can't attach comments if there was no firstImport",
         );
     }
-    if (outputNodes[0].type !== 'EmptyStatement') {
-        // Put in a dummy empty statement to attach top-of-file-comments to if one was not provided
-        outputNodes.unshift(emptyStatement());
-    }
 
     /** Store a mapping of Specifier to ImportDeclaration */
     const parentNodeId = (specifier: SomeSpecifier) =>
@@ -399,6 +395,8 @@ export function attachCommentsToOutputNodes(
         }
     }
 
+    const newFirstImport = outputNodes[0];
+
     for (const commentEntry of commentEntriesFromRegistry) {
         const {
             owner,
@@ -407,6 +405,46 @@ export function attachCommentsToOutputNodes(
             needsTopOfFileOwner,
             needsLastSpecifierOwner,
         } = commentEntry;
+
+        if (needsTopOfFileOwner && outputNodes[0].type !== 'EmptyStatement') {
+            // Put in a dummy empty statement to attach top-of-file-comments to if one was not provided
+            const dummy = emptyStatement();
+            dummy.loc = {
+                start: { line: 0, column: 0 },
+                end: { line: 0, column: 0 },
+            };
+            outputNodes.unshift(dummy);
+
+            // Put the first import in the right spot, where the original first import started
+            // Otherwise, comments at the top of the file will not be formatted correctly.
+            // This is a little tricky, because the new first import might have leading comments,
+            // and we have to move the node and all comments the same distance
+            const commentHeight = getHeightOfLeadingComments(newFirstImport);
+            const originalLoc = newFirstImport.loc;
+            if (firstImport.loc && originalLoc) {
+                newFirstImport.loc = {
+                    start: {
+                        ...firstImport.loc?.start,
+                        line: firstImport.loc?.start.line + commentHeight,
+                    },
+                    end: {
+                        ...firstImport.loc?.end,
+                        line: firstImport.loc?.end.line + commentHeight,
+                    },
+                };
+                const moveDist =
+                    originalLoc.start.line - newFirstImport.loc.start.line;
+
+                for (const commentType of orderedCommentKeysToRegister) {
+                    newFirstImport[commentType]?.forEach((c) => {
+                        if (c.loc) {
+                            c.loc.start.line -= moveDist;
+                            c.loc.end.line -= moveDist;
+                        }
+                    });
+                }
+            }
+        }
 
         let ownerNode = needsTopOfFileOwner
             ? outputNodes[0]
@@ -446,38 +484,37 @@ export function attachCommentsToOutputNodes(
             throw new Error("Fatal Internal Error: Couldn't find owner node");
         }
 
+        // // Since we mucked with the loc of the newFirstImport, we need to be careful to
+        // // keep its comments in the right place, so adjust their loc too
+        if (
+            ownerNode === newFirstImport &&
+            association !== CommentAssociation.leading &&
+            comment.loc &&
+            ownerNode.loc &&
+            !needsLastSpecifierOwner
+        ) {
+            comment.loc.start.line = ownerNode.loc.start.line;
+        }
+
         // addComments(ownerNode, association, [comment]);
         // using Babel's addComments will reverse the comments if you iteratively attach them, so push them directly
-        const commentCollection = (ownerNode[
-            CommentAssociationByValue[association]
-        ] = ownerNode[CommentAssociationByValue[association]] || []);
+        const commentType = needsTopOfFileOwner
+            ? 'trailingComments' // use trailing comments to preserve trailing blank line if present
+            : CommentAssociationByValue[association];
+        const commentCollection = (ownerNode[commentType] =
+            ownerNode[commentType] || []);
         (commentCollection as Comment[]).push(comment);
     }
+}
 
-    const topOfFileNode = outputNodes[0];
+function getHeightOfLeadingComments(node: ImportOrLine) {
     if (
-        Array.isArray(topOfFileNode.leadingComments) &&
-        topOfFileNode.leadingComments.length > 0
+        Array.isArray(node.leadingComments) &&
+        node.leadingComments.length &&
+        node.leadingComments[0].loc &&
+        node.loc
     ) {
-        const lastTopOfFileCommentEndLine =
-            topOfFileNode.leadingComments[
-                topOfFileNode.leadingComments.length - 1
-            ].loc?.end.line || 0;
-
-        const lastTopOfFileCommentWasFollowedByBlankLine =
-            lastTopOfFileCommentEndLine <=
-            (firstImport.loc?.start.line || 0) - 2;
-
-        if (topOfFileNode.leadingComments.length === 0) {
-            outputNodes.shift(); // Remove the empty statement
-        } else if (lastTopOfFileCommentWasFollowedByBlankLine) {
-            // Convert this to a newline node!
-            outputNodes[0] = {
-                ...newLineNode,
-                leadingComments: topOfFileNode.leadingComments,
-            };
-        } else {
-            // topOfFileNode is an EmptyStatement with leading comments [We're all set, do nothing!]
-        }
+        return node.loc.start.line - node.leadingComments[0].loc.start.line;
     }
+    return 0;
 }
