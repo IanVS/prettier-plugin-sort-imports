@@ -15,19 +15,6 @@ import {
 
 describe('getCommentRegistryFromImportDeclarations', () => {
     test('is empty if provided no comments or no first-import', () => {
-        expect(getCommentRegistryFromImportDeclarations({} as any)).toEqual([]);
-        expect(
-            getCommentRegistryFromImportDeclarations({
-                firstImport: null as any,
-                outputNodes: [],
-            }),
-        ).toEqual([]);
-        expect(
-            getCommentRegistryFromImportDeclarations({
-                firstImport: null as any,
-                outputNodes: [emptyStatement() as any],
-            }),
-        ).toEqual([]);
         expect(
             getCommentRegistryFromImportDeclarations({
                 firstImport: emptyStatement() as any,
@@ -40,24 +27,10 @@ describe('getCommentRegistryFromImportDeclarations', () => {
 describe('attachCommentsToOutputNodes', () => {
     test('throws when missing inputs', () => {
         expect(() =>
-            attachCommentsToOutputNodes(null as any, null as any, null as any),
-        ).toThrow(
-            new Error(
-                'Fatal Internal Error: Expected a list of commentEntriesFromRegistry',
-            ),
-        );
-        expect(() =>
             attachCommentsToOutputNodes([], [], emptyStatement() as any),
         ).toThrow(
             new Error(
                 "Fatal Internal Error: Can't attach comments to empty output",
-            ),
-        );
-        expect(() =>
-            attachCommentsToOutputNodes([], [{} as any], null as any),
-        ).toThrow(
-            new Error(
-                "Fatal Internal Error: Can't attach comments if there was no firstImport",
             ),
         );
     });

@@ -242,9 +242,10 @@ export const getCommentRegistryFromImportDeclarations = ({
     firstImport: ImportDeclaration;
 
     /** Constructed Output Nodes */
-    outputNodes: ImportDeclaration[];
-}) => {
-    if (outputNodes?.length === 0 || !firstImport) {
+    outputNodes: readonly ImportDeclaration[];
+}): readonly CommentEntry[] => {
+    if (outputNodes.length === 0) {
+        // Nothing to do if there are no outputs
         return [];
     }
 
@@ -364,27 +365,18 @@ export const getCommentRegistryFromImportDeclarations = ({
 };
 
 export function attachCommentsToOutputNodes(
-    commentEntriesFromRegistry: CommentEntry[],
+    commentEntriesFromRegistry: readonly CommentEntry[],
     outputNodes: ImportOrLine[],
     /** Original declaration, not the re-sorted output-node! */
     firstImport: ImportDeclaration,
 ) {
-    if (!Array.isArray(commentEntriesFromRegistry)) {
-        throw new Error(
-            'Fatal Internal Error: Expected a list of commentEntriesFromRegistry',
-        );
-    }
-    if (outputNodes == null || outputNodes.length === 0) {
+    if (outputNodes.length === 0) {
         // attachCommentsToOutputNodes implies that there's at least one output node so this shouldn't happen
         throw new Error(
             "Fatal Internal Error: Can't attach comments to empty output",
         );
     }
-    if (firstImport == null) {
-        throw new Error(
-            "Fatal Internal Error: Can't attach comments if there was no firstImport",
-        );
-    }
+
     const newFirstImport = outputNodes[0];
 
     /** Store a mapping of Specifier to ImportDeclaration */
