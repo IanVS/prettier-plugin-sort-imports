@@ -189,6 +189,7 @@ const attachCommentsToRegistryMap = ({
                 deferredCommentClaims.push({
                     ...commentEntry,
                     needsTopOfFileOwner: true,
+                    association: CommentAssociation.trailing, // For top-of-file, always use trailing to preserve trailing blank line if present
                     processingPriority:
                         commentEntry.processingPriority +
                         DeferredCommentClaimPriorityAdjustment.leadingAboveAllImports,
@@ -241,9 +242,10 @@ export const getCommentRegistryFromImportDeclarations = ({
     firstImport: ImportDeclaration;
 
     /** Constructed Output Nodes */
-    outputNodes: ImportDeclaration[];
-}) => {
-    if (outputNodes.length === 0 || !firstImport) {
+    outputNodes: readonly ImportDeclaration[];
+}): readonly CommentEntry[] => {
+    if (outputNodes.length === 0) {
+        // Nothing to do if there are no outputs
         return [];
     }
 
@@ -363,7 +365,7 @@ export const getCommentRegistryFromImportDeclarations = ({
 };
 
 export function attachCommentsToOutputNodes(
-    commentEntriesFromRegistry: CommentEntry[],
+    commentEntriesFromRegistry: readonly CommentEntry[],
     outputNodes: ImportOrLine[],
     /** Original declaration, not the re-sorted output-node! */
     firstImport: ImportDeclaration,
@@ -374,17 +376,15 @@ export function attachCommentsToOutputNodes(
             "Fatal Internal Error: Can't attach comments to empty output",
         );
     }
-    if (firstImport == null) {
-        throw new Error(
-            "Fatal Internal Error: Can't attach comments if there was no firstImport",
-        );
-    }
+
+    const newFirstImport = outputNodes[0];
 
     /** Store a mapping of Specifier to ImportDeclaration */
     const parentNodeId = (specifier: SomeSpecifier) =>
         `parent::${nodeId(specifier)}`;
 
     const outputRegistry = new Map<string, ImportRelated>();
+    // Collect entries for every declaration, specifier, and parent of specifier in a single table for mapping
     for (const outputNode of outputNodes) {
         outputRegistry.set(nodeId(outputNode), outputNode);
         if (outputNode.type === 'ImportDeclaration') {
@@ -395,7 +395,48 @@ export function attachCommentsToOutputNodes(
         }
     }
 
-    const newFirstImport = outputNodes[0];
+    let hasPatchedNewFirstImportLocation = false;
+    /**
+     * Put the first import in the right spot (where the original first import started).
+     *  Otherwise, comments at the top of the file will not be formatted correctly.
+     *
+     * This is a little tricky, because the new first import might have leading comments,
+     *  and we have to move the node and all comments the same distance
+     *
+     * This works since late 2022, Babel uses `loc` (if-present) to hint how to render for some cases.
+     */
+    const patchNewFirstImportLocationOnlyOnce = () => {
+        if (!hasPatchedNewFirstImportLocation) {
+            return;
+        }
+
+        const commentHeight = getHeightOfLeadingComments(newFirstImport);
+        const originalLoc = newFirstImport.loc;
+        if (firstImport.loc && originalLoc) {
+            newFirstImport.loc = {
+                start: {
+                    ...firstImport.loc?.start,
+                    line: firstImport.loc?.start.line + commentHeight,
+                },
+                end: {
+                    ...firstImport.loc?.end,
+                    line: firstImport.loc?.end.line + commentHeight,
+                },
+            };
+            const moveDist =
+                originalLoc.start.line - newFirstImport.loc.start.line;
+
+            for (const commentType of orderedCommentKeysToRegister) {
+                newFirstImport[commentType]?.forEach((c) => {
+                    if (c.loc) {
+                        c.loc.start.line -= moveDist;
+                        c.loc.end.line -= moveDist;
+                    }
+                });
+            }
+        }
+        hasPatchedNewFirstImportLocation = true;
+    };
 
     for (const commentEntry of commentEntriesFromRegistry) {
         const {
@@ -406,44 +447,9 @@ export function attachCommentsToOutputNodes(
             needsLastSpecifierOwner,
         } = commentEntry;
 
-        if (needsTopOfFileOwner && outputNodes[0].type !== 'EmptyStatement') {
-            // Put in a dummy empty statement to attach top-of-file-comments to if one was not provided
-            const dummy = emptyStatement();
-            dummy.loc = {
-                start: { line: 0, column: 0 },
-                end: { line: 0, column: 0 },
-            };
-            outputNodes.unshift(dummy);
-
-            // Put the first import in the right spot, where the original first import started
-            // Otherwise, comments at the top of the file will not be formatted correctly.
-            // This is a little tricky, because the new first import might have leading comments,
-            // and we have to move the node and all comments the same distance
-            const commentHeight = getHeightOfLeadingComments(newFirstImport);
-            const originalLoc = newFirstImport.loc;
-            if (firstImport.loc && originalLoc) {
-                newFirstImport.loc = {
-                    start: {
-                        ...firstImport.loc?.start,
-                        line: firstImport.loc?.start.line + commentHeight,
-                    },
-                    end: {
-                        ...firstImport.loc?.end,
-                        line: firstImport.loc?.end.line + commentHeight,
-                    },
-                };
-                const moveDist =
-                    originalLoc.start.line - newFirstImport.loc.start.line;
-
-                for (const commentType of orderedCommentKeysToRegister) {
-                    newFirstImport[commentType]?.forEach((c) => {
-                        if (c.loc) {
-                            c.loc.start.line -= moveDist;
-                            c.loc.end.line -= moveDist;
-                        }
-                    });
-                }
-            }
+        if (needsTopOfFileOwner) {
+            ensureEmptyStatementAtFront(outputNodes);
+            patchNewFirstImportLocationOnlyOnce();
         }
 
         let ownerNode = needsTopOfFileOwner
@@ -451,6 +457,7 @@ export function attachCommentsToOutputNodes(
             : outputRegistry.get(nodeId(owner));
 
         if (needsLastSpecifierOwner) {
+            // get the owner (a specifier) and find its declaration node
             const parentDeclaration = outputRegistry.get(
                 parentNodeId(owner as SomeSpecifier),
             ) as ImportDeclaration | undefined;
@@ -463,6 +470,7 @@ export function attachCommentsToOutputNodes(
                     "Fatal Internal Error: Couldn't find parent declaration for a specifier",
                 );
             }
+            // Select the last specifier in the declaration
             const lastSpecifier =
                 parentDeclaration.specifiers[
                     parentDeclaration.specifiers.length - 1
@@ -484,8 +492,8 @@ export function attachCommentsToOutputNodes(
             throw new Error("Fatal Internal Error: Couldn't find owner node");
         }
 
-        // // Since we mucked with the loc of the newFirstImport, we need to be careful to
-        // // keep its comments in the right place, so adjust their loc too
+        // Since we mucked with the loc of the newFirstImport, we need to be careful to
+        //  keep its comments in the right place, so adjust their loc too
         if (
             ownerNode === newFirstImport &&
             association !== CommentAssociation.leading &&
@@ -496,17 +504,24 @@ export function attachCommentsToOutputNodes(
             comment.loc.start.line = ownerNode.loc.start.line;
         }
 
-        // addComments(ownerNode, association, [comment]);
-        // using Babel's addComments will reverse the comments if you iteratively attach them, so push them directly
-        const commentType = needsTopOfFileOwner
-            ? 'trailingComments' // use trailing comments to preserve trailing blank line if present
-            : CommentAssociationByValue[association];
-        const commentCollection = (ownerNode[commentType] =
-            ownerNode[commentType] || []);
+        // addComments(ownerNode, association, [comment]); -- using Babel's addComments will reverse the comments if you iteratively attach them, so push them directly
+        const attachment = CommentAssociationByValue[association];
+        const commentCollection = (ownerNode[attachment] =
+            ownerNode[attachment] || []);
         (commentCollection as Comment[]).push(comment);
     }
 }
-
+function ensureEmptyStatementAtFront(outputNodes: ImportOrLine[]) {
+    if (outputNodes[0].type === 'EmptyStatement') {
+        return;
+    }
+    const dummy = emptyStatement();
+    dummy.loc = {
+        start: { line: 0, column: 0 },
+        end: { line: 0, column: 0 },
+    };
+    outputNodes.unshift(dummy);
+}
 function getHeightOfLeadingComments(node: ImportOrLine) {
     if (
         Array.isArray(node.leadingComments) &&
@@ -514,7 +529,13 @@ function getHeightOfLeadingComments(node: ImportOrLine) {
         node.leadingComments[0].loc &&
         node.loc
     ) {
-        return node.loc.start.line - node.leadingComments[0].loc.start.line;
+        return Math.max(
+            0, // Use Math.max to avoid negative heights (shouldn't be possible)
+            node.loc.start.line - node.leadingComments[0].loc.start.line,
+        );
     }
     return 0;
 }
+export const testingOnlyExports = {
+    nodeId,
+};

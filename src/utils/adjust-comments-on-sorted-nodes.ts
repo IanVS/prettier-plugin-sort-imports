@@ -15,15 +15,15 @@ import {
  * @returns A copied and adjusted set of nodes, containing comments
  */
 export const adjustCommentsOnSortedNodes = (
-    originalDeclarationNodes: ImportDeclaration[],
-    finalNodes: ImportOrLine[],
+    originalDeclarationNodes: readonly ImportDeclaration[],
+    finalNodes: readonly ImportOrLine[],
 ) => {
     const outputNodes: ImportDeclaration[] = finalNodes.filter(
         (n) => n.type === 'ImportDeclaration',
     ) as ImportDeclaration[];
     if (originalDeclarationNodes.length === 0 || outputNodes.length === 0) {
         // Nothing to do, because there are no ImportDeclarations!
-        return finalNodes;
+        return [...finalNodes];
     }
 
     const firstImport = originalDeclarationNodes[0];

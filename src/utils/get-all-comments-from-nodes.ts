@@ -8,7 +8,7 @@ import type {
 import { SomeSpecifier } from '../types';
 
 export const getAllCommentsFromNodes = (
-    nodes: (Directive | Statement | SomeSpecifier)[],
+    nodes: readonly (Directive | Statement | SomeSpecifier)[],
 ) =>
     nodes.reduce((acc, node) => {
         if (
