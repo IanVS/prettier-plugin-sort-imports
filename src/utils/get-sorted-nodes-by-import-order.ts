@@ -1,12 +1,9 @@
-import {
-    BUILTIN_MODULES,
-    newLineNode,
-    THIRD_PARTY_MODULES_SPECIAL_WORD,
-} from '../constants';
+import { newLineNode, THIRD_PARTY_MODULES_SPECIAL_WORD } from '../constants';
 import type { GetSortedNodes, ImportGroups, ImportOrLine } from '../types';
 import { getImportNodesMatchedGroup } from './get-import-nodes-matched-group';
 import { getSortedImportSpecifiers } from './get-sorted-import-specifiers';
 import { getSortedNodesGroup } from './get-sorted-nodes-group';
+import { normalizeImportOrderOption } from './normalize-import-order-options';
 
 /**
  * This function returns the given nodes, sorted in the order as indicated by
@@ -19,16 +16,10 @@ export const getSortedNodesByImportOrder: GetSortedNodes = (
     originalNodes,
     options,
 ) => {
-    let { importOrder } = options;
+    // This normalization is safe even if the option is already correct.
+    const importOrder = normalizeImportOrderOption(options.importOrder);
 
     const finalNodes: ImportOrLine[] = [];
-
-    if (!importOrder.includes(THIRD_PARTY_MODULES_SPECIAL_WORD)) {
-        importOrder = [THIRD_PARTY_MODULES_SPECIAL_WORD, ...importOrder];
-    }
-
-    // Opinionated decision: builtin modules should always be first
-    importOrder = [BUILTIN_MODULES, ...importOrder];
 
     const importOrderGroups = importOrder.reduce<ImportGroups>(
         (groups, regexp) =>

@@ -4,7 +4,6 @@ import {
     type ImportDeclaration,
 } from '@babel/types';
 
-import { newLineNode } from '../constants';
 import { ImportOrLine, ImportRelated, SomeSpecifier } from '../types';
 
 const SpecifierTypes = [
