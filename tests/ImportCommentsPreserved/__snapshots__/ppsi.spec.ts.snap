@@ -102,6 +102,21 @@ import { useState } from "react";
 
 `;
 
+exports[`import-comments-no-top-gap.ts - typescript-verify > import-comments-no-top-gap.ts 1`] = `
+/**
+ * @prettier
+ */
+import { requireValue } from './utils/require/requireValue';
+import { fooValue } from './foo';
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+ * @prettier
+ */
+import { fooValue } from "./foo";
+import { requireValue } from "./utils/require/requireValue";
+
+`;
+
 exports[`import-comments-outer-comments-block-comments.ts - typescript-verify > import-comments-outer-comments-block-comments.ts 1`] = `
 // Loose leading comment before imports (should not be dragged down with B)
 
