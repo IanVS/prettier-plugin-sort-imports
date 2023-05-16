@@ -12,6 +12,7 @@
 - The `importOrderMergeDuplicateImports` option has been removed, and imports are always combined (previous `true` setting)
 - The `importOrderCombineTypeAndValueImports` option has been removed.  See [below](#importOrderCombineTypeAndValueImports-removed) for details
 - Added `importOrderTypeScriptVersion` option.
+- The default `importOrder` was improved.  It now sorts node.js built-ins, then non-relative imports, then relative imports. If you have an `importOrder` specified, this will not affect you.
 
 #### `importOrderSeparation` removed
 
