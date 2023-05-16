@@ -22,7 +22,8 @@ export const getSortedImportSpecifiers = (node: ImportDeclaration) => {
             b.type === 'ImportSpecifier' &&
             a.importKind !== b.importKind
         ) {
-            return a.importKind === 'value' ? -1 : 1;
+            // flow uses null for value import specifiers
+            return a.importKind === 'value' || a.importKind == null ? -1 : 1;
         }
 
         return naturalSort(a.local.name, b.local.name);

@@ -15,20 +15,22 @@ import {
  * @returns A copied and adjusted set of nodes, containing comments
  */
 export const adjustCommentsOnSortedNodes = (
-    originalDeclarationNodes: ImportDeclaration[],
-    finalNodes: ImportOrLine[],
+    originalDeclarationNodes: readonly ImportDeclaration[],
+    finalNodes: readonly ImportOrLine[],
 ) => {
     const outputNodes: ImportDeclaration[] = finalNodes.filter(
         (n) => n.type === 'ImportDeclaration',
     ) as ImportDeclaration[];
     if (originalDeclarationNodes.length === 0 || outputNodes.length === 0) {
         // Nothing to do, because there are no ImportDeclarations!
-        return finalNodes;
+        return [...finalNodes];
     }
+
+    const firstImport = originalDeclarationNodes[0];
 
     const registry = getCommentRegistryFromImportDeclarations({
         outputNodes,
-        firstImport: originalDeclarationNodes[0],
+        firstImport,
     });
 
     // Make a copy of the nodes for easier debugging & remove the existing comments to reattach them
@@ -44,7 +46,7 @@ export const adjustCommentsOnSortedNodes = (
         return noDirectCommentsNode;
     });
 
-    attachCommentsToOutputNodes(registry, finalNodesClone);
+    attachCommentsToOutputNodes(registry, finalNodesClone, firstImport);
 
     return finalNodesClone;
 };

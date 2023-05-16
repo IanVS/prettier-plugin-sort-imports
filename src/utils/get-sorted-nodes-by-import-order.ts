@@ -27,7 +27,7 @@ export const getSortedNodesByImportOrder: GetSortedNodes = (
         importOrder = [THIRD_PARTY_MODULES_SPECIAL_WORD, ...importOrder];
     }
 
-    // IDEA: We could make built-ins a special word, if people do not want them up top
+    // Opinionated decision: builtin modules should always be first
     importOrder = [BUILTIN_MODULES, ...importOrder];
 
     const importOrderGroups = importOrder.reduce<ImportGroups>(
@@ -42,6 +42,7 @@ export const getSortedNodesByImportOrder: GetSortedNodes = (
         {},
     );
 
+    // Select just the SPECIAL WORDS and the matchers
     const sanitizedImportOrder = importOrder.filter(
         (group) =>
             !isCustomGroupSeparator(group) &&
