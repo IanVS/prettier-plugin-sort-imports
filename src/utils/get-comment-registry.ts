@@ -406,7 +406,7 @@ export function attachCommentsToOutputNodes(
      * This works since late 2022, Babel uses `loc` (if-present) to hint how to render for some cases.
      */
     const patchNewFirstImportLocationOnlyOnce = () => {
-        if (!hasPatchedNewFirstImportLocation) {
+        if (hasPatchedNewFirstImportLocation) {
             return;
         }
 
