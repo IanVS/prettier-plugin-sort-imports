@@ -231,7 +231,7 @@ import MyApp from './MyApp';
 Imports of CSS files are often placed at the bottom of the list of imports, and can be accomplished like so:
 
 ```json
-"importOrder": ["<THIRD_PARTY_MODULES>", "^(?!.*[.]css$)[./].*$", ".css$",]
+"importOrder": ["<THIRD_PARTY_MODULES>", "^(?!.*[.]css$)[./].*$", ".css$"]
 ```
 
 e.g.:
@@ -265,7 +265,7 @@ import MyApp from './MyApp';
 If you're using Flow or TypeScript, you might want to separate out your type imports from imports of values.  And to be especially fancy, you can even group 3rd party types together, and your own local type imports separately:
 
 ```json
-"importOrder": ["<TYPES>", "<TYPES>^[.]", "<THIRD_PARTY_MODULES>", "^[.]",]
+"importOrder": ["<TYPES>", "<TYPES>^[.]", "<THIRD_PARTY_MODULES>", "^[.]"]
 ```
 
 e.g.:
