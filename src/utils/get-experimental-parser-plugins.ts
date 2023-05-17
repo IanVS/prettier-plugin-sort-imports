@@ -50,9 +50,7 @@ export const hasPlugin = (
 
         if (isParserPluginWithOptions) {
             try {
-                plugin = JSON.parse(
-                    pluginNameOrJson,
-                ) as ParserPluginWithOptions;
+                plugin = JSON.parse(pluginNameOrJson)[0];
             } catch (e) {
                 throw Error(
                     'Invalid JSON in importOrderParserPlugins: ' +
