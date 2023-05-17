@@ -1,0 +1,40 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`imports-with-file-level-comments.ts - typescript-verify > imports-with-file-level-comments.ts 1`] = `
+//@ts-ignore
+// I am file top level comments (expect blank line below this)
+import threeLevelRelativePath from "../../../threeLevelRelativePath";
+// I am stick to b
+import b from "b";
+import a from "a";
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//@ts-ignore
+// I am file top level comments (expect blank line below this)
+
+import a from "a";
+// I am stick to b
+import b from "b";
+
+import threeLevelRelativePath from "../../../threeLevelRelativePath";
+
+`;
+
+exports[`imports-without-file-level-comments.ts - typescript-verify > imports-without-file-level-comments.ts 1`] = `
+import threeLevelRelativePath from "../../../threeLevelRelativePath";
+// I am stick to b
+import b from "b";
+import a from "a";
+
+// Loose runtime comment
+const foo = "foo";
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import a from "a";
+// I am stick to b
+import b from "b";
+
+import threeLevelRelativePath from "../../../threeLevelRelativePath";
+
+// Loose runtime comment
+const foo = "foo";
+
+`;

@@ -1,3 +1,4 @@
+import type { ParserPlugin } from '@babel/parser';
 import {
     type EmptyStatement,
     type ExpressionStatement,
@@ -46,11 +47,26 @@ export type SomeSpecifier =
     | ImportNamespaceSpecifier;
 export type ImportRelated = ImportOrLine | SomeSpecifier;
 
+export interface InspectedAndNormalizedOptions {
+    importOrder: PrettierOptions['importOrder'];
+    importOrderCombineTypeAndValueImports: boolean;
+    hasAnyCustomGroupSeparatorsInImportOrder: boolean;
+    provideGapAfterTopOfFileComments: boolean;
+    plugins: ParserPlugin[];
+}
+
 export type GetSortedNodes = (
     nodes: ImportDeclaration[],
-    options: Pick<PrettierOptions, 'importOrder'> & {
+    options: Pick<InspectedAndNormalizedOptions, 'importOrder'> & {
         importOrderCombineTypeAndValueImports: boolean;
+        hasAnyCustomGroupSeparatorsInImportOrder?: boolean;
+        provideGapAfterTopOfFileComments?: boolean;
     },
+) => ImportOrLine[];
+
+export type GetSortedNodesByImportOrder = (
+    nodes: ImportDeclaration[],
+    options: Pick<InspectedAndNormalizedOptions, 'importOrder'>,
 ) => ImportOrLine[];
 
 export type GetChunkTypeOfNode = (node: ImportDeclaration) => ChunkType;
@@ -65,3 +81,7 @@ export type MergeNodesWithMatchingImportFlavors = (
 export type ExplodeTypeAndValueSpecifiers = (
     nodes: ImportDeclaration[],
 ) => ImportDeclaration[];
+
+export interface CommentAttachmentOptions {
+    provideGapAfterTopOfFileComments?: boolean;
+}

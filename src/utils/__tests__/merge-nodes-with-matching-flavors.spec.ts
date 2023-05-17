@@ -4,11 +4,13 @@ import { expect, test } from 'vitest';
 import { getCodeFromAst } from '../get-code-from-ast';
 import { getImportNodes } from '../get-import-nodes';
 import { getSortedNodes } from '../get-sorted-nodes';
+import { examineAndNormalizePluginOptions } from '../normalize-plugin-options';
 
-const defaultOptions = {
+const defaultOptions = examineAndNormalizePluginOptions({
     importOrder: [''], // Separate side-effect and ignored chunks, for easier test readability
-    importOrderCombineTypeAndValueImports: true,
-};
+    importOrderTypeScriptVersion: '5.0.0',
+    importOrderParserPlugins: [],
+});
 
 test('should merge duplicate imports within a given chunk', () => {
     const code = `

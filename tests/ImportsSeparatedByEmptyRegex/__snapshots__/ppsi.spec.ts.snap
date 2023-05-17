@@ -217,7 +217,6 @@ function add(a: number, b: number) {
 exports[`imports-with-file-level-comments.ts - typescript-verify > imports-with-file-level-comments.ts 1`] = `
 //@ts-ignore
 // I am file top level comments
-
 import threeLevelRelativePath from "../../../threeLevelRelativePath";
 // I am stick to sameLevelRelativePath
 import sameLevelRelativePath from "./sameLevelRelativePath";
@@ -252,7 +251,6 @@ function add(a:number,b:number) {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //@ts-ignore
 // I am file top level comments
-
 import a from "a";
 import c from "c";
 // I am stick to third party comment

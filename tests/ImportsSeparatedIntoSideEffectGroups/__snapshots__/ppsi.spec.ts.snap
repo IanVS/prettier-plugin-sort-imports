@@ -50,6 +50,7 @@ import something3 from "@core/something3";
 import { type Something2 } from "./__generated2__";
 
 import "side-effect-z";
+
 import thirdDisco1 from "third-disco1";
 import thirdParty1 from "third-party1";
 import otherthing0 from "@core/otherthing0";
@@ -63,6 +64,7 @@ import sameLevelRelativePath3 from "./sameLevelRelativePath3";
 import "side-effect-y3";
 import "side-effect-y1";
 import "side-effect-y2";
+
 import thirdDisco3 from "third-disco3";
 import thirdParty3 from "third-party3";
 import otherthing2 from "@core/otherthing2";
@@ -74,6 +76,7 @@ import anotherSameLevelRelativePath1 from "./anotherSameLevelRelativePath1";
 import sameLevelRelativePath1 from "./sameLevelRelativePath1";
 
 import "side-effect-x";
+
 import thirdDisco2 from "third-disco2";
 import thirdParty2 from "third-party2";
 import otherthing1 from "@core/otherthing1";

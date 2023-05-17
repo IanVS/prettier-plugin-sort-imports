@@ -5,6 +5,7 @@ import { expect, test } from 'vitest';
 import { getAllCommentsFromNodes } from '../get-all-comments-from-nodes';
 import { getImportNodes } from '../get-import-nodes';
 import { getSortedNodes } from '../get-sorted-nodes';
+import { testingOnly } from '../normalize-plugin-options';
 import { removeNodesFromOriginalCode } from '../remove-nodes-from-original-code';
 
 const code = `"some directive";// first comment
@@ -23,7 +24,7 @@ test('it should remove nodes from the original code', () => {
     const ast = babelParser(code, { sourceType: 'module' });
     const importNodes = getImportNodes(code);
     const sortedNodes = getSortedNodes(importNodes, {
-        importOrder: [],
+        importOrder: testingOnly.normalizeImportOrderOption([]),
         importOrderCombineTypeAndValueImports: true,
     });
     const allCommentsFromImports = getAllCommentsFromNodes(sortedNodes);

@@ -4,7 +4,12 @@ import {
     type ImportDeclaration,
 } from '@babel/types';
 
-import { ImportOrLine, ImportRelated, SomeSpecifier } from '../types';
+import {
+    CommentAttachmentOptions,
+    ImportOrLine,
+    ImportRelated,
+    SomeSpecifier,
+} from '../types';
 
 const SpecifierTypes = [
     'ImportSpecifier',
@@ -368,6 +373,7 @@ export function attachCommentsToOutputNodes(
     outputNodes: ImportOrLine[],
     /** Original declaration, not the re-sorted output-node! */
     firstImport: ImportDeclaration,
+    { provideGapAfterTopOfFileComments }: CommentAttachmentOptions = {},
 ) {
     if (outputNodes.length === 0) {
         // attachCommentsToOutputNodes implies that there's at least one output node so this shouldn't happen
@@ -422,8 +428,13 @@ export function attachCommentsToOutputNodes(
                     line: firstImport.loc?.end.line + commentHeight,
                 },
             };
+
             const moveDist =
                 originalLoc.start.line - newFirstImport.loc.start.line;
+
+            if (provideGapAfterTopOfFileComments) {
+                newFirstImport.loc.start.line += 1;
+            }
 
             for (const commentType of orderedCommentKeysToRegister) {
                 newFirstImport[commentType]?.forEach((c) => {
@@ -535,6 +546,6 @@ function getHeightOfLeadingComments(node: ImportOrLine) {
     }
     return 0;
 }
-export const testingOnlyExports = {
+export const testingOnly = {
     nodeId,
 };

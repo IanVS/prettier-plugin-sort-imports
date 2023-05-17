@@ -7,10 +7,7 @@ import type { GetSortedNodes, ImportChunk, ImportOrLine } from '../types';
 import { adjustCommentsOnSortedNodes } from './adjust-comments-on-sorted-nodes';
 import { explodeTypeAndValueSpecifiers } from './explode-type-and-value-specifiers';
 import { getChunkTypeOfNode } from './get-chunk-type-of-node';
-import {
-    getSortedNodesByImportOrder,
-    isCustomGroupSeparator,
-} from './get-sorted-nodes-by-import-order';
+import { getSortedNodesByImportOrder } from './get-sorted-nodes-by-import-order';
 import { mergeNodesWithMatchingImportFlavors } from './merge-nodes-with-matching-flavors';
 
 /**
@@ -29,7 +26,12 @@ import { mergeNodesWithMatchingImportFlavors } from './merge-nodes-with-matching
  * @returns A sorted array of the remaining import nodes
  */
 export const getSortedNodes: GetSortedNodes = (nodes, options) => {
-    const { importOrder, importOrderCombineTypeAndValueImports } = options;
+    const {
+        importOrder,
+        importOrderCombineTypeAndValueImports,
+        hasAnyCustomGroupSeparatorsInImportOrder,
+        provideGapAfterTopOfFileComments,
+    } = options;
 
     // Split nodes at each boundary between a side-effect node and a
     // non-side-effect node, keeping both types of nodes together.
@@ -53,9 +55,9 @@ export const getSortedNodes: GetSortedNodes = (nodes, options) => {
     for (const chunk of splitBySideEffectNodes) {
         // do not sort side effect nodes
         if (chunk.type === chunkTypeUnsortable) {
-            // If the first item in importOrder is a newline, add newlines around the side effect node
-            if (isCustomGroupSeparator(importOrder[0])) {
-                // Add newline before chunk if it has no leading comment
+            // If users use custom separators, add newlines around the side effect node
+            if (hasAnyCustomGroupSeparatorsInImportOrder) {
+                // Add newline before chunk if it has no leading comment #ConditionalNewLineAfterSideEffectWithSeparatorsGivenLeadingComment
                 if (!chunk.nodes[0].leadingComments?.length) {
                     finalNodes.push(newLineNode);
                 }
@@ -84,5 +86,7 @@ export const getSortedNodes: GetSortedNodes = (nodes, options) => {
     }
 
     // Adjust the comments on the sorted nodes to match the original comments
-    return adjustCommentsOnSortedNodes(nodes, finalNodes);
+    return adjustCommentsOnSortedNodes(nodes, finalNodes, {
+        provideGapAfterTopOfFileComments,
+    });
 };
