@@ -3,7 +3,9 @@ import type { GetSortedNodes, ImportGroups, ImportOrLine } from '../types';
 import { getImportNodesMatchedGroup } from './get-import-nodes-matched-group';
 import { getSortedImportSpecifiers } from './get-sorted-import-specifiers';
 import { getSortedNodesGroup } from './get-sorted-nodes-group';
-import { normalizeImportOrderOption } from './normalize-import-order-options';
+import {
+    normalizeImportOrderOption,
+} from './normalize-plugin-options';
 
 /**
  * This function returns the given nodes, sorted in the order as indicated by
