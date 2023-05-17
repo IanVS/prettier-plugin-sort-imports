@@ -1,5 +1,40 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`jsx-in-ts.vue - vue-verify > jsx-in-ts.vue 1`] = `
+<template>
+    <router-view />
+</template>
+
+<script lang="ts">
+    // This will crash if we try to use the \`jsx\` parser plugin
+    <A>a();
+</script>
+
+<style lang="less">
+#app {
+height: 100%;
+background-color: inherit;
+}
+</style>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<template>
+    <router-view />
+</template>
+
+<script lang="ts">
+// This will crash if we try to use the \`jsx\` parser plugin
+<A>a();
+</script>
+
+<style lang="less">
+#app {
+    height: 100%;
+    background-color: inherit;
+}
+</style>
+
+`;
+
 exports[`no-script.vue - vue-verify > no-script.vue 1`] = `
 <template>
     <router-view />
