@@ -50,9 +50,10 @@ export function examineAndNormalizePluginOptions(
         | 'importOrder'
         | 'importOrderParserPlugins'
         | 'importOrderTypeScriptVersion'
+        | 'filepath'
     >,
 ): InspectedAndNormalizedOptions {
-    const { importOrderParserPlugins } = options;
+    const { importOrderParserPlugins, filepath } = options;
     let { importOrderTypeScriptVersion } = options;
 
     const isTSSemverValid = semver.valid(importOrderTypeScriptVersion);
@@ -72,7 +73,11 @@ export function examineAndNormalizePluginOptions(
         ? false
         : true;
 
-    const plugins = getExperimentalParserPlugins(importOrderParserPlugins);
+    let plugins = getExperimentalParserPlugins(importOrderParserPlugins);
+    // Do not inject jsx plugin for non-jsx ts files
+    if (filepath.endsWith('.ts')) {
+        plugins = plugins.filter((p) => p !== 'jsx');
+    }
 
     // Disable importOrderCombineTypeAndValueImports if typescript is not set to a version that supports it
     if (

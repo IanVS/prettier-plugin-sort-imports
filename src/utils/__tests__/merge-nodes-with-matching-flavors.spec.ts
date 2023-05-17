@@ -10,6 +10,7 @@ const defaultOptions = examineAndNormalizePluginOptions({
     importOrder: [''], // Separate side-effect and ignored chunks, for easier test readability
     importOrderTypeScriptVersion: '5.0.0',
     importOrderParserPlugins: [],
+    filepath: './test.ts',
 });
 
 test('should merge duplicate imports within a given chunk', () => {
