@@ -194,8 +194,8 @@ The main way to control the import order and formatting, `importOrder` is a coll
 
 ```js
 [
-    '<BUILTIN_MODULES>', // Built-in modules are always grouped. If you don't configure this special word, it will be injected.
-    '<THIRD_PARTY_MODULES>', // Imports not matched by other special words or regexps -- if you don't configure this special word, it will be injected.
+    '<BUILTIN_MODULES>', // Node.js built-in modules
+    '<THIRD_PARTY_MODULES>', // Imports not matched by other special words or groups.
     '^[.]', // relative imports
 ],
 ```
@@ -247,7 +247,7 @@ import styles from './global.css';
 If you want to group your imports into "chunks" with blank lines between, you can add empty strings like this:
 
 ```json
-"importOrder": ["<BUILT_IN_MODULES>", "", "<THIRD_PARTY_MODULES>", "", "^[.]",]
+"importOrder": ["<BUILT_IN_MODULES>", "", "<THIRD_PARTY_MODULES>", "", "^[.]"]
 ```
 
 e.g.:
