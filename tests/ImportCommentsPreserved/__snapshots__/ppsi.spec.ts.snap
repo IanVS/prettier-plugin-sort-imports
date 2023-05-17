@@ -307,3 +307,41 @@ import {
 } from "d_proving_all_specifier_blank_lines_get_removed";
 
 `;
+
+exports[`inner-comment-on-declaration.ts - typescript-verify > inner-comment-on-declaration.ts 1`] = `
+const someRandomGlobal = "stuff"; // same-line comment on someRandomGlobal
+
+import * as fs from "fs";
+import * as path from "path";
+import shell from "shelljs";
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import * as fs from "fs";
+import * as path from "path";
+import shell from "shelljs";
+
+const someRandomGlobal = "stuff"; // same-line comment on someRandomGlobal
+
+`;
+
+exports[`leading-comments-on-declaration.ts - typescript-verify > leading-comments-on-declaration.ts 1`] = `
+#!/usr/bin/env ts-node
+
+// Leading comment on someRandomGlobal
+const someRandomGlobal = "stuff";
+
+import * as fs from "fs";
+import * as path from "path";
+import shell from "shelljs";
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#!/usr/bin/env ts-node
+
+import * as fs from "fs";
+import * as path from "path";
+import shell from "shelljs";
+
+// Leading comment on someRandomGlobal
+const someRandomGlobal = "stuff";
+
+`;
