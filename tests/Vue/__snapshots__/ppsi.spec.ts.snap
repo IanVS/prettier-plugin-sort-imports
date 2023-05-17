@@ -48,13 +48,16 @@ function add(a, b) {
 </script>
 
 <script setup>
-import z from "z";
-import threeLevelRelativePath from "../../../threeLevelRelativePath";
-import sameLevelRelativePath from "./sameLevelRelativePath";
 import thirdParty from "third-party";
-import oneLevelRelativePath from "../oneLevelRelativePath";
-import otherthing from "@core/otherthing";
 import { defineComponent } from "vue";
+import z from "z";
+
+import otherthing from "@core/otherthing";
+
+import threeLevelRelativePath from "../../../threeLevelRelativePath";
+import oneLevelRelativePath from "../oneLevelRelativePath";
+import sameLevelRelativePath from "./sameLevelRelativePath";
+
 function add(a, b) {
     return a + b;
 }
