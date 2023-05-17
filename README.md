@@ -365,14 +365,14 @@ Having some trouble or an issue? You can check [FAQ / Troubleshooting section](.
 
 ## Compatibility
 
-| Framework              | Supported     | Note                                             |
-| ---------------------- | ------------- | ------------------------------------------------ |
-| JS with ES Modules     | ✅ Everything | -                                                |
-| NodeJS with ES Modules | ✅ Everything | -                                                |
-| React                  | ✅ Everything | -                                                |
-| Angular                | ✅ Everything | Supported through `importOrderParserPlugins` API |
-| Vue                    | ✅ Everything | Peer dependency `@vue/compiler-sfc` is required  |
-| Svelte                 | ⚠️ Not yet    | Contributions are welcome                        |
+| Framework              | Supported     | Note                                                       |
+| ---------------------- | ------------- | ---------------------------------------------------------- |
+| JS with ES Modules     | ✅ Everything | -                                                          |
+| NodeJS with ES Modules | ✅ Everything | -                                                          |
+| React                  | ✅ Everything | -                                                          |
+| Angular                | ✅ Everything | Supported through `importOrderParserPlugins` API           |
+| Vue                    | ✅ Everything | SFCs only, peer dependency `@vue/compiler-sfc` is required |
+| Svelte                 | ⚠️ Not yet    | Contributions are welcome                                  |
 
 ## Contribution
 
