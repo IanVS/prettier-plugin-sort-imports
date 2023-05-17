@@ -1,0 +1,26 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`trailing-comments-on-interpreter.ts - typescript-verify > trailing-comments-on-interpreter.ts 1`] = `
+#!/usr/bin/env ts-node
+// ################################################
+// ## Highlander comment: There can only be one! ##
+// ################################################
+
+const someRandomGlobal = "stuff";
+
+import * as fs from "fs";
+import * as path from "path";
+import shell from "shelljs";
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#!/usr/bin/env ts-node
+// ################################################
+// ## Highlander comment: There can only be one! ##
+// ################################################
+import * as fs from "fs";
+import * as path from "path";
+import shell from "shelljs";
+
+const someRandomGlobal = "stuff";
+
+`;
