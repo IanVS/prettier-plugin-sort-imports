@@ -75,13 +75,6 @@ function sortScript(
         if (!hasPlugin(newPlugins, 'typescript')) {
             newPlugins.push('typescript');
         }
-
-        if (
-            !hasPlugin(newPlugins, 'decorators') &&
-            !hasPlugin(newPlugins, 'decorators-legacy')
-        ) {
-            newPlugins.push('decorators-legacy');
-        }
     }
 
     const adjustedOptions = {
