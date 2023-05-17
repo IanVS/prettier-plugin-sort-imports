@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`import-comments-should-not-duplicate.ts - typescript-verify > import-comments-should-not-duplicate.ts 1`] = `
+exports[`trailing-comments-on-interpreter.ts - typescript-verify > trailing-comments-on-interpreter.ts 1`] = `
 #!/usr/bin/env ts-node
 // ################################################
 // ## Highlander comment: There can only be one! ##
