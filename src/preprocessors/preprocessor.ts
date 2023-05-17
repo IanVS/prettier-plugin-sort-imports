@@ -10,7 +10,7 @@ import { getExperimentalParserPlugins } from '../utils/get-experimental-parser-p
 import { getSortedNodes } from '../utils/get-sorted-nodes';
 
 export function preprocessor(code: string, options: PrettierOptions): string {
-    const { importOrderParserPlugins, importOrder } = options;
+    const { importOrderParserPlugins, importOrder, filepath } = options;
     let { importOrderTypeScriptVersion } = options;
     const isTSSemverValid = semver.valid(importOrderTypeScriptVersion);
 
@@ -29,10 +29,15 @@ export function preprocessor(code: string, options: PrettierOptions): string {
         : true;
 
     const allOriginalImportNodes: ImportDeclaration[] = [];
+    let plugins = getExperimentalParserPlugins(importOrderParserPlugins);
+    // Do not inject jsx plugin for non-jsx ts files
+    if (filepath.endsWith('.ts')) {
+        plugins = plugins.filter((p) => p !== 'jsx');
+    }
     const parserOptions: ParserOptions = {
         sourceType: 'module',
         attachComment: true,
-        plugins: getExperimentalParserPlugins(importOrderParserPlugins),
+        plugins,
     };
 
     // Disable importOrderCombineTypeAndValueImports if typescript is not set to a version that supports it

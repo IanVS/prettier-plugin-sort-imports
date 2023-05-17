@@ -302,3 +302,16 @@ export const Component = () => {
 };
 
 `;
+
+exports[`old-style-assertion.ts - typescript-verify > old-style-assertion.ts 1`] = `
+import { b } from "b";
+import { a } from "a";
+
+<A>a();
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import { a } from "a";
+import { b } from "b";
+
+<A>a();
+
+`;
