@@ -35,12 +35,16 @@ export const getCodeFromAst = ({
 }) => {
     const allCommentsFromImports = getAllCommentsFromNodes(nodesToOutput);
     const allCommentsFromDirectives = getAllCommentsFromNodes(directives);
+    const allCommentsFromIntrepter = interpreter
+        ? getAllCommentsFromNodes([interpreter])
+        : [];
 
     const nodesToRemoveFromCode = [
         ...nodesToOutput,
         ...allOriginalImportNodes,
         ...allCommentsFromImports,
         ...allCommentsFromDirectives,
+        ...allCommentsFromIntrepter,
         ...(interpreter ? [interpreter] : []),
         ...directives,
     ];

@@ -2,13 +2,19 @@ import type {
     CommentBlock,
     CommentLine,
     Directive,
+    InterpreterDirective,
     Statement,
 } from '@babel/types';
 
 import { SomeSpecifier } from '../types';
 
 export const getAllCommentsFromNodes = (
-    nodes: readonly (Directive | Statement | SomeSpecifier)[],
+    nodes: readonly (
+        | Directive
+        | Statement
+        | SomeSpecifier
+        | InterpreterDirective
+    )[],
 ) =>
     nodes.reduce((acc, node) => {
         if (
