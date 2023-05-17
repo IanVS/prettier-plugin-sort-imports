@@ -1,5 +1,30 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`no-script.vue - vue-verify > no-script.vue 1`] = `
+<template>
+    <router-view />
+</template>
+
+<style lang="less">
+#app {
+height: 100%;
+background-color: inherit;
+}
+</style>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<template>
+    <router-view />
+</template>
+
+<style lang="less">
+#app {
+    height: 100%;
+    background-color: inherit;
+}
+</style>
+
+`;
+
 exports[`script-and-setup.vue - vue-verify > script-and-setup.vue 1`] = `
 <script>
 import z from 'z';
