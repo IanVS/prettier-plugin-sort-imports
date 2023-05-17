@@ -93,7 +93,7 @@ export function examineAndNormalizePluginOptions(
             isCustomGroupSeparator,
         ),
         // Now that the regex for <BUILTIN_MODULES> is present, we can check if the user
-        // configured a separator before z<BUILTIN_MODULES>
+        // configured a separator before <BUILTIN_MODULES>
         provideGapAfterTopOfFileComments: isCustomGroupSeparator(
             importOrder[0],
         ),
