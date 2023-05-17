@@ -21,7 +21,7 @@ Since then more critical features & fixes have been added, and the options have 
 
 [We welcome contributions!](./CONTRIBUTING.md)
 
-**Table of Contents**
+## Table of Contents
 
 - [Sample](#sample)
   - [Input](#input)
@@ -177,9 +177,10 @@ unsortable. This can be used for edge-cases, such as when you have a named impor
 
 Next, the plugin sorts the _local imports_ and _third party imports_ using [natural sort algorithm](https://en.wikipedia.org/wiki/Natural_sort_order).
 
-In the end, the plugin returns final imports with _third party imports_ on top and _local imports_ at the end.
+In the end, the plugin returns final imports with _nodejs built-in modules_, followed by _third party imports_ and subsequent _local imports_ at the end.
 
-The _third party imports_ position (it's top by default) can be overridden using the `<THIRD_PARTY_MODULES>` special word in the `importOrder`.
+- The _nodejs built-in modules_ position (it's 1st by default) can be overridden using the `<BUILTIN_MODULES>` special word in the `importOrder`
+- The _third party imports_ position (it's 2nd by default) can be overridden using the `<THIRD_PARTY_MODULES>` special word in the `importOrder`.
 
 ### Options
 
@@ -193,13 +194,19 @@ The main way to control the import order and formatting, `importOrder` is a coll
 
 ```js
 [
-    // node.js built-ins are always first
-    '<THIRD_PARTY_MODULES>', // Non-relative imports
+    '<BUILTIN_MODULES>', // Node.js built-in modules
+    '<THIRD_PARTY_MODULES>', // Imports not matched by other special words or groups.
     '^[.]', // relative imports
 ],
 ```
 
 By default, this plugin sorts as documented on the line above, with Node.js built-in modules at the top, followed by non-relative imports, and lastly any relative import starting with a `.` character.
+
+Available Special Words:
+
+- `<BUILTIN_MODULES>` - All _nodejs built-in modules_ will be grouped here, and is injected at the top if it's not present.
+- `<THIRD_PARTY_MODULES>` - All imports not targeted by another regex will end up here, so this will be injected if not present in `options.importOrder`
+- `<TYPES>` - Not active by default, this allows you to group all type-imports, or target them with a regex (`<TYPES>^[.]` targets imports of types from local files).
 
 Here are some common ways to configure `importOrder`:
 
@@ -240,10 +247,8 @@ import styles from './global.css';
 If you want to group your imports into "chunks" with blank lines between, you can add empty strings like this:
 
 ```json
-"importOrder": ["", "<THIRD_PARTY_MODULES>", "", "^[.]",]
+"importOrder": ["<BUILT_IN_MODULES>", "", "<THIRD_PARTY_MODULES>", "", "^[.]"]
 ```
-
-(Note the empty string at the start, to add a blank line after node.js built-ins)
 
 e.g.:
 

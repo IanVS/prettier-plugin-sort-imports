@@ -4,7 +4,10 @@ import { parsers as flowParsers } from 'prettier/parser-flow';
 import { parsers as htmlParsers } from 'prettier/parser-html';
 import { parsers as typescriptParsers } from 'prettier/parser-typescript';
 
-import { THIRD_PARTY_MODULES_SPECIAL_WORD } from './constants';
+import {
+    BUILTIN_MODULES_SPECIAL_WORD,
+    THIRD_PARTY_MODULES_SPECIAL_WORD,
+} from './constants';
 import { defaultPreprocessor } from './preprocessors/default';
 import { vuePreprocessor } from './preprocessors/vue';
 import type { PrettierOptions } from './types';
@@ -29,7 +32,7 @@ export const options: Record<
         default: [
             {
                 value: [
-                    // node.js built-ins are always first
+                    BUILTIN_MODULES_SPECIAL_WORD,
                     THIRD_PARTY_MODULES_SPECIAL_WORD, // Everything not matching relative imports
                     '^[.]', // relative imports
                 ],

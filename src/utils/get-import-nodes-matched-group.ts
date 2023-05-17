@@ -5,13 +5,24 @@ import {
     TYPES_SPECIAL_WORD,
 } from '../constants';
 
+const regexCache = new Map<string, RegExp>();
+const cachedRegExp = (regExp: string) => {
+    if (regexCache.has(regExp)) {
+        return regexCache.get(regExp)!;
+    }
+    // Strip <TYPES> when creating regexp
+    const result = new RegExp(regExp.replace(TYPES_SPECIAL_WORD, ''));
+    regexCache.set(regExp, result);
+    return result;
+};
+
 /**
  * Get the regexp group to keep the import nodes.
  *
  * This comes near the end of processing, after import declaration nodes have been combined or exploded.
  *
  * @param node
- * @param importOrder
+ * @param importOrder a list of [regexp or special-word] groups (no separators)
  */
 export const getImportNodesMatchedGroup = (
     node: ImportDeclaration,
@@ -23,8 +34,7 @@ export const getImportNodesMatchedGroup = (
     const groupWithRegExp = importOrder
         .map((group) => ({
             group,
-            // Strip <TYPES> when creating regexp
-            regExp: new RegExp(group.replace(TYPES_SPECIAL_WORD, '')),
+            regExp: cachedRegExp(group),
         }))
         // Remove explicit bare <TYPES> group, we'll deal with that at the end similar to third party modules
         .filter(({ group }) => group !== TYPES_SPECIAL_WORD);

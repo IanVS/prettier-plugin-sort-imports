@@ -1,0 +1,20 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`exercise-custom-builtin-modules-spacing.ts - typescript-verify > exercise-custom-builtin-modules-spacing.ts 1`] = `
+// Top-of-file-comment
+import path from "path"
+import b from 'b';
+import foo from './foo';
+import thirdParty from 'third-party';
+import fs from "node:fs"
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Top-of-file-comment
+import b from "b";
+import thirdParty from "third-party";
+
+import fs from "node:fs";
+import path from "path";
+
+import foo from "./foo";
+
+`;

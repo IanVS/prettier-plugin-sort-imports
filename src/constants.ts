@@ -23,11 +23,14 @@ export const mergeableImportFlavors = [
     importFlavorType,
 ] as const;
 
-/*
- * Used to mark the position between RegExps,
- * where the not matched imports should be placed
+export const BUILTIN_MODULES_REGEX_STR = `^(?:node:)?(?:${builtinModules.join(
+    '|',
+)})$`;
+
+export const BUILTIN_MODULES_SPECIAL_WORD = '<BUILTIN_MODULES>';
+/**
+ * Used to mark not otherwise matched imports should be placed
  */
-export const BUILTIN_MODULES = `^(?:node:)?(?:${builtinModules.join('|')})$`;
 export const THIRD_PARTY_MODULES_SPECIAL_WORD = '<THIRD_PARTY_MODULES>';
 export const TYPES_SPECIAL_WORD = '<TYPES>';
 
