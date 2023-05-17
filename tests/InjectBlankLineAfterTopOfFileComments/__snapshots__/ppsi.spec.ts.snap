@@ -6,11 +6,17 @@ exports[`imports-with-file-level-comments.ts - typescript-verify > imports-with-
 import threeLevelRelativePath from "../../../threeLevelRelativePath";
 // I am stick to b
 import b from "b";
+// I am stick to a
 import a from "a";
+
+import fs from "fs";
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //@ts-ignore
 // I am file top level comments (expect blank line below this)
 
+import fs from "fs";
+
+// I am stick to a
 import a from "a";
 // I am stick to b
 import b from "b";
@@ -23,11 +29,17 @@ exports[`imports-without-file-level-comments.ts - typescript-verify > imports-wi
 import threeLevelRelativePath from "../../../threeLevelRelativePath";
 // I am stick to b
 import b from "b";
+// I am stick to a
 import a from "a";
 
 // Loose runtime comment
 const foo = "foo";
+
+import fs from "fs";
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import fs from "fs";
+
+// I am stick to a
 import a from "a";
 // I am stick to b
 import b from "b";
