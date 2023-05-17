@@ -44,6 +44,15 @@ export function isCustomGroupSeparator(pattern?: string) {
     return pattern?.trim() === '';
 }
 
+/** 
+ * Verifies that our special words that must always be there are present on importOrder
+ * Verifies that parser plugins are inferred correctly for certain file extensions.
+ *
+ * Configures certain behavior flags such as
+ *  - when to use certain typescript syntax
+ *  - when to inject blank lines after top-of-file comments
+ *  - when to inject blank lines around groups / side-effect nodes.
+ */
 export function examineAndNormalizePluginOptions(
     options: Pick<
         PrettierOptions,
