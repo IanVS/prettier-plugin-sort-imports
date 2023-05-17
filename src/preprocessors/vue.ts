@@ -1,14 +1,31 @@
+import type { parse as Parse } from '@vue/compiler-sfc';
+
 import { PrettierOptions } from '../types';
 import { preprocessor } from './preprocessor';
 
 export function vuePreprocessor(code: string, options: PrettierOptions) {
+    let preprocessedCode = code;
     try {
-        const { parse } = require('@vue/compiler-sfc');
+        const { parse }: { parse: typeof Parse } = require('@vue/compiler-sfc');
         const { descriptor } = parse(code);
-        const content =
-            (descriptor.script ?? descriptor.scriptSetup)?.content ?? code;
 
-        return code.replace(content, `\n${preprocessor(content, options)}\n`);
+        if (descriptor.script) {
+            const { content } = descriptor.script;
+            preprocessedCode = preprocessedCode.replace(
+                content,
+                `\n${preprocessor(content, options)}\n`,
+            );
+        }
+
+        if (descriptor.scriptSetup) {
+            const { content } = descriptor.scriptSetup;
+            preprocessedCode = preprocessedCode.replace(
+                content,
+                `\n${preprocessor(content, options)}\n`,
+            );
+        }
+
+        return preprocessedCode;
     } catch (err) {
         if ((err as NodeJS.ErrnoException).code === 'MODULE_NOT_FOUND') {
             console.warn(

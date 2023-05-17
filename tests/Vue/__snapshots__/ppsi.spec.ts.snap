@@ -1,5 +1,99 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`no-script.vue - vue-verify > no-script.vue 1`] = `
+<template>
+    <router-view />
+</template>
+
+<style lang="less">
+#app {
+height: 100%;
+background-color: inherit;
+}
+</style>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<template>
+    <router-view />
+</template>
+
+<style lang="less">
+#app {
+    height: 100%;
+    background-color: inherit;
+}
+</style>
+
+`;
+
+exports[`script-and-setup.vue - vue-verify > script-and-setup.vue 1`] = `
+<script>
+import z from 'z';
+import threeLevelRelativePath from "../../../threeLevelRelativePath";
+import sameLevelRelativePath from "./sameLevelRelativePath";
+import thirdParty from "third-party";
+import oneLevelRelativePath from "../oneLevelRelativePath";
+import otherthing from "@core/otherthing";
+import { defineComponent } from 'vue'
+function add(a,b) {
+  return a + b;
+}
+</script>
+
+<script setup>
+import z from 'z';
+import threeLevelRelativePath from "../../../threeLevelRelativePath";
+import sameLevelRelativePath from "./sameLevelRelativePath";
+import thirdParty from "third-party";
+import oneLevelRelativePath from "../oneLevelRelativePath";
+import otherthing from "@core/otherthing";
+import { defineComponent } from 'vue'
+function add(a,b) {
+  return a + b;
+}
+</script>
+
+<template>
+  <div></div>
+</template>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<script>
+import thirdParty from "third-party";
+import { defineComponent } from "vue";
+import z from "z";
+
+import otherthing from "@core/otherthing";
+
+import threeLevelRelativePath from "../../../threeLevelRelativePath";
+import oneLevelRelativePath from "../oneLevelRelativePath";
+import sameLevelRelativePath from "./sameLevelRelativePath";
+
+function add(a, b) {
+    return a + b;
+}
+</script>
+
+<script setup>
+import thirdParty from "third-party";
+import { defineComponent } from "vue";
+import z from "z";
+
+import otherthing from "@core/otherthing";
+
+import threeLevelRelativePath from "../../../threeLevelRelativePath";
+import oneLevelRelativePath from "../oneLevelRelativePath";
+import sameLevelRelativePath from "./sameLevelRelativePath";
+
+function add(a, b) {
+    return a + b;
+}
+</script>
+
+<template>
+    <div></div>
+</template>
+
+`;
+
 exports[`setup.vue - vue-verify > setup.vue 1`] = `
 <script setup>
 // I am top level comment in this file.
