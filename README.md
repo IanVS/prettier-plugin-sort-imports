@@ -36,6 +36,7 @@ Since then more critical features & fixes have been added, and the options have 
       - [3. Add spaces between import groups](#3-add-spaces-between-import-groups)
       - [4. Group type imports separately from values](#4-group-type-imports-separately-from-values)
       - [5. Group aliases with local imports](#5-group-aliases-with-local-imports)
+      - [6. Enforce a blank line after top of file comments](#6-enforce-a-blank-line-after-top-of-file-comments)
     - [`importOrderTypeScriptVersion`](#importordertypescriptversion)
     - [`importOrderParserPlugins`](#importorderparserplugins)
   - [Prevent imports from being sorted](#prevent-imports-from-being-sorted)
@@ -293,6 +294,31 @@ If you define non-relative aliases to refer to local files without long chains o
 e.g.:
 
 ```ts
+import { debounce, reduce } from 'lodash';
+import { Users } from '@api';
+import icon from '@assets/icon';
+import App from './App';
+```
+
+##### 6. Enforce a blank line after top of file comments
+
+If you have pragma-comments at the top of file, or you have boilerplate copyright announcements, you may be interested in separating that content from your code imports. Explicitly providing `"<BUILTIN_MODULES>", "<THIRD_PARTY_MODULES>"` in your list will allow you to add a separator before them!
+
+```json
+"importOrder": [
+    "", // Include the separator here! And also provide "<BUILTIN_MODULES>", "<THIRD_PARTY_MODULES>" later
+    "<BUILTIN_MODULES>",     // This must be present in the list somewhere
+    "<THIRD_PARTY_MODULES>", // This must be present in the list somewhere
+    "^[.]"]
+```
+
+e.g.:
+
+```ts
+/**
+ * @prettier
+ */
+
 import { debounce, reduce } from 'lodash';
 import { Users } from '@api';
 import icon from '@assets/icon';
