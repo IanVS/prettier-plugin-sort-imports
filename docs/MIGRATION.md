@@ -4,7 +4,7 @@
 
 ### Migrating from v3.x.x to v4.x.x
 
-- The `importOrderBuiltinModulesToTop` option has been removed, and node.js built in modules are always sorted to the top.
+- The `importOrderBuiltinModulesToTop` option has been removed, and node.js built in modules are sorted to the top by default.  The position can be controled using the new `<BUILTIN_MODULES>` keyword in `importOrder`.
 - The `importOrderSeparation` option has been removed.  Use empty quotes in your `importOrder` to control the placement of blank lines.
 - The `importOrderCaseInsensitive` option has been removed, and imports will always be sorted case-insensitive.
 - The `importOrderGroupNamespaceSpecifiers` option has been removed.
