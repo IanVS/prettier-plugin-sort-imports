@@ -10,6 +10,7 @@ import {
     ImportRelated,
     SomeSpecifier,
 } from '../types';
+import { hasIgnoreNextNode } from './has-ignore-next-node';
 
 const SpecifierTypes = [
     'ImportSpecifier',
@@ -415,7 +416,8 @@ export function attachCommentsToOutputNodes(
             return;
         }
 
-        const commentHeight = getHeightOfLeadingComments(newFirstImport);
+        let commentHeight = getHeightOfLeadingComments(newFirstImport);
+
         const originalLoc = newFirstImport.loc;
         if (firstImport.loc && originalLoc) {
             newFirstImport.loc = {
@@ -432,10 +434,6 @@ export function attachCommentsToOutputNodes(
             const moveDist =
                 originalLoc.start.line - newFirstImport.loc.start.line;
 
-            if (provideGapAfterTopOfFileComments) {
-                newFirstImport.loc.start.line += 1;
-            }
-
             for (const commentType of orderedCommentKeysToRegister) {
                 newFirstImport[commentType]?.forEach((c) => {
                     if (c.loc) {
@@ -448,6 +446,7 @@ export function attachCommentsToOutputNodes(
         hasPatchedNewFirstImportLocation = true;
     };
 
+    const topOfFileComments: Comment[] = [];
     for (const commentEntry of commentEntriesFromRegistry) {
         const {
             owner,
@@ -460,6 +459,7 @@ export function attachCommentsToOutputNodes(
         if (needsTopOfFileOwner) {
             ensureEmptyStatementAtFront(outputNodes);
             patchNewFirstImportLocationOnlyOnce();
+            topOfFileComments.push(comment);
         }
 
         let ownerNode = needsTopOfFileOwner
@@ -519,6 +519,15 @@ export function attachCommentsToOutputNodes(
         const commentCollection = (ownerNode[attachment] =
             ownerNode[attachment] || []);
         (commentCollection as Comment[]).push(comment);
+    }
+
+    if (
+        provideGapAfterTopOfFileComments &&
+        hasPatchedNewFirstImportLocation &&
+        topOfFileComments.length && // We did have some relevant comments
+        !hasIgnoreNextNode(topOfFileComments) // None of the comments told us to prettier-ignore it
+    ) {
+        (newFirstImport.loc || { start: { line: 0 } }).start.line++;
     }
 }
 function ensureEmptyStatementAtFront(outputNodes: ImportOrLine[]) {

@@ -35,7 +35,7 @@ export const getCodeFromAst = ({
 }) => {
     const allCommentsFromImports = getAllCommentsFromNodes(nodesToOutput);
     const allCommentsFromDirectives = getAllCommentsFromNodes(directives);
-    const allCommentsFromIntrepter = interpreter
+    const allCommentsFromInterpreter = interpreter
         ? getAllCommentsFromNodes([interpreter])
         : [];
 
@@ -44,7 +44,7 @@ export const getCodeFromAst = ({
         ...allOriginalImportNodes,
         ...allCommentsFromImports,
         ...allCommentsFromDirectives,
-        ...allCommentsFromIntrepter,
+        ...allCommentsFromInterpreter,
         ...(interpreter ? [interpreter] : []),
         ...directives,
     ];
