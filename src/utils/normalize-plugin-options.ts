@@ -6,7 +6,7 @@ import {
     THIRD_PARTY_MODULES_SPECIAL_WORD,
     TYPES_SPECIAL_WORD,
 } from '../constants';
-import { InspectedAndNormalizedOptions, PrettierOptions } from '../types';
+import { ExtendedOptions, PrettierOptions } from '../types';
 import { getExperimentalParserPlugins } from './get-experimental-parser-plugins';
 
 function normalizeImportOrderOption(
@@ -44,7 +44,7 @@ export function isCustomGroupSeparator(pattern?: string) {
     return pattern?.trim() === '';
 }
 
-/** 
+/**
  * Verifies that our special words that must always be there are present on importOrder
  * Verifies that parser plugins are inferred correctly for certain file extensions.
  *
@@ -61,7 +61,7 @@ export function examineAndNormalizePluginOptions(
         | 'importOrderTypeScriptVersion'
         | 'filepath'
     >,
-): InspectedAndNormalizedOptions {
+): ExtendedOptions {
     const { importOrderParserPlugins, filepath } = options;
     let { importOrderTypeScriptVersion } = options;
 

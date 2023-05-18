@@ -47,7 +47,12 @@ export type SomeSpecifier =
     | ImportNamespaceSpecifier;
 export type ImportRelated = ImportOrLine | SomeSpecifier;
 
-export interface InspectedAndNormalizedOptions {
+/**
+ * The PrettierOptions after validation/normalization
+ * - behavior flags are derived from the base options
+ * - plugins is dynamically modified by filepath
+ */
+export interface ExtendedOptions {
     importOrder: PrettierOptions['importOrder'];
     importOrderCombineTypeAndValueImports: boolean;
     hasAnyCustomGroupSeparatorsInImportOrder: boolean;
@@ -57,7 +62,7 @@ export interface InspectedAndNormalizedOptions {
 
 export type GetSortedNodes = (
     nodes: ImportDeclaration[],
-    options: Pick<InspectedAndNormalizedOptions, 'importOrder'> & {
+    options: Pick<ExtendedOptions, 'importOrder'> & {
         importOrderCombineTypeAndValueImports: boolean;
         hasAnyCustomGroupSeparatorsInImportOrder?: boolean;
         provideGapAfterTopOfFileComments?: boolean;
@@ -66,7 +71,7 @@ export type GetSortedNodes = (
 
 export type GetSortedNodesByImportOrder = (
     nodes: ImportDeclaration[],
-    options: Pick<InspectedAndNormalizedOptions, 'importOrder'>,
+    options: Pick<ExtendedOptions, 'importOrder'>,
 ) => ImportOrLine[];
 
 export type GetChunkTypeOfNode = (node: ImportDeclaration) => ChunkType;
