@@ -23,6 +23,15 @@ export interface PrettierOptions
     extends Required<PluginConfig>,
         RequiredOptions {}
 
+/** Subset of options that need to be normalized, or affect normalization */
+export type NormalizableOptions = Pick<
+    PrettierOptions,
+    | 'importOrder'
+    | 'importOrderParserPlugins'
+    | 'importOrderTypeScriptVersion'
+    | 'filepath'
+>;
+
 export type ChunkType = typeof chunkTypeOther | typeof chunkTypeUnsortable;
 export type FlavorType =
     | typeof importFlavorIgnore
