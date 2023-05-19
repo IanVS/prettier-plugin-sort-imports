@@ -302,14 +302,13 @@ import App from './App';
 
 ##### 6. Enforce a blank line after top of file comments
 
-If you have pragma-comments at the top of file, or you have boilerplate copyright announcements, you may be interested in separating that content from your code imports. Explicitly providing `"<BUILTIN_MODULES>", "<THIRD_PARTY_MODULES>"` in your list will allow you to add a separator before them!
+If you have pragma-comments at the top of file, or you have boilerplate copyright announcements, you may be interested in separating that content from your code imports, you can add that separator first.
 
 ```json
 "importOrder": [
-    "", // Include the separator here! And also provide "<BUILTIN_MODULES>", "<THIRD_PARTY_MODULES>" later
-    "<BUILTIN_MODULES>",     // This must be present in the list somewhere
-    "<THIRD_PARTY_MODULES>", // This must be present in the list somewhere
-    "^[.]"]
+    "",
+    "^[.]"
+]
 ```
 
 e.g.:
