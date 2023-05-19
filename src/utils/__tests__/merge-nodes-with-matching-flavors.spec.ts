@@ -65,7 +65,6 @@ import "./side-effects1";
 
 // C, E and D will be separated from A, B because side-effects in-between
 import { D, type C, type E } from "a";
-
 // prettier-ignore
 import type { NoMerge1 } from "a";
 // prettier-ignore
@@ -117,6 +116,7 @@ test('should merge type imports into regular imports', () => {
 
     expect(format(formatted, { parser: 'babel' }))
         .toEqual(`// Preserves 'import type'
+
 import type { A1, A2 } from "a";
 // Preserves 'import value'
 import { B1, B2 } from "b";
