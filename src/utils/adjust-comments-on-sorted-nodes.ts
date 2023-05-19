@@ -1,6 +1,6 @@
 import { removeComments, type ImportDeclaration } from '@babel/types';
 
-import { ImportOrLine } from '../types';
+import { CommentAttachmentOptions, ImportOrLine } from '../types';
 import {
     attachCommentsToOutputNodes,
     getCommentRegistryFromImportDeclarations,
@@ -17,6 +17,7 @@ import {
 export const adjustCommentsOnSortedNodes = (
     originalDeclarationNodes: readonly ImportDeclaration[],
     finalNodes: readonly ImportOrLine[],
+    options: CommentAttachmentOptions,
 ) => {
     const outputNodes: ImportDeclaration[] = finalNodes.filter(
         (n) => n.type === 'ImportDeclaration',
@@ -46,7 +47,12 @@ export const adjustCommentsOnSortedNodes = (
         return noDirectCommentsNode;
     });
 
-    attachCommentsToOutputNodes(registry, finalNodesClone, firstImport);
+    attachCommentsToOutputNodes(
+        registry,
+        finalNodesClone,
+        firstImport,
+        options,
+    );
 
     return finalNodesClone;
 };

@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import type { ImportOrLine } from '../../types';
+import type { CommentAttachmentOptions, ImportOrLine } from '../../types';
 import { adjustCommentsOnSortedNodes } from '../adjust-comments-on-sorted-nodes';
 import { getImportNodes } from '../get-import-nodes';
 
@@ -12,6 +12,8 @@ function trailingComments(node: ImportOrLine): string[] {
     return node.trailingComments?.map((c) => c.value) ?? [];
 }
 
+const defaultAttachmentOptions: CommentAttachmentOptions = {};
+
 test('it preserves the single leading comment for each import declaration', () => {
     const importNodes = getImportNodes(`
     import {x} from "c";
@@ -22,7 +24,11 @@ test('it preserves the single leading comment for each import declaration', () =
     `);
     expect(importNodes).toHaveLength(3);
     const finalNodes = [importNodes[2], importNodes[1], importNodes[0]];
-    const adjustedNodes = adjustCommentsOnSortedNodes(importNodes, finalNodes);
+    const adjustedNodes = adjustCommentsOnSortedNodes(
+        importNodes,
+        finalNodes,
+        defaultAttachmentOptions,
+    );
     expect(adjustedNodes).toHaveLength(3);
     expect(leadingComments(adjustedNodes[0])).toEqual([' comment a']);
     expect(trailingComments(adjustedNodes[0])).toEqual([]);
@@ -47,7 +53,11 @@ test('it preserves multiple leading comments for each import declaration', () =>
     `);
     expect(importNodes).toHaveLength(3);
     const finalNodes = [importNodes[2], importNodes[1], importNodes[0]];
-    const adjustedNodes = adjustCommentsOnSortedNodes(importNodes, finalNodes);
+    const adjustedNodes = adjustCommentsOnSortedNodes(
+        importNodes,
+        finalNodes,
+        defaultAttachmentOptions,
+    );
     expect(adjustedNodes).toHaveLength(3);
     expect(leadingComments(adjustedNodes[0])).toEqual([
         ' comment a1',
@@ -75,7 +85,11 @@ test('it does not move comments more than one line before all import declaration
     `);
     expect(importNodes).toHaveLength(3);
     const finalNodes = [importNodes[2], importNodes[1], importNodes[0]];
-    const adjustedNodes = adjustCommentsOnSortedNodes(importNodes, finalNodes);
+    const adjustedNodes = adjustCommentsOnSortedNodes(
+        importNodes,
+        finalNodes,
+        defaultAttachmentOptions,
+    );
     expect(adjustedNodes).toHaveLength(4);
     // Comment c1 is above the first import, so it stays with the top-of-file attached to a dummy statement
     expect(adjustedNodes[0].type).toEqual('EmptyStatement');
@@ -99,7 +113,11 @@ test('it does not affect comments after all import declarations', () => {
     `);
     expect(importNodes).toHaveLength(3);
     const finalNodes = [importNodes[2], importNodes[1], importNodes[0]];
-    const adjustedNodes = adjustCommentsOnSortedNodes(importNodes, finalNodes);
+    const adjustedNodes = adjustCommentsOnSortedNodes(
+        importNodes,
+        finalNodes,
+        defaultAttachmentOptions,
+    );
     expect(adjustedNodes).toHaveLength(3);
     expect(leadingComments(adjustedNodes[0])).toEqual([]);
     expect(trailingComments(adjustedNodes[0])).toEqual([]);

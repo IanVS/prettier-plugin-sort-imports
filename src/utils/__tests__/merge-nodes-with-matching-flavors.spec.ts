@@ -4,11 +4,18 @@ import { expect, test } from 'vitest';
 import { getCodeFromAst } from '../get-code-from-ast';
 import { getImportNodes } from '../get-import-nodes';
 import { getSortedNodes } from '../get-sorted-nodes';
+import {
+    examineAndNormalizePluginOptions,
+    testingOnly,
+} from '../normalize-plugin-options';
 
-const defaultOptions = {
-    importOrder: [''], // Separate side-effect and ignored chunks, for easier test readability
-    importOrderCombineTypeAndValueImports: true,
-};
+const defaultOptions = examineAndNormalizePluginOptions({
+    // First separator for top-of-file comments, second to separate side-effect and ignored chunks, for easier test readability
+    importOrder: testingOnly.normalizeImportOrderOption(['', '']),
+    importOrderTypeScriptVersion: '5.0.0',
+    importOrderParserPlugins: [],
+    filepath: __filename,
+});
 
 test('should merge duplicate imports within a given chunk', () => {
     const code = `
@@ -114,6 +121,7 @@ test('should merge type imports into regular imports', () => {
 
     expect(format(formatted, { parser: 'babel' }))
         .toEqual(`// Preserves 'import type'
+
 import type { A1, A2 } from "a";
 // Preserves 'import value'
 import { B1, B2 } from "b";

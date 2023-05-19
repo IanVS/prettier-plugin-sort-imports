@@ -9,12 +9,13 @@ import { expect, test } from 'vitest';
 import { getAllCommentsFromNodes } from '../get-all-comments-from-nodes';
 import { getImportNodes } from '../get-import-nodes';
 import { getSortedNodes } from '../get-sorted-nodes';
+import { testingOnly } from '../normalize-plugin-options';
 
 const getSortedImportNodes = (code: string, options?: ParserOptions) => {
     const importNodes: ImportDeclaration[] = getImportNodes(code, options);
 
     return getSortedNodes(importNodes, {
-        importOrder: [],
+        importOrder: testingOnly.normalizeImportOrderOption([]),
         importOrderCombineTypeAndValueImports: true,
     });
 };

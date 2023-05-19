@@ -6,7 +6,6 @@ import thirdParty from 'third-party';
 import fs from "fs"
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import fs from "fs";
-
 import thirdParty from "third-party";
 import foo from "./constants/foo";
 

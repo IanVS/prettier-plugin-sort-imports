@@ -1,9 +1,16 @@
 import { newLineNode, THIRD_PARTY_MODULES_SPECIAL_WORD } from '../constants';
-import type { GetSortedNodes, ImportGroups, ImportOrLine } from '../types';
+import type {
+    GetSortedNodesByImportOrder,
+    ImportGroups,
+    ImportOrLine,
+} from '../types';
 import { getImportNodesMatchedGroup } from './get-import-nodes-matched-group';
 import { getSortedImportSpecifiers } from './get-sorted-import-specifiers';
 import { getSortedNodesGroup } from './get-sorted-nodes-group';
-import { normalizeImportOrderOption } from './normalize-import-order-options';
+import {
+    isCustomGroupSeparator,
+    testingOnly,
+} from './normalize-plugin-options';
 
 /**
  * This function returns the given nodes, sorted in the order as indicated by
@@ -12,12 +19,19 @@ import { normalizeImportOrderOption } from './normalize-import-order-options';
  * @param originalNodes A subset (of all import nodes) that should be sorted.
  * @param options Options to influence the behavior of the sorting algorithm.
  */
-export const getSortedNodesByImportOrder: GetSortedNodes = (
+export const getSortedNodesByImportOrder: GetSortedNodesByImportOrder = (
     originalNodes,
-    options,
+    { importOrder },
 ) => {
-    // This normalization is safe even if the option is already correct.
-    const importOrder = normalizeImportOrderOption(options.importOrder);
+    if (
+        process.env.NODE_ENV === 'test' &&
+        JSON.stringify(importOrder) !==
+            JSON.stringify(testingOnly.normalizeImportOrderOption(importOrder))
+    ) {
+        throw new Error(
+            'API Misuse: getSortedNodesByImportOrder::importOrder option already should be normalized.',
+        );
+    }
 
     const finalNodes: ImportOrLine[] = [];
 
@@ -79,14 +93,6 @@ export const getSortedNodesByImportOrder: GetSortedNodes = (
 
     return finalNodes;
 };
-
-/**
- * isCustomGroupSeparator checks if the provided pattern is intended to be used
- * as an import separator, rather than an actual group of imports.
- */
-export function isCustomGroupSeparator(pattern?: string) {
-    return pattern?.trim() === '';
-}
 
 function isNodeANewline(node: ImportOrLine) {
     return node.type === 'ExpressionStatement';

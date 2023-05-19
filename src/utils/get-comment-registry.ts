@@ -4,7 +4,13 @@ import {
     type ImportDeclaration,
 } from '@babel/types';
 
-import { ImportOrLine, ImportRelated, SomeSpecifier } from '../types';
+import {
+    CommentAttachmentOptions,
+    ImportOrLine,
+    ImportRelated,
+    SomeSpecifier,
+} from '../types';
+import { hasIgnoreNextNode } from './has-ignore-next-node';
 
 const SpecifierTypes = [
     'ImportSpecifier',
@@ -368,6 +374,7 @@ export function attachCommentsToOutputNodes(
     outputNodes: ImportOrLine[],
     /** Original declaration, not the re-sorted output-node! */
     firstImport: ImportDeclaration,
+    { provideGapAfterTopOfFileComments }: CommentAttachmentOptions = {},
 ) {
     if (outputNodes.length === 0) {
         // attachCommentsToOutputNodes implies that there's at least one output node so this shouldn't happen
@@ -409,7 +416,8 @@ export function attachCommentsToOutputNodes(
             return;
         }
 
-        const commentHeight = getHeightOfLeadingComments(newFirstImport);
+        let commentHeight = getHeightOfLeadingComments(newFirstImport);
+
         const originalLoc = newFirstImport.loc;
         if (firstImport.loc && originalLoc) {
             newFirstImport.loc = {
@@ -422,6 +430,7 @@ export function attachCommentsToOutputNodes(
                     line: firstImport.loc?.end.line + commentHeight,
                 },
             };
+
             const moveDist =
                 originalLoc.start.line - newFirstImport.loc.start.line;
 
@@ -437,6 +446,7 @@ export function attachCommentsToOutputNodes(
         hasPatchedNewFirstImportLocation = true;
     };
 
+    const topOfFileComments: Comment[] = [];
     for (const commentEntry of commentEntriesFromRegistry) {
         const {
             owner,
@@ -449,6 +459,7 @@ export function attachCommentsToOutputNodes(
         if (needsTopOfFileOwner) {
             ensureEmptyStatementAtFront(outputNodes);
             patchNewFirstImportLocationOnlyOnce();
+            topOfFileComments.push(comment);
         }
 
         let ownerNode = needsTopOfFileOwner
@@ -509,6 +520,15 @@ export function attachCommentsToOutputNodes(
             ownerNode[attachment] || []);
         (commentCollection as Comment[]).push(comment);
     }
+
+    if (
+        provideGapAfterTopOfFileComments &&
+        hasPatchedNewFirstImportLocation &&
+        topOfFileComments.length && // We did have some relevant comments
+        !hasIgnoreNextNode(topOfFileComments) // None of the comments told us to prettier-ignore it
+    ) {
+        (newFirstImport.loc || { start: { line: 0 } }).start.line++;
+    }
 }
 function ensureEmptyStatementAtFront(outputNodes: ImportOrLine[]) {
     if (outputNodes[0].type === 'EmptyStatement') {
@@ -535,6 +555,6 @@ function getHeightOfLeadingComments(node: ImportOrLine) {
     }
     return 0;
 }
-export const testingOnlyExports = {
+export const testingOnly = {
     nodeId,
 };

@@ -10,7 +10,7 @@ import {
     attachCommentsToOutputNodes,
     CommentAssociation,
     getCommentRegistryFromImportDeclarations,
-    testingOnlyExports,
+    testingOnly,
 } from '../get-comment-registry';
 
 describe('getCommentRegistryFromImportDeclarations', () => {
@@ -64,7 +64,7 @@ describe('attachCommentsToOutputNodes', () => {
                     needsTopOfFileOwner: true,
                     comment,
                     ownerIsSpecifier: false,
-                    commentId: testingOnlyExports.nodeId(comment),
+                    commentId: testingOnly.nodeId(comment),
                     owner: firstImport,
                     association: CommentAssociation.trailing,
                     processingPriority: 0,
