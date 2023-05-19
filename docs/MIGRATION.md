@@ -23,6 +23,8 @@ For example:
 ```js
     "importOrder": [
         "", // If you want a gap at the top after top-of-file-comments, put a separator here!
+        "<BUILTIN_MODULES>",
+        "",
         "<THIRD_PARTY_MODULES>",
         "",
         "^@app/(.*)$",
