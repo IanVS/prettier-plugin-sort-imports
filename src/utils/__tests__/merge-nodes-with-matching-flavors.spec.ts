@@ -4,10 +4,14 @@ import { expect, test } from 'vitest';
 import { getCodeFromAst } from '../get-code-from-ast';
 import { getImportNodes } from '../get-import-nodes';
 import { getSortedNodes } from '../get-sorted-nodes';
-import { examineAndNormalizePluginOptions } from '../normalize-plugin-options';
+import {
+    examineAndNormalizePluginOptions,
+    testingOnly,
+} from '../normalize-plugin-options';
 
 const defaultOptions = examineAndNormalizePluginOptions({
-    importOrder: [''], // Separate side-effect and ignored chunks, for easier test readability
+    // First separator for top-of-file comments, second to separate side-effect and ignored chunks, for easier test readability
+    importOrder: testingOnly.normalizeImportOrderOption(['', '']),
     importOrderTypeScriptVersion: '5.0.0',
     importOrderParserPlugins: [],
     filepath: __filename,
@@ -65,6 +69,7 @@ import "./side-effects1";
 
 // C, E and D will be separated from A, B because side-effects in-between
 import { D, type C, type E } from "a";
+
 // prettier-ignore
 import type { NoMerge1 } from "a";
 // prettier-ignore
