@@ -64,6 +64,10 @@ export const parsers = {
         ...babelParsers.babel,
         preprocess: defaultPreprocessor,
     },
+    'babel-ts': {
+        ...babelParsers['babel-ts'],
+        preprocess: defaultPreprocessor,
+    },
     flow: {
         ...flowParsers.flow,
         preprocess: defaultPreprocessor,
