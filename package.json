@@ -1,7 +1,7 @@
 {
     "name": "@ianvs/prettier-plugin-sort-imports",
     "private": false,
-    "version": "4.0.0-alpha.7",
+    "version": "4.0.0-beta.0",
     "description": "A prettier plugins to sort imports in provided RegEx order",
     "main": "lib/src/index.js",
     "types": "types/index.d.ts",
