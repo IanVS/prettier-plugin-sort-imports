@@ -13,7 +13,7 @@ export const getExperimentalParserPlugins = (
         // in prettier options the array will be sent in a JSON string
         const isParserPluginWithOptions = pluginNameOrJson.startsWith('[');
 
-        let plugin;
+        let plugin: ParserPlugin;
         if (isParserPluginWithOptions) {
             try {
                 plugin = JSON.parse(
@@ -31,4 +31,36 @@ export const getExperimentalParserPlugins = (
 
         return plugin;
     });
+};
+
+/**
+ * Checks whether a specified plugin is included in importOrderParserPlugins.
+ * More fancy than just a `.includes()` because importOrderParserPlugins can contain plugins with configuration
+ *
+ * @param importOrderParserPlugins array of experimental babel parser plugins
+ * @returns true if the plugin is in the list
+ */
+export const hasPlugin = (
+    importOrderParserPlugins: string[],
+    pluginName: string,
+): boolean => {
+    for (const pluginNameOrJson of importOrderParserPlugins) {
+        const isParserPluginWithOptions = pluginNameOrJson.startsWith('[');
+        let plugin;
+
+        if (isParserPluginWithOptions) {
+            try {
+                plugin = JSON.parse(pluginNameOrJson)[0];
+            } catch (e) {
+                throw Error(
+                    'Invalid JSON in importOrderParserPlugins: ' +
+                        pluginNameOrJson,
+                );
+            }
+        } else {
+            plugin = pluginNameOrJson as ParserPlugin;
+        }
+        if (plugin === pluginName) return true;
+    }
+    return false;
 };

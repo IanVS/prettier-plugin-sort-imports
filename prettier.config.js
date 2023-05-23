@@ -6,6 +6,13 @@ module.exports = {
     bracketSameLine: true,
     semi: true,
     plugins: [require('./lib/src/index.js')],
-    importOrder: ['', '<THIRD_PARTY_MODULES>', '', '^[./]'],
+    importOrder: [
+        '',
+        '<BUILTIN_MODULES>',
+        '',
+        '<THIRD_PARTY_MODULES>',
+        '',
+        '^[./]',
+    ],
     importOrderTypeScriptVersion: '5.0.0',
 };

@@ -14,6 +14,43 @@ import B from "b";
 
 `;
 
+exports[`import-comments-directives.ts - typescript-verify > import-comments-directives.ts 1`] = `
+/** @jsxImportSource @emotion/react */
+"use client";
+
+import * as React from "react";
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/** @jsxImportSource @emotion/react */
+"use client";
+
+import * as React from "react";
+
+`;
+
+exports[`import-comments-document-top-all-are-untouched.ts - typescript-verify > import-comments-document-top-all-are-untouched.ts 1`] = `
+/**
+ * @prettier
+ * This comment is before the first import, and so should never be moved.
+ * https://github.com/IanVS/prettier-plugin-sort-imports/issues/81
+ */
+
+// second comment
+import type { A } from 'a'; // a
+import { b } from 'b';
+import { a } from 'a';
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+ * @prettier
+ * This comment is before the first import, and so should never be moved.
+ * https://github.com/IanVS/prettier-plugin-sort-imports/issues/81
+ */
+
+// second comment
+import { a, type A } from "a"; // a
+import { b } from "b";
+
+`;
+
 exports[`import-comments-document-top-test1.ts - typescript-verify > import-comments-document-top-test1.ts 1`] = `
 // This is part of multiple-lines at document-top
 // Second line followed by a gap
@@ -45,6 +82,38 @@ import a from "a";
 
 import a from "a";
 import b from "b";
+
+`;
+
+exports[`import-comments-document-top-test3.ts - typescript-verify > import-comments-document-top-test3.ts 1`] = `
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable react/jsx-key */
+/* eslint-disable jsx-a11y/alt-text */
+
+import { useState } from "react";
+import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable react/jsx-key */
+/* eslint-disable jsx-a11y/alt-text */
+
+import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
+import { useState } from "react";
+
+`;
+
+exports[`import-comments-no-top-gap.ts - typescript-verify > import-comments-no-top-gap.ts 1`] = `
+/**
+ * @prettier
+ */
+import { requireValue } from './utils/require/requireValue';
+import { fooValue } from './foo';
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+ * @prettier
+ */
+import { fooValue } from "./foo";
+import { requireValue } from "./utils/require/requireValue";
 
 `;
 
@@ -85,7 +154,7 @@ import C from "c"; /* trailing comment that spans
 exports[`import-comments-outer-comments-single-line.ts - typescript-verify > import-comments-outer-comments-single-line.ts 1`] = `
 // Loose leading comment before imports (should not be dragged down with B)
 
-// Leading comment before B
+// Leading comment before B (this is treated as top-of-file comment)
 import B from "b"; // Trailing comment on same-line as B
 // Trailing comment on first line after B (this is treated as a leading comment for next import A!)
 
@@ -97,11 +166,12 @@ import A from "a"; // Trailing comment on same-line as A
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Loose leading comment before imports (should not be dragged down with B)
 
+// Leading comment before B (this is treated as top-of-file comment)
+
 // Trailing comment on first line after B (this is treated as a leading comment for next import A!)
 
 // Leading comment before A
 import A from "a"; // Trailing comment on same-line as A
-// Leading comment before B
 import B from "b"; // Trailing comment on same-line as B
 
 // Trailing comment on first line after A (this is treated as a "bottom-of-imports comment)
@@ -165,5 +235,75 @@ import {
 } from "j";
 
 // Rest of file below here
+
+`;
+
+exports[`import-comments-trailing-specifier-comment-lost.ts - typescript-verify > import-comments-trailing-specifier-comment-lost.ts 1`] = `
+import {
+    b3,
+    a3,
+    /* @ts-expect-error*/
+} from "c";
+
+import {
+    b4,
+    a4,
+    // @ts-expect-error
+} from "c2";
+
+import {
+    b2,a2,
+    // @ts-expect-error
+} from "b";
+
+import {
+    b1,
+    a1,
+
+    // @ts-expect-error
+} from "a";
+import {
+
+    damn_long_1,
+    damn_long_2,
+
+    damn_long_3,
+    damn_long_4,
+
+
+
+    damn_long_5,
+    damn_long_6,
+    damn_long_7,
+    damn_long_8,
+
+} from "d_proving_all_specifier_blank_lines_get_removed";
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import {
+    a1,
+    b1,
+    // @ts-expect-error
+} from "a";
+import {
+    a2,
+    b2,
+    // @ts-expect-error
+} from "b";
+import { a3, b3 } from /* @ts-expect-error*/ "c";
+import {
+    a4,
+    b4,
+    // @ts-expect-error
+} from "c2";
+import {
+    damn_long_1,
+    damn_long_2,
+    damn_long_3,
+    damn_long_4,
+    damn_long_5,
+    damn_long_6,
+    damn_long_7,
+    damn_long_8,
+} from "d_proving_all_specifier_blank_lines_get_removed";
 
 `;

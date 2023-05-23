@@ -1,3 +1,4 @@
+import type { ParserPlugin } from '@babel/parser';
 import {
     type EmptyStatement,
     type ExpressionStatement,
@@ -21,6 +22,15 @@ import {
 export interface PrettierOptions
     extends Required<PluginConfig>,
         RequiredOptions {}
+
+/** Subset of options that need to be normalized, or affect normalization */
+export type NormalizableOptions = Pick<
+    PrettierOptions,
+    | 'importOrder'
+    | 'importOrderParserPlugins'
+    | 'importOrderTypeScriptVersion'
+    | 'filepath'
+>;
 
 export type ChunkType = typeof chunkTypeOther | typeof chunkTypeUnsortable;
 export type FlavorType =
@@ -46,11 +56,31 @@ export type SomeSpecifier =
     | ImportNamespaceSpecifier;
 export type ImportRelated = ImportOrLine | SomeSpecifier;
 
+/**
+ * The PrettierOptions after validation/normalization
+ * - behavior flags are derived from the base options
+ * - plugins is dynamically modified by filepath
+ */
+export interface ExtendedOptions {
+    importOrder: PrettierOptions['importOrder'];
+    importOrderCombineTypeAndValueImports: boolean;
+    hasAnyCustomGroupSeparatorsInImportOrder: boolean;
+    provideGapAfterTopOfFileComments: boolean;
+    plugins: ParserPlugin[];
+}
+
 export type GetSortedNodes = (
     nodes: ImportDeclaration[],
-    options: Pick<PrettierOptions, 'importOrder'> & {
+    options: Pick<ExtendedOptions, 'importOrder'> & {
         importOrderCombineTypeAndValueImports: boolean;
+        hasAnyCustomGroupSeparatorsInImportOrder?: boolean;
+        provideGapAfterTopOfFileComments?: boolean;
     },
+) => ImportOrLine[];
+
+export type GetSortedNodesByImportOrder = (
+    nodes: ImportDeclaration[],
+    options: Pick<ExtendedOptions, 'importOrder'>,
 ) => ImportOrLine[];
 
 export type GetChunkTypeOfNode = (node: ImportDeclaration) => ChunkType;
@@ -65,3 +95,7 @@ export type MergeNodesWithMatchingImportFlavors = (
 export type ExplodeTypeAndValueSpecifiers = (
     nodes: ImportDeclaration[],
 ) => ImportDeclaration[];
+
+export interface CommentAttachmentOptions {
+    provideGapAfterTopOfFileComments?: boolean;
+}

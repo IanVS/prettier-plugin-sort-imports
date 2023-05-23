@@ -1,34 +1,39 @@
-import clone from 'lodash.clone';
-
-import {
-    BUILTIN_MODULES,
-    newLineNode,
-    THIRD_PARTY_MODULES_SPECIAL_WORD,
-} from '../constants';
-import type { GetSortedNodes, ImportGroups, ImportOrLine } from '../types';
+import { newLineNode, THIRD_PARTY_MODULES_SPECIAL_WORD } from '../constants';
+import type {
+    GetSortedNodesByImportOrder,
+    ImportGroups,
+    ImportOrLine,
+} from '../types';
 import { getImportNodesMatchedGroup } from './get-import-nodes-matched-group';
 import { getSortedImportSpecifiers } from './get-sorted-import-specifiers';
 import { getSortedNodesGroup } from './get-sorted-nodes-group';
+import {
+    isCustomGroupSeparator,
+    testingOnly,
+} from './normalize-plugin-options';
 
 /**
  * This function returns the given nodes, sorted in the order as indicated by
  * the importOrder array from the given options.
  * The plugin considers these import nodes as local import declarations.
- * @param nodes A subset of all import nodes that should be sorted.
+ * @param originalNodes A subset (of all import nodes) that should be sorted.
  * @param options Options to influence the behavior of the sorting algorithm.
  */
-export const getSortedNodesByImportOrder: GetSortedNodes = (nodes, options) => {
-    let { importOrder } = options;
-
-    const originalNodes = nodes.map(clone);
-    const finalNodes: ImportOrLine[] = [];
-
-    if (!importOrder.includes(THIRD_PARTY_MODULES_SPECIAL_WORD)) {
-        importOrder = [THIRD_PARTY_MODULES_SPECIAL_WORD, ...importOrder];
+export const getSortedNodesByImportOrder: GetSortedNodesByImportOrder = (
+    originalNodes,
+    { importOrder },
+) => {
+    if (
+        process.env.NODE_ENV === 'test' &&
+        JSON.stringify(importOrder) !==
+            JSON.stringify(testingOnly.normalizeImportOrderOption(importOrder))
+    ) {
+        throw new Error(
+            'API Misuse: getSortedNodesByImportOrder::importOrder option already should be normalized.',
+        );
     }
 
-    // IDEA: We could make built-ins a special word, if people do not want them up top
-    importOrder = [BUILTIN_MODULES, ...importOrder];
+    const finalNodes: ImportOrLine[] = [];
 
     const importOrderGroups = importOrder.reduce<ImportGroups>(
         (groups, regexp) =>
@@ -42,6 +47,7 @@ export const getSortedNodesByImportOrder: GetSortedNodes = (nodes, options) => {
         {},
     );
 
+    // Select just the SPECIAL WORDS and the matchers
     const sanitizedImportOrder = importOrder.filter(
         (group) =>
             !isCustomGroupSeparator(group) &&
@@ -87,14 +93,6 @@ export const getSortedNodesByImportOrder: GetSortedNodes = (nodes, options) => {
 
     return finalNodes;
 };
-
-/**
- * isCustomGroupSeparator checks if the provided pattern is intended to be used
- * as an import separator, rather than an actual group of imports.
- */
-export function isCustomGroupSeparator(pattern?: string) {
-    return pattern?.trim() === '';
-}
 
 function isNodeANewline(node: ImportOrLine) {
     return node.type === 'ExpressionStatement';

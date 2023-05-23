@@ -5,7 +5,7 @@ import type { Comment } from '@babel/types';
  */
 export const hasIgnoreNextNode = (
     comments: readonly Comment[] | null | undefined,
-) =>
-    (comments ?? []).some(
-        (comment) => comment.value.trim() === 'prettier-ignore',
-    );
+) => (comments ?? []).some(isIgnoreNextNode);
+
+export const isIgnoreNextNode = (comment: Comment) =>
+    comment.value.trim() === 'prettier-ignore';

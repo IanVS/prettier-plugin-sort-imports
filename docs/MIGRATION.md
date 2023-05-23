@@ -4,14 +4,15 @@
 
 ### Migrating from v3.x.x to v4.x.x
 
-- The `importOrderBuiltinModulesToTop` option has been removed, and node.js built in modules are always sorted to the top.
+- The `importOrderBuiltinModulesToTop` option has been removed, and node.js built in modules are sorted to the top by default.  The position can be controled using the new `<BUILTIN_MODULES>` keyword in `importOrder`.
 - The `importOrderSeparation` option has been removed.  Use empty quotes in your `importOrder` to control the placement of blank lines.
 - The `importOrderCaseInsensitive` option has been removed, and imports will always be sorted case-insensitive.
 - The `importOrderGroupNamespaceSpecifiers` option has been removed.
 - The `importOrderSortSpecifiers` option has been removed, and specifiers are now always sorted (previous `true` setting)
 - The `importOrderMergeDuplicateImports` option has been removed, and imports are always combined (previous `true` setting)
-- The `importOrderCombineTypeAndValueImports` option has been removed.  See [below](#importOrderCombineTypeAndValueImports-removed) for details
+- The `importOrderCombineTypeAndValueImports` option has been removed.  See [below](#importordercombinetypeandvalueimports-removed) for details
 - Added `importOrderTypeScriptVersion` option.
+- The default `importOrder` was improved.  It now sorts node.js built-ins, then non-relative imports, then relative imports. If you have an `importOrder` specified, this will not affect you.
 
 #### `importOrderSeparation` removed
 
@@ -21,7 +22,9 @@ For example:
 
 ```js
     "importOrder": [
-        "", // This emptry group at the start will add separators for side-effect imports and node.js built-in modules
+        "", // If you want a gap at the top after top-of-file-comments, put a separator here!
+        "<BUILTIN_MODULES>",
+        "",
         "<THIRD_PARTY_MODULES>",
         "",
         "^@app/(.*)$",

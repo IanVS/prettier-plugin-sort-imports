@@ -4,6 +4,9 @@ import { expect, test } from 'vitest';
 import { getCodeFromAst } from '../get-code-from-ast';
 import { getImportNodes } from '../get-import-nodes';
 import { getSortedNodes } from '../get-sorted-nodes';
+import { testingOnly } from '../normalize-plugin-options';
+
+const emptyImportOrder = testingOnly.normalizeImportOrderOption([]);
 
 test('sorts imports correctly', async () => {
     const code = `import z from 'z';
@@ -15,7 +18,7 @@ import a from 'a';
 `;
     const importNodes = getImportNodes(code);
     const sortedNodes = getSortedNodes(importNodes, {
-        importOrder: [],
+        importOrder: emptyImportOrder,
         importOrderCombineTypeAndValueImports: true,
     });
     const formatted = getCodeFromAst({
@@ -47,7 +50,7 @@ import type {See} from 'c';
 `;
     const importNodes = getImportNodes(code, { plugins: ['typescript'] });
     const sortedNodes = getSortedNodes(importNodes, {
-        importOrder: [],
+        importOrder: emptyImportOrder,
         importOrderCombineTypeAndValueImports: true,
     });
     const formatted = getCodeFromAst({

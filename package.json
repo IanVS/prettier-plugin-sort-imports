@@ -1,7 +1,7 @@
 {
     "name": "@ianvs/prettier-plugin-sort-imports",
     "private": false,
-    "version": "4.0.0-alpha.3",
+    "version": "4.0.0-beta.0",
     "description": "A prettier plugins to sort imports in provided RegEx order",
     "main": "lib/src/index.js",
     "types": "types/index.d.ts",
@@ -58,13 +58,11 @@
         "@babel/parser": "^7.21.8",
         "@babel/traverse": "^7.21.5",
         "@babel/types": "^7.21.5",
-        "lodash.clone": "^4.5.0",
         "semver": "^7.5.0"
     },
     "devDependencies": {
         "@types/babel__generator": "^7.6.4",
         "@types/babel__traverse": "^7.18.3",
-        "@types/lodash.clone": "4.5.7",
         "@types/node": "^18.15.13",
         "@types/prettier": "^2.7.2",
         "@types/semver": "^7.3.13",

@@ -12,16 +12,16 @@ Since then more critical features & fixes have been added, and the options have 
 
 **Features not currently supported by upstream:**
 
--   Do not re-order across side-effect imports
--   Combine imports from the same source
--   Combine type and value imports
--   Type import grouping with `<TYPES>` keyword
--   Sorts node.js builtin modules to top
--   Custom import order separation
+- Do not re-order across side-effect imports
+- Combine imports from the same source
+- Combine type and value imports
+- Type import grouping with `<TYPES>` keyword
+- Sorts node.js builtin modules to top
+- Custom import order separation
 
 [We welcome contributions!](./CONTRIBUTING.md)
 
-**Table of Contents**
+## Table of Contents
 
 - [Sample](#sample)
   - [Input](#input)
@@ -31,6 +31,12 @@ Since then more critical features & fixes have been added, and the options have 
   - [How does import sort work?](#how-does-import-sort-work)
   - [Options](#options)
     - [`importOrder`](#importorder)
+      - [1. Put specific dependencies at the top](#1-put-specific-dependencies-at-the-top)
+      - [2. Keep css modules at the bottom](#2-keep-css-modules-at-the-bottom)
+      - [3. Add spaces between import groups](#3-add-spaces-between-import-groups)
+      - [4. Group type imports separately from values](#4-group-type-imports-separately-from-values)
+      - [5. Group aliases with local imports](#5-group-aliases-with-local-imports)
+      - [6. Enforce a blank line after top of file comments](#6-enforce-a-blank-line-after-top-of-file-comments)
     - [`importOrderTypeScriptVersion`](#importordertypescriptversion)
     - [`importOrderParserPlugins`](#importorderparserplugins)
   - [Prevent imports from being sorted](#prevent-imports-from-being-sorted)
@@ -103,13 +109,13 @@ import { add, filter, repeat } from '../utils';
 npm
 
 ```shell script
-npm install --save-dev @ianvs/prettier-plugin-sort-imports
+npm install --save-dev @ianvs/prettier-plugin-sort-imports@next
 ```
 
 or, using yarn
 
 ```shell script
-yarn add --dev @ianvs/prettier-plugin-sort-imports
+yarn add --dev @ianvs/prettier-plugin-sort-imports@next
 ```
 
 **Note: If you are migrating from v3.x.x to v4.x.x, [Please Read Migration Guidelines](./docs/MIGRATION.md)**
@@ -172,9 +178,10 @@ unsortable. This can be used for edge-cases, such as when you have a named impor
 
 Next, the plugin sorts the _local imports_ and _third party imports_ using [natural sort algorithm](https://en.wikipedia.org/wiki/Natural_sort_order).
 
-In the end, the plugin returns final imports with _third party imports_ on top and _local imports_ at the end.
+In the end, the plugin returns final imports with _nodejs built-in modules_, followed by _third party imports_ and subsequent _local imports_ at the end.
 
-The _third party imports_ position (it's top by default) can be overridden using the `<THIRD_PARTY_MODULES>` special word in the `importOrder`.
+- The _nodejs built-in modules_ position (it's 1st by default) can be overridden using the `<BUILTIN_MODULES>` special word in the `importOrder`
+- The _third party imports_ position (it's 2nd by default) can be overridden using the `<THIRD_PARTY_MODULES>` special word in the `importOrder`.
 
 ### Options
 
@@ -182,38 +189,139 @@ The _third party imports_ position (it's top by default) can be overridden using
 
 **type**: `Array<string>`
 
-A collection of Regular expressions in string format.
+The main way to control the import order and formatting, `importOrder` is a collection of Regular expressions in string format, along with a few "special case" strings that you can use.
 
-```json
-"importOrder": ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
-```
-
-_Default:_ `[]`
-
-By default, this plugin will not move any imports. To separate third party from relative imports, use `["^[./]"]`. This will become the default in the next major version.
-
-The plugin moves the third party imports to the top which are not part of the `importOrder` list.
-To move the third party imports at desired place, you can use `<THIRD_PARTY_MODULES>` to assign third party imports to the appropriate position:
-
-```json
-"importOrder": ["^@core/(.*)$", "<THIRD_PARTY_MODULES>", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
-```
-
-If you would like to order type imports differently from value imports, you can use the special `<TYPES>` string. This example will place third party types at the top, followed by local types, then third party value imports, and lastly local value imports:
-
-```json
-"importOrder": ["<TYPES>", "<TYPES>^[./]", "<THIRD_PARTY_MODULES>", "^[./]"],
-```
-
-_Note:_ If you want to separate some groups from others, you can add an empty string to your `importOrder` array to signify newlines. For example:
+**default value**:
 
 ```js
-"importOrder": [
-   "^react", // React will be placed at the top of third-party modules
-    "<THIRD_PARTY_MODULES>",
-    "",  // use empty strings to separate groups with empty lines
-    "^[./]"
+[
+    '<BUILTIN_MODULES>', // Node.js built-in modules
+    '<THIRD_PARTY_MODULES>', // Imports not matched by other special words or groups.
+    '^[.]', // relative imports
 ],
+```
+
+By default, this plugin sorts as documented on the line above, with Node.js built-in modules at the top, followed by non-relative imports, and lastly any relative import starting with a `.` character.
+
+Available Special Words:
+
+- `<BUILTIN_MODULES>` - All _nodejs built-in modules_ will be grouped here, and is injected at the top if it's not present.
+- `<THIRD_PARTY_MODULES>` - All imports not targeted by another regex will end up here, so this will be injected if not present in `options.importOrder`
+- `<TYPES>` - Not active by default, this allows you to group all type-imports, or target them with a regex (`<TYPES>^[.]` targets imports of types from local files).
+
+Here are some common ways to configure `importOrder`:
+
+##### 1. Put specific dependencies at the top
+
+Some styles call for putting the import of `react` at the top of your imports, which you could accomplish like this:
+
+```json
+"importOrder": ["react", "<THIRD_PARTY_MODULES>", "^[.]"]
+```
+
+e.g.:
+
+```ts
+import * as React from 'react';
+import cn from 'classnames';
+import MyApp from './MyApp';
+```
+
+##### 2. Keep css modules at the bottom
+
+Imports of CSS files are often placed at the bottom of the list of imports, and can be accomplished like so:
+
+```json
+"importOrder": ["<THIRD_PARTY_MODULES>", "^(?!.*[.]css$)[./].*$", ".css$"]
+```
+
+e.g.:
+
+```ts
+import * as React from 'react';
+import MyApp from './MyApp';
+import styles from './global.css';
+```
+
+##### 3. Add spaces between import groups
+
+If you want to group your imports into "chunks" with blank lines between, you can add empty strings like this:
+
+```json
+"importOrder": ["<BUILT_IN_MODULES>", "", "<THIRD_PARTY_MODULES>", "", "^[.]"]
+```
+
+e.g.:
+
+```ts
+import fs from 'fs';
+
+import { debounce, reduce } from 'lodash';
+
+import MyApp from './MyApp';
+```
+
+##### 4. Group type imports separately from values
+
+If you're using Flow or TypeScript, you might want to separate out your type imports from imports of values.  And to be especially fancy, you can even group 3rd party types together, and your own local type imports separately:
+
+```json
+"importOrder": ["<TYPES>", "<TYPES>^[.]", "<THIRD_PARTY_MODULES>", "^[.]"]
+```
+
+e.g.:
+
+```ts
+import type { Logger } from '@tanstack/react-query';
+import type { Location } from 'history';
+import type {Props} from './App';
+import { QueryClient} from '@tanstack/react-query';
+import { createBrowserHistory } from 'history';
+import App from './App';
+```
+
+##### 5. Group aliases with local imports
+
+If you define non-relative aliases to refer to local files without long chains of `"../../../"`, you can include those aliases in your `importOrder` to keep them grouped with your local code.
+
+```json
+"importOrder": [
+    "<THIRD_PARTY_MODULES>",
+    "^(@api|@assets|@ui)(/.*)$",
+    "^[.]"]
+```
+
+e.g.:
+
+```ts
+import { debounce, reduce } from 'lodash';
+import { Users } from '@api';
+import icon from '@assets/icon';
+import App from './App';
+```
+
+##### 6. Enforce a blank line after top of file comments
+
+If you have pragma-comments at the top of file, or you have boilerplate copyright announcements, you may be interested in separating that content from your code imports, you can add that separator first.
+
+```json
+"importOrder": [
+    "",
+    "^[.]"
+]
+```
+
+e.g.:
+
+```ts
+/**
+ * @prettier
+ */
+
+import { promises } from 'fs';
+import { Users } from '@api';
+import icon from '@assets/icon';
+import App from './App';
 ```
 
 #### `importOrderTypeScriptVersion`
@@ -276,7 +384,7 @@ entire import statements can be ignored, line comments (`// prettier-ignore`) ar
 
 We make the following attempts at keeping comments in your imports clean:
 
-- If you have one or more comments at the top of the file, we will keep them at the top as long as there is a blank line before your first import statement.
+- If you have one or more comments at the top of the file, we will keep them at the top.
 - Comments on lines after the final import statement will not be moved. (Runtime-code between imports will be moved below all the imports).
 - In general, if you place a comment on the same line as an Import `Declaration` or `*Specifier`, we will keep it attached to that same specifier if it moves around.
 - Other comments are preserved, and are generally considered "leading" comments for the subsequent Import `Declaration` or `*Specifier`.
@@ -287,14 +395,14 @@ Having some trouble or an issue? You can check [FAQ / Troubleshooting section](.
 
 ## Compatibility
 
-| Framework              | Supported     | Note                                             |
-| ---------------------- | ------------- | ------------------------------------------------ |
-| JS with ES Modules     | ✅ Everything | -                                                |
-| NodeJS with ES Modules | ✅ Everything | -                                                |
-| React                  | ✅ Everything | -                                                |
-| Angular                | ✅ Everything | Supported through `importOrderParserPlugins` API |
-| Vue                    | ✅ Everything | Peer dependency `@vue/compiler-sfc` is required  |
-| Svelte                 | ⚠️ Not yet    | Contributions are welcome                        |
+| Framework              | Supported     | Note                                                       |
+| ---------------------- | ------------- | ---------------------------------------------------------- |
+| JS with ES Modules     | ✅ Everything | -                                                          |
+| NodeJS with ES Modules | ✅ Everything | -                                                          |
+| React                  | ✅ Everything | -                                                          |
+| Angular                | ✅ Everything | Supported through `importOrderParserPlugins` API           |
+| Vue                    | ✅ Everything | SFCs only, peer dependency `@vue/compiler-sfc` is required |
+| Svelte                 | ⚠️ Not yet    | Contributions are welcome                                  |
 
 ## Contribution
 

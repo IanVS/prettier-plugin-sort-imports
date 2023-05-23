@@ -1,0 +1,65 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`imports-with-file-level-comments.ts - typescript-verify > imports-with-file-level-comments.ts 1`] = `
+//@ts-ignore
+// I am file top level comments (expect blank line below this)
+import threeLevelRelativePath from "../../../threeLevelRelativePath";
+// I am stick to b
+import b from "b";
+// I am stick to a
+import a from "a";
+
+import fs from "fs";
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//@ts-ignore
+// I am file top level comments (expect blank line below this)
+
+import fs from "fs";
+
+// I am stick to a
+import a from "a";
+// I am stick to b
+import b from "b";
+
+import threeLevelRelativePath from "../../../threeLevelRelativePath";
+
+`;
+
+exports[`imports-without-file-level-comments.ts - typescript-verify > imports-without-file-level-comments.ts 1`] = `
+import threeLevelRelativePath from "../../../threeLevelRelativePath";
+// I am stick to b
+import b from "b";
+// I am stick to a
+import a from "a";
+
+// Loose runtime comment
+const foo = "foo";
+
+import fs from "fs";
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import fs from "fs";
+
+// I am stick to a
+import a from "a";
+// I am stick to b
+import b from "b";
+
+import threeLevelRelativePath from "../../../threeLevelRelativePath";
+
+// Loose runtime comment
+const foo = "foo";
+
+`;
+
+exports[`not-when-theres-an-ignore.ts - typescript-verify > not-when-theres-an-ignore.ts 1`] = `
+// prettier-ignore
+import {b, a} from 'a'
+// prettier-ignore
+import {c, d} from 'b'
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// prettier-ignore
+import { b, a } from 'a';
+// prettier-ignore
+import { c, d } from 'b';
+
+`;

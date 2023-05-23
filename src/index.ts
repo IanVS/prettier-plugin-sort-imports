@@ -4,6 +4,10 @@ import { parsers as flowParsers } from 'prettier/parser-flow';
 import { parsers as htmlParsers } from 'prettier/parser-html';
 import { parsers as typescriptParsers } from 'prettier/parser-typescript';
 
+import {
+    BUILTIN_MODULES_SPECIAL_WORD,
+    THIRD_PARTY_MODULES_SPECIAL_WORD,
+} from './constants';
 import { defaultPreprocessor } from './preprocessors/default';
 import { vuePreprocessor } from './preprocessors/vue';
 import type { PrettierOptions } from './types';
@@ -25,8 +29,17 @@ export const options: Record<
         type: 'path',
         category: 'Global',
         array: true,
-        default: [{ value: [] }],
-        description: 'Provide an order to sort imports.',
+        default: [
+            {
+                value: [
+                    BUILTIN_MODULES_SPECIAL_WORD,
+                    THIRD_PARTY_MODULES_SPECIAL_WORD, // Everything not matching relative imports
+                    '^[.]', // relative imports
+                ],
+            },
+        ],
+        description:
+            'Provide an order to sort imports. [node.js built-ins are always first]',
     },
     importOrderParserPlugins: {
         type: 'path',
@@ -49,6 +62,10 @@ export const options: Record<
 export const parsers = {
     babel: {
         ...babelParsers.babel,
+        preprocess: defaultPreprocessor,
+    },
+    'babel-ts': {
+        ...babelParsers['babel-ts'],
         preprocess: defaultPreprocessor,
     },
     flow: {
