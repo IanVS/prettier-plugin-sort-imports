@@ -1,27 +1,21 @@
-NOTE: These docs are for the upcoming version 4.0.  View the [3.X readme](https://github.com/IanVS/prettier-plugin-sort-imports/tree/main#readme) for the latest stable release, or the [migration guide](https://github.com/IanVS/prettier-plugin-sort-imports/blob/next/docs/MIGRATION.md#migrating-from-v3xx-to-v4xx) for the changes so far.
-
 # Prettier plugin sort imports <!-- omit in toc -->
 
-A prettier plugin to sort import declarations by provided Regular Expression order.
+A prettier plugin to sort import declarations by provided Regular Expression order, while preserving side-effect import order.
 
-This was forked from [@trivago/prettier-plugin-sort-imports](https://github.com/trivago/prettier-plugin-sort-imports).
+This project is based on [@trivago/prettier-plugin-sort-imports](https://github.com/trivago/prettier-plugin-sort-imports), but adds additional features:
 
-The first change was preserving the order of [side-effect imports](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#import_a_module_for_its_side_effects_only) to avoid breaking situations where import-order has correctness implications (such as styles).
-
-Since then more critical features & fixes have been added, and the options have been simplified.
-
-**Features not currently supported by upstream:**
-
-- Do not re-order across side-effect imports
-- Combine imports from the same source
-- Combine type and value imports
-- Type import grouping with `<TYPES>` keyword
-- Sorts node.js builtin modules to top
-- Custom import order separation
+- Does not re-order across side-effect imports
+- Combines imports from the same source
+- Combines type and value imports (if `importOrderTypeScriptVersion` is set to `"4.5.0"` or higher)
+- Groups type imports with `<TYPES>` keyword
+- Sorts node.js builtin modules to top (configurable with `<BUILTIN_MODULES>` keyword)
+- Supports custom import order separation
+- Handles comments around imports correctly
+- Simplifies options for easier configuration
 
 [We welcome contributions!](./CONTRIBUTING.md)
 
-## Table of Contents
+## Table of Contents <!-- omit in toc -->
 
 - [Sample](#sample)
   - [Input](#input)
@@ -108,17 +102,23 @@ import { add, filter, repeat } from '../utils';
 
 npm
 
-```shell script
-npm install --save-dev @ianvs/prettier-plugin-sort-imports@next
+```shell
+npm install --save-dev @ianvs/prettier-plugin-sort-import
 ```
 
-or, using yarn
+yarn
 
-```shell script
-yarn add --dev @ianvs/prettier-plugin-sort-imports@next
+```shell
+yarn add --dev @ianvs/prettier-plugin-sort-import
 ```
 
-**Note: If you are migrating from v3.x.x to v4.x.x, [Please Read Migration Guidelines](./docs/MIGRATION.md)**
+pnpm
+
+```shell
+pnpm add --dev @ianvs/prettier-plugin-sort-import
+```
+
+**Note: If you are migrating from v3.x.x to v4.x.x, please read the [migration guidelines](./docs/MIGRATION.md)**
 
 ## Usage
 
@@ -134,6 +134,7 @@ module.exports = {
     trailingComma: 'all',
     singleQuote: true,
     semi: true,
+    // This plugin's options
     importOrder: ['^@core/(.*)$', '', '^@server/(.*)$', '', '^@ui/(.*)$', '', '^[./]'],
     importOrderParserPlugins: ['typescript', 'jsx', 'decorators-legacy'],
     importOrderTypeScriptVersion: '5.0.0',
@@ -143,7 +144,7 @@ module.exports = {
 ### How does import sort work?
 
 The plugin extracts the imports which are defined in `importOrder`. These imports are considered as _local imports_.
-The imports which are not part of the `importOrder` is considered as _third party imports_.
+The imports which are not part of the `importOrder` are considered to be _third party imports_.
 
 First, the plugin checks for
 [side effect imports](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#import_a_module_for_its_side_effects_only),
@@ -178,7 +179,7 @@ unsortable. This can be used for edge-cases, such as when you have a named impor
 
 Next, the plugin sorts the _local imports_ and _third party imports_ using [natural sort algorithm](https://en.wikipedia.org/wiki/Natural_sort_order).
 
-In the end, the plugin returns final imports with _nodejs built-in modules_, followed by _third party imports_ and subsequent _local imports_ at the end.
+By default the plugin returns final imports with _nodejs built-in modules_, followed by _third party imports_ and subsequent _local imports_ at the end.
 
 - The _nodejs built-in modules_ position (it's 1st by default) can be overridden using the `<BUILTIN_MODULES>` special word in the `importOrder`
 - The _third party imports_ position (it's 2nd by default) can be overridden using the `<THIRD_PARTY_MODULES>` special word in the `importOrder`.
@@ -206,7 +207,7 @@ By default, this plugin sorts as documented on the line above, with Node.js buil
 Available Special Words:
 
 - `<BUILTIN_MODULES>` - All _nodejs built-in modules_ will be grouped here, and is injected at the top if it's not present.
-- `<THIRD_PARTY_MODULES>` - All imports not targeted by another regex will end up here, so this will be injected if not present in `options.importOrder`
+- `<THIRD_PARTY_MODULES>` - All imports not targeted by another regex will end up here, so this will be injected if not present in `importOrder`
 - `<TYPES>` - Not active by default, this allows you to group all type-imports, or target them with a regex (`<TYPES>^[.]` targets imports of types from local files).
 
 Here are some common ways to configure `importOrder`:
