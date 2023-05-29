@@ -103,19 +103,19 @@ import { add, filter, repeat } from '../utils';
 npm
 
 ```shell
-npm install --save-dev @ianvs/prettier-plugin-sort-import
+npm install --save-dev @ianvs/prettier-plugin-sort-imports
 ```
 
 yarn
 
 ```shell
-yarn add --dev @ianvs/prettier-plugin-sort-import
+yarn add --dev @ianvs/prettier-plugin-sort-imports
 ```
 
 pnpm
 
 ```shell
-pnpm add --dev @ianvs/prettier-plugin-sort-import
+pnpm add --save-dev @ianvs/prettier-plugin-sort-imports
 ```
 
 **Note: If you are migrating from v3.x.x to v4.x.x, please read the [migration guidelines](./docs/MIGRATION.md)**
