@@ -17,6 +17,10 @@ import { defineComponent } from 'vue'
 function add(a,b) {
   return a + b;
 }
+
+const number = 500;
+const dollarSign = '$';
+const dollarPrefixed =`\$${number}`;
 </script>
 
 <template>
