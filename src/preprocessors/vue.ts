@@ -84,6 +84,6 @@ function sortScript(
 
     return code.replace(
         content,
-        `\n${preprocessor(content, adjustedOptions)}\n`,
+        () => `\n${preprocessor(content, adjustedOptions)}\n`,
     );
 }
