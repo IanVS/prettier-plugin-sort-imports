@@ -88,7 +88,7 @@ export function examineAndNormalizePluginOptions(
 
     let plugins = getExperimentalParserPlugins(importOrderParserPlugins);
     // Do not inject jsx plugin for non-jsx ts files
-    if (filepath.endsWith('.ts')) {
+    if (filepath?.endsWith('.ts')) {
         plugins = plugins.filter((p) => p !== 'jsx');
     }
 
