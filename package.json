@@ -73,7 +73,7 @@
     },
     "peerDependencies": {
         "@vue/compiler-sfc": ">=3.0.0",
-        "prettier": "2.x"
+        "prettier": "2 || 3"
     },
     "peerDependenciesMeta": {
         "@vue/compiler-sfc": {
