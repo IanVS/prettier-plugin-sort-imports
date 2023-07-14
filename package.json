@@ -20,7 +20,7 @@
         "prepare": "yarn run compile",
         "compile": "tsc",
         "preexample": "yarn run compile",
-        "test": "vitest --run",
+        "test": "NODE_OPTIONS=--experimental-vm-modules vitest --run",
         "test:watch": "vitest",
         "format": "prettier . --write",
         "format:check": "prettier . --check",
@@ -67,7 +67,7 @@
         "@types/prettier": "^2.7.2",
         "@types/semver": "^7.3.13",
         "@vue/compiler-sfc": "3.2.47",
-        "prettier": "2.8.7",
+        "prettier": "^3.0.0",
         "typescript": "5.0.4",
         "vitest": "^0.30.1"
     },

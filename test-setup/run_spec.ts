@@ -1,14 +1,14 @@
 'use strict';
 
 import fs from 'fs';
-import { extname, join, resolve } from 'path';
+import { extname } from 'path';
 
-import prettier from 'prettier';
+import { format } from 'prettier';
 import { expect, test } from 'vitest';
 
 import * as plugin from '../src';
 
-export function run_spec(dirname, parsers, options) {
+export async function run_spec(dirname, parsers, options) {
     options = Object.assign(
         {
             plugins: [plugin],
@@ -22,7 +22,7 @@ export function run_spec(dirname, parsers, options) {
         throw new Error(`No parsers were specified for ${dirname}`);
     }
 
-    fs.readdirSync(dirname).forEach((filename) => {
+    for (const filename of fs.readdirSync(dirname)) {
         const path = dirname + '/' + filename;
         if (
             extname(filename) !== '.snap' &&
@@ -35,32 +35,37 @@ export function run_spec(dirname, parsers, options) {
             const mergedOptions = Object.assign({}, options, {
                 parser: parsers[0],
             });
-            const output = prettyprint(source, path, mergedOptions);
-            test(`${filename} - ${mergedOptions.parser}-verify`, () => {
+            test(`${filename} - ${mergedOptions.parser}-verify`, async () => {
+                const output = await prettyprint(source, path, mergedOptions);
                 expect(
                     raw(source + '~'.repeat(80) + '\n' + output),
                 ).toMatchSnapshot(filename);
             });
 
-            parsers.slice(1).forEach((parserName) => {
-                test(`${filename} - ${parserName}-verify`, () => {
+            for (const parserName of parsers.slice(1)) {
+                test(`${filename} - ${parserName}-verify`, async () => {
+                    const output = await prettyprint(
+                        source,
+                        path,
+                        mergedOptions,
+                    );
                     const verifyOptions = Object.assign(mergedOptions, {
                         parser: parserName,
                     });
-                    const verifyOutput = prettyprint(
+                    const verifyOutput = await prettyprint(
                         source,
                         path,
                         verifyOptions,
                     );
                     expect(output).toEqual(verifyOutput);
                 });
-            });
+            }
         }
-    });
+    }
 }
 
-function prettyprint(src, filename, options) {
-    return prettier.format(
+async function prettyprint(src, filename, options) {
+    return await format(
         src,
         Object.assign(
             {

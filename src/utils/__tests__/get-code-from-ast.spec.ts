@@ -8,7 +8,7 @@ import { testingOnly } from '../normalize-plugin-options';
 
 const emptyImportOrder = testingOnly.normalizeImportOrderOption([]);
 
-test('sorts imports correctly', () => {
+test('sorts imports correctly', async () => {
     const code = `import z from 'z';
 import c from 'c';
 import g from 'g';
@@ -26,7 +26,7 @@ import a from 'a';
         originalCode: code,
         directives: [],
     });
-    expect(format(formatted, { parser: 'babel' })).toEqual(
+    expect(await format(formatted, { parser: 'babel' })).toEqual(
         `import a from "a";
 import c from "c";
 import g from "g";
@@ -37,7 +37,7 @@ import z from "z";
     );
 });
 
-test('merges duplicate imports correctly', () => {
+test('merges duplicate imports correctly', async () => {
     const code = `import z from 'z';
 import c from 'c';
 import g from 'g';
@@ -59,7 +59,7 @@ import type {See} from 'c';
         originalCode: code,
         directives: [],
     });
-    expect(format(formatted, { parser: 'babel' })).toEqual(
+    expect(await format(formatted, { parser: 'typescript' })).toEqual(
         `import a, { b, type Bee } from "a";
 import c, { type C, type See } from "c";
 import g from "g";

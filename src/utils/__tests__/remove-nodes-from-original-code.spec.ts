@@ -20,7 +20,7 @@ import k from 'k';
 import a from 'a';
 `;
 
-test('it should remove nodes from the original code', () => {
+test('it should remove nodes from the original code', async () => {
     const ast = babelParser(code, { sourceType: 'module' });
     const importNodes = getImportNodes(code);
     const sortedNodes = getSortedNodes(importNodes, {
@@ -38,6 +38,8 @@ test('it should remove nodes from the original code', () => {
         code,
         commentAndImportsToRemoveFromCode,
     );
-    const result = format(codeWithoutImportDeclarations, { parser: 'babel' });
+    const result = await format(codeWithoutImportDeclarations, {
+        parser: 'babel',
+    });
     expect(result).toEqual('');
 });
