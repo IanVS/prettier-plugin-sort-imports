@@ -194,4 +194,23 @@ describe('examineAndNormalizePluginOptions', () => {
             provideGapAfterTopOfFileComments: false,
         });
     });
+    test('it should not have a problem with a missing filepath', () => {
+        expect(
+            examineAndNormalizePluginOptions({
+                importOrder: [],
+                importOrderParserPlugins: [],
+                importOrderTypeScriptVersion: '1.0.0',
+                filepath: undefined,
+            } as NormalizableOptions),
+        ).toEqual({
+            hasAnyCustomGroupSeparatorsInImportOrder: false,
+            importOrder: [
+                BUILTIN_MODULES_REGEX_STR,
+                THIRD_PARTY_MODULES_SPECIAL_WORD,
+            ],
+            importOrderCombineTypeAndValueImports: true,
+            plugins: [],
+            provideGapAfterTopOfFileComments: false,
+        });
+    });
 });
