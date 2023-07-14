@@ -15,7 +15,7 @@ import {
 import type { MergeNodesWithMatchingImportFlavors } from '../types';
 import { getImportFlavorOfNode } from './get-import-flavor-of-node';
 
-type MergeableFlavor = typeof mergeableImportFlavors[number];
+type MergeableFlavor = (typeof mergeableImportFlavors)[number];
 function isMergeableFlavor(flavor: string): flavor is MergeableFlavor {
     return mergeableImportFlavors.includes(flavor as MergeableFlavor);
 }
@@ -28,7 +28,7 @@ function selectMergeableNodesByImportFlavor(
     nodes: ImportDeclaration[],
 ): Record<MergeableFlavor, ImportDeclaration[]> {
     return nodes.reduce<
-        Record<typeof mergeableImportFlavors[number], ImportDeclaration[]>
+        Record<(typeof mergeableImportFlavors)[number], ImportDeclaration[]>
     >(
         (groups, node) => {
             const flavor = getImportFlavorOfNode(node);
