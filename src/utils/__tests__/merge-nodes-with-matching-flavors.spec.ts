@@ -61,7 +61,7 @@ test('should merge duplicate imports within a given chunk', async () => {
         directives: [],
     });
 
-    expect(await format(formatted, { parser: 'babel' }))
+    expect(await format(formatted, { parser: 'typescript' }))
         .toEqual(`import type { A, B } from "a";
 import { Junk } from "junk-group-1";
 
@@ -119,7 +119,7 @@ test('should merge type imports into regular imports', async () => {
         directives: [],
     });
 
-    expect(await format(formatted, { parser: 'babel' }))
+    expect(await format(formatted, { parser: 'typescript' }))
         .toEqual(`// Preserves 'import type'
 
 import type { A1, A2 } from "a";
@@ -152,7 +152,7 @@ import defaultValue from './source';
         directives: [],
     });
 
-    expect(await format(formatted, { parser: 'babel' }))
+    expect(await format(formatted, { parser: 'typescript' }))
         .toEqual(`import defaultValue, { type MyType } from "./source";
 `);
 });
@@ -177,7 +177,7 @@ import * as Namespace from './source';
         directives: [],
     });
 
-    expect(await format(formatted, { parser: 'babel' }))
+    expect(await format(formatted, { parser: 'typescript' }))
         .toEqual(`import type { MyType } from "./source";
 import * as Namespace from "./source";
 `);
@@ -203,7 +203,7 @@ import {value as alias} from './source';
         directives: [],
     });
 
-    expect(await format(formatted, { parser: 'babel' }))
+    expect(await format(formatted, { parser: 'typescript' }))
         .toEqual(`import { value as alias, type MyType } from "./source";
 `);
 });
@@ -228,7 +228,7 @@ import {value, SecondValue} from './source';
         directives: [],
     });
 
-    expect(await format(formatted, { parser: 'babel' }))
+    expect(await format(formatted, { parser: 'typescript' }))
         .toEqual(`import { SecondValue, value, type MyType, type SecondType } from "./source";
 `);
 });
@@ -255,7 +255,7 @@ import {otherValue} from './other';
         directives: [],
     });
 
-    expect(await format(formatted, { parser: 'babel' }))
+    expect(await format(formatted, { parser: 'typescript' }))
         .toEqual(`import { otherValue, type OtherType } from "./other";
 import { value, type MyType } from "./source";
 `);
@@ -283,7 +283,7 @@ import {SecondValue} from './source';
         directives: [],
     });
 
-    expect(await format(formatted, { parser: 'babel' }))
+    expect(await format(formatted, { parser: 'typescript' }))
         .toEqual(`import { SecondValue, value, type MyType, type SecondType } from "./source";
 `);
 });
@@ -310,7 +310,7 @@ import {value} from './source';
         directives: [],
     });
 
-    expect(await format(formatted, { parser: 'babel' }))
+    expect(await format(formatted, { parser: 'typescript' }))
         .toEqual(`import type { OtherType } from "./other";
 import { value, type MyType } from "./source";
 import { thirdValue } from "./third";
@@ -337,7 +337,7 @@ test('should not combine default type imports', async () => {
         directives: [],
     });
 
-    expect(await format(formatted, { parser: 'babel' }))
+    expect(await format(formatted, { parser: 'typescript' }))
         .toEqual(`import { ComponentProps, useEffect } from "react";
 import type React from "react";
 `);

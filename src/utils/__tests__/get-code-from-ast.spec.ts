@@ -59,7 +59,7 @@ import type {See} from 'c';
         originalCode: code,
         directives: [],
     });
-    expect(await format(formatted, { parser: 'babel' })).toEqual(
+    expect(await format(formatted, { parser: 'typescript' })).toEqual(
         `import a, { b, type Bee } from "a";
 import c, { type C, type See } from "c";
 import g from "g";
