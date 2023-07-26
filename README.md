@@ -129,11 +129,11 @@ Add your preferred settings in your prettier config file.
 
 /** @type {import("@ianvs/prettier-plugin-sort-imports").PrettierConfig} */
 module.exports = {
-    printWidth: 80,
-    tabWidth: 4,
-    trailingComma: 'all',
+    // Standard prettier options
     singleQuote: true,
     semi: true,
+    // Since prettier 3.0, manually specifying plugins is required
+    plugins: ['@ianvs/prettier-plugin-sort-imports'],
     // This plugin's options
     importOrder: ['^@core/(.*)$', '', '^@server/(.*)$', '', '^@ui/(.*)$', '', '^[./]'],
     importOrderParserPlugins: ['typescript', 'jsx', 'decorators-legacy'],
