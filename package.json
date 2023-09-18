@@ -58,7 +58,7 @@
         "@babel/parser": "^7.21.8",
         "@babel/traverse": "^7.21.5",
         "@babel/types": "^7.21.5",
-        "semver": "^7.5.0"
+        "semver": "^7.5.2"
     },
     "devDependencies": {
         "@types/babel__generator": "^7.6.4",
