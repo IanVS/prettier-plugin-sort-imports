@@ -37,7 +37,7 @@ export const explodeTypeAndValueSpecifiers: ExplodeTypeAndValueSpecifiers = (
         );
 
         // If we have a mix of type and value imports, we need to 'splode them into two import declarations
-        if (typeImports.length) {
+        if (typeImports.length && typeImports.length < node.specifiers.length) {
             const valueImports = node.specifiers.filter(
                 (i) =>
                     !(i.type === 'ImportSpecifier' && i.importKind === 'type'),
