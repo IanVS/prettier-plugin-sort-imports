@@ -82,6 +82,20 @@ test('it should return named type imports unchanged', () => {
     );
 });
 
+test('it should return inline named type imports unchanged', () => {
+    const code = `import { type NamedType1, type NamedType2 } from './source';`;
+    const importNodes = getImportNodes(code, { plugins: ['typescript'] });
+    const explodedNodes = explodeTypeAndValueSpecifiers(importNodes);
+    const formatted = getCodeFromAst({
+        nodesToOutput: explodedNodes,
+        originalCode: code,
+        directives: [],
+    });
+    expect(formatted).toEqual(
+        `import { type NamedType1, type NamedType2 } from './source';`,
+    );
+});
+
 test('it should separate named type and value imports', () => {
     const code = `import { named, type NamedType } from './source';`;
     const importNodes = getImportNodes(code, { plugins: ['typescript'] });
