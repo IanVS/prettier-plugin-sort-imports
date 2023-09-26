@@ -26,7 +26,7 @@ export function preprocessor(code: string, options: PrettierOptions): string {
     traverse(ast, {
         ImportDeclaration(path: NodePath<ImportDeclaration>) {
             const tsModuleParent = path.findParent((p) =>
-                isTSModuleDeclaration(p),
+                isTSModuleDeclaration(p.node),
             );
             if (!tsModuleParent) {
                 allOriginalImportNodes.push(path.node);

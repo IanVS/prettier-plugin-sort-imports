@@ -15,7 +15,7 @@ export const getImportNodes = (
     traverse(ast, {
         ImportDeclaration(path: NodePath<ImportDeclaration>) {
             const tsModuleParent = path.findParent((p) =>
-                isTSModuleDeclaration(p),
+                isTSModuleDeclaration(p.node),
             );
             if (!tsModuleParent) {
                 importNodes.push(path.node);
