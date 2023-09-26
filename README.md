@@ -217,7 +217,7 @@ Here are some common ways to configure `importOrder`:
 Some styles call for putting the import of `react` at the top of your imports, which you could accomplish like this:
 
 ```json
-"importOrder": ["react", "<THIRD_PARTY_MODULES>", "^[.]"]
+"importOrder": ["^react$", "<THIRD_PARTY_MODULES>", "^[.]"]
 ```
 
 e.g.:
