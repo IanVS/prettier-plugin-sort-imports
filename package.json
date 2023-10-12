@@ -61,16 +61,16 @@
         "semver": "^7.5.2"
     },
     "devDependencies": {
-        "@types/babel__generator": "^7.6.4",
-        "@types/babel__traverse": "^7.18.3",
+        "@types/babel__generator": "^7.6.5",
+        "@types/babel__traverse": "^7.20.2",
         "@types/node": "^18.15.13",
-        "@types/prettier": "^2.7.2",
-        "@types/semver": "^7.3.13",
-        "@vue/compiler-sfc": "3.2.47",
+        "@types/prettier": "^3.0.0",
+        "@types/semver": "^7.5.3",
+        "@vue/compiler-sfc": "3.3.4",
         "cross-env": "^7.0.3",
-        "prettier": "^3.0.0",
-        "typescript": "5.0.4",
-        "vitest": "^0.30.1"
+        "prettier": "^3.0.3",
+        "typescript": "5.2.2",
+        "vitest": "^0.34.5"
     },
     "peerDependencies": {
         "@vue/compiler-sfc": ">=3.0.0",
