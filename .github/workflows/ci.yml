@@ -4,12 +4,14 @@ on:
     push:
         branches:
             - main
+
 jobs:
     build:
-        runs-on: ubuntu-latest
         strategy:
             matrix:
-                node: [16.x, 18.x]
+                node: [16.x, 18.x, 20.x]
+                platform: [ubuntu-latest, windows-latest]
+        runs-on: ${{ matrix.platform }}
         steps:
             - uses: actions/checkout@v3
             - uses: actions/setup-node@v3
