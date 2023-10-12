@@ -20,6 +20,8 @@ jobs:
                   cache: 'yarn'
                   cache-dependency-path: 'yarn.lock'
             - run: yarn install --frozen-lockfile --non-interactive
+            - name: Build
+              run: yarn compile
             - name: Test
               run: yarn test
             - name: Check formatting
