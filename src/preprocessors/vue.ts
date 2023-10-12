@@ -6,28 +6,40 @@ import { hasPlugin } from '../utils/get-experimental-parser-plugins';
 import { preprocessor } from './preprocessor';
 
 export function vuePreprocessor(code: string, options: PrettierOptions) {
-    let preprocessedCode = code;
     try {
         const { parse }: { parse: typeof Parse } = require('@vue/compiler-sfc');
         const { descriptor } = parse(code);
 
-        if (descriptor.script) {
-            preprocessedCode = sortScript(
-                descriptor.script,
-                preprocessedCode,
-                options,
-            );
+        // 1. Filter valid blocks.
+        const blocks = [descriptor.script, descriptor.scriptSetup].filter(
+            (block): block is NonNullable<typeof descriptor.script> =>
+                Boolean(block?.content),
+        );
+        if (!blocks.length) {
+            return code;
         }
 
-        if (descriptor.scriptSetup) {
-            preprocessedCode = sortScript(
-                descriptor.scriptSetup,
-                preprocessedCode,
-                options,
-            );
+        // 2. Sort blocks by start offset.
+        blocks.sort((a, b) => a.loc.start.offset - b.loc.start.offset);
+
+        // 3. Replace blocks.
+        // Using offsets to avoid string replace catching the wrong place and improve efficiency
+        // see https://github.com/IanVS/prettier-plugin-sort-imports/pull/90
+        let offset = 0;
+        let result = '';
+        for (const block of blocks) {
+            // https://github.com/vuejs/core/blob/b8fc18c0b23be9a77b05dc41ed452a87a0becf82/packages/compiler-core/src/ast.ts#L74-L80
+            // The node's range. The `start` is inclusive and `end` is exclusive.
+            // [start, end)
+            const { start, end } = block.loc;
+            const preprocessedBlockCode = sortScript(block, options);
+            result += code.slice(offset, start.offset) + preprocessedBlockCode;
+            offset = end.offset;
         }
 
-        return preprocessedCode;
+        // 4. Append the rest.
+        result += code.slice(offset);
+        return result;
     } catch (err) {
         if ((err as NodeJS.ErrnoException).code === 'MODULE_NOT_FOUND') {
             console.warn(
@@ -48,14 +60,12 @@ function isTS(lang?: string) {
  *
  * Much of this was adapted from https://github.com/vuejs/vue/blob/49b6bd4264c25ea41408f066a1835f38bf6fe9f1/packages/compiler-sfc/src/compileScript.ts#L118-L134
  *
- * @param param0 a script or setupScript
- * @param code Source code of the file
+ * @param param0 A script or setupScript block of the SFC
  * @param options Prettier options
- * @returns Original code with sorted imports in the script provided
+ * @returns Original code with sorted imports in the block provided
  */
 function sortScript(
     { content, lang }: { content: string; lang?: string },
-    code: string,
     options: PrettierOptions,
 ) {
     const { importOrderParserPlugins = [] } = options;
@@ -82,8 +92,5 @@ function sortScript(
         importOrderParserPlugins: newPlugins,
     };
 
-    return code.replace(
-        content,
-        () => `\n${preprocessor(content, adjustedOptions)}\n`,
-    );
+    return `\n${preprocessor(content, adjustedOptions)}\n`;
 }
