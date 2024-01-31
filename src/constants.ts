@@ -23,9 +23,9 @@ export const mergeableImportFlavors = [
     importFlavorType,
 ] as const;
 
-export const BUILTIN_MODULES_REGEX_STR = `^(?:node:)?(?:${builtinModules.join(
+export const BUILTIN_MODULES_REGEX_STR = `(^(?:node:)?(?:${builtinModules.join(
     '|',
-)})$`;
+)})$)|(^(?:node:test)$)`; // NOTE: 'test' is not included in `builtinModules` so explicitly check for "node:test"
 
 export const BUILTIN_MODULES_SPECIAL_WORD = '<BUILTIN_MODULES>';
 /**
