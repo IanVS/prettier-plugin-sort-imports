@@ -1,0 +1,19 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`groups-node-test-with-builtin-modules.js - typescript-verify > groups-node-test-with-builtin-modules.js 1`] = `
+import nodeUtil from 'node:util';
+
+import nodeNodeTest from 'node:node:test';
+import nodeTest from 'node:test';
+import test from 'test'
+
+import fs from 'fs';
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import fs from "fs";
+import nodeTest from "node:test";
+import nodeUtil from "node:util";
+
+import nodeNodeTest from "node:node:test";
+import test from "test";
+
+`;
