@@ -20,7 +20,7 @@
         "prepare": "yarn run compile",
         "compile": "tsc",
         "preexample": "yarn run compile",
-        "test": "cross-env NODE_OPTIONS=--experimental-vm-modules vitest --run",
+        "test": "cross-env NODE_OPTIONS=\" $NODE_OPTIONS --experimental-vm-modules \" vitest --run",
         "test:watch": "vitest",
         "format": "prettier . --write",
         "format:check": "prettier . --check",
@@ -69,15 +69,25 @@
         "@vue/compiler-sfc": "3.3.4",
         "cross-env": "^7.0.3",
         "prettier": "^3.0.3",
+        "prettier-plugin-svelte": "^3.2.0",
+        "svelte": "^4.2.0",
         "typescript": "5.2.2",
         "vitest": "^0.34.5"
     },
     "peerDependencies": {
         "@vue/compiler-sfc": ">=3.0.0",
-        "prettier": "2 || 3"
+        "prettier": "2 || 3",
+        "prettier-plugin-svelte": "3",
+        "svelte": "4"
     },
     "peerDependenciesMeta": {
         "@vue/compiler-sfc": {
+            "optional": true
+        },
+        "prettier-plugin-svelte": {
+            "optional": true
+        },
+        "svelte": {
             "optional": true
         }
     }

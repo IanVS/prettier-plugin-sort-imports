@@ -9,8 +9,12 @@ import {
     THIRD_PARTY_MODULES_SPECIAL_WORD,
 } from './constants';
 import { defaultPreprocessor } from './preprocessors/default';
+import { sveltePreprocessor } from './preprocessors/svelte';
 import { vuePreprocessor } from './preprocessors/vue';
 import type { PrettierOptions } from './types';
+
+// NOTE(secondfry): `prettier-plugin-svelte` typings are misleading.
+const { parsers: svelteParsers } = require('prettier-plugin-svelte');
 
 // Not sure what the type from Prettier should be, but this is a good enough start.
 interface PrettierOptionSchema {
@@ -79,5 +83,9 @@ export const parsers = {
     vue: {
         ...htmlParsers.vue,
         preprocess: vuePreprocessor,
+    },
+    svelte: {
+        ...svelteParsers.svelte,
+        preprocess: sveltePreprocessor,
     },
 };

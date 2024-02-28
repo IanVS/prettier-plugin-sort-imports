@@ -403,7 +403,7 @@ Having some trouble or an issue? You can check [FAQ / Troubleshooting section](.
 | React                  | ✅ Everything | -                                                          |
 | Angular                | ✅ Everything | Supported through `importOrderParserPlugins` API           |
 | Vue                    | ✅ Everything | SFCs only, peer dependency `@vue/compiler-sfc` is required |
-| Svelte                 | ⚠️ Not yet    | Contributions are welcome                                  |
+| Svelte                 | ✅ Everything | Peer dependency `prettier-plugin-svelte` is required       |
 
 ## Contribution
 
