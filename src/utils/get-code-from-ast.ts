@@ -60,7 +60,6 @@ export const getCodeFromAst = ({
         directives: directives,
         sourceType: 'module',
         interpreter: interpreter,
-        sourceFile: '',
         leadingComments: [],
         innerComments: [],
         trailingComments: [],
