@@ -264,10 +264,17 @@ import MyApp from './MyApp';
 
 ##### 4. Group type imports separately from values
 
-If you're using Flow or TypeScript, you might want to separate out your type imports from imports of values.  And to be especially fancy, you can even group 3rd party types together, and your own local type imports separately:
+If you're using Flow or TypeScript, you might want to separate out your type imports from imports of values.  And to be especially fancy, you can even group built-in types (if you're using `node:` imports), 3rd party types, and your own local type imports separately:
 
 ```json
-"importOrder": ["<TYPES>", "<TYPES>^[.]", "<THIRD_PARTY_MODULES>", "^[.]"]
+"importOrder": [
+    "<TYPES>^(node:)",
+    "<TYPES>",
+    "<TYPES>^[.]",
+    "<BUILT_IN_MODULES>",
+    "<THIRD_PARTY_MODULES>",
+    "^[.]"
+]
 ```
 
 e.g.:
