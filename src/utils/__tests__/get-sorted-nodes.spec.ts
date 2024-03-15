@@ -1,12 +1,12 @@
 import type { ImportDeclaration } from '@babel/types';
 import { expect, test } from 'vitest';
 
+import { DEFAULT_IMPORT_ORDER } from '../../constants';
 import { getImportNodes } from '../get-import-nodes';
 import { getSortedNodes } from '../get-sorted-nodes';
 import { getSortedNodesModulesNames } from '../get-sorted-nodes-modules-names';
 import { getSortedNodesNamesAndNewlines } from '../get-sorted-nodes-names-and-newlines';
 import { testingOnly } from '../normalize-plugin-options';
-import { DEFAULT_IMPORT_ORDER } from '../../constants';
 
 const code = `
 import "se3";
@@ -30,7 +30,8 @@ import "se2";
 test('it returns all sorted nodes, preserving the order side effect nodes', () => {
     const result = getImportNodes(code);
     const sorted = getSortedNodes(result, {
-        importOrder: testingOnly.normalizeImportOrderOption(DEFAULT_IMPORT_ORDER),
+        importOrder:
+            testingOnly.normalizeImportOrderOption(DEFAULT_IMPORT_ORDER),
         importOrderCombineTypeAndValueImports: true,
     }) as ImportDeclaration[];
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([

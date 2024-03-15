@@ -1,13 +1,14 @@
 import { format } from 'prettier';
 import { expect, test } from 'vitest';
 
+import { DEFAULT_IMPORT_ORDER } from '../../constants';
 import { getCodeFromAst } from '../get-code-from-ast';
 import { getImportNodes } from '../get-import-nodes';
 import { getSortedNodes } from '../get-sorted-nodes';
 import { testingOnly } from '../normalize-plugin-options';
-import { DEFAULT_IMPORT_ORDER } from '../../constants';
 
-const defaultImportOrder = testingOnly.normalizeImportOrderOption(DEFAULT_IMPORT_ORDER);
+const defaultImportOrder =
+    testingOnly.normalizeImportOrderOption(DEFAULT_IMPORT_ORDER);
 
 test('sorts imports correctly', async () => {
     const code = `import z from 'z';

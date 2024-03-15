@@ -6,17 +6,18 @@ import type {
 } from '@babel/types';
 import { expect, test } from 'vitest';
 
+import { DEFAULT_IMPORT_ORDER } from '../../constants';
 import { getAllCommentsFromNodes } from '../get-all-comments-from-nodes';
 import { getImportNodes } from '../get-import-nodes';
 import { getSortedNodes } from '../get-sorted-nodes';
 import { testingOnly } from '../normalize-plugin-options';
-import { DEFAULT_IMPORT_ORDER } from '../../constants';
 
 const getSortedImportNodes = (code: string, options?: ParserOptions) => {
     const importNodes: ImportDeclaration[] = getImportNodes(code, options);
 
     return getSortedNodes(importNodes, {
-        importOrder: testingOnly.normalizeImportOrderOption(DEFAULT_IMPORT_ORDER),
+        importOrder:
+            testingOnly.normalizeImportOrderOption(DEFAULT_IMPORT_ORDER),
         importOrderCombineTypeAndValueImports: true,
     });
 };
