@@ -10,14 +10,16 @@ export interface PluginConfig {
      * A collection of Regular expressions in string format.
      *
      * ```json
-     * "importOrder": ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
+     * "importOrder": ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[.]"],
      * ```
      *
-     * _Default:_ `[]`
+     * _Default:_ `["<BUILTIN_MODULES>"", "<THIRD_PARTY_MODULES>", "^[.]"]`
      *
-     * By default, this plugin will not move any imports.
-     * To separate third party from relative imports, use `["^[./]"]`.
-     * This will become the default in the next major version.
+     * By default, this plugin will sort node.js built-in modules to the top, followed by non-relative
+     * imports (usually third-party modules), and finally relative imports.
+     *
+     * `<THIRD_PARTY_MODULES>` is a special value that will match any imports not matched by any other regex patterns.
+     * We'll call them "third party imports" for simplicity, since that's what they usually are.
      *
      * The plugin moves the third party imports to the top which are not part of the `importOrder` list.
      * To move the third party imports at desired place,
