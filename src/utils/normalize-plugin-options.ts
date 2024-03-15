@@ -9,12 +9,17 @@ import {
 import { ExtendedOptions, NormalizableOptions } from '../types';
 import { getExperimentalParserPlugins } from './get-experimental-parser-plugins';
 
+// If importOrder is not set in the config, it will be pre-populated with the default before it hits this
+// function.  This means we should never get something like `undefined`, and if we see a config of `[]`,
+// someone set that explicitly in their config.
 function normalizeImportOrderOption(
     importOrder: NormalizableOptions['importOrder'],
 ) {
-    if (importOrder == null) {
-        importOrder = [];
+    // Allow disabling by setting an empty array, short-circuit
+    if (Array.isArray(importOrder) && !importOrder.length) {
+        return importOrder;
     }
+
     importOrder = [...importOrder]; // Clone the array so we can splice it
 
     // If we have a separator in the first slot, we need to inject our required words after it.

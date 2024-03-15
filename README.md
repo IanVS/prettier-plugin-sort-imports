@@ -31,6 +31,7 @@ This project is based on [@trivago/prettier-plugin-sort-imports](https://github.
       - [4. Group type imports separately from values](#4-group-type-imports-separately-from-values)
       - [5. Group aliases with local imports](#5-group-aliases-with-local-imports)
       - [6. Enforce a blank line after top of file comments](#6-enforce-a-blank-line-after-top-of-file-comments)
+      - [7. Enforce sort order only in certain folders or files](#7-enforce-sort-order-only-in-certain-folders-or-files)
     - [`importOrderTypeScriptVersion`](#importordertypescriptversion)
     - [`importOrderParserPlugins`](#importorderparserplugins)
   - [Prevent imports from being sorted](#prevent-imports-from-being-sorted)
@@ -330,6 +331,24 @@ import { promises } from 'fs';
 import { Users } from '@api';
 import icon from '@assets/icon';
 import App from './App';
+```
+
+##### 7. Enforce sort order only in certain folders or files
+
+If you'd like to sort the imports only in a specific set of files or directories, you can disable the plugin by setting `importOrder` to an empty array, and then use Prettier's [Configuration Overrides](https://prettier.io/docs/en/configuration#configuration-overrides) to set the order for files matching a glob pattern.
+
+This can also be beneficial for large projects wishing to gradually adopt a sort order in a less disruptive approach than a single big-bang change.
+
+```json
+"importOrder": []
+"overrides": [
+    {
+        "files": "**/*.test.ts",
+        "options": {
+            "importOrder": [ "^vitest", "<THIRD_PARTY_MODULES>", "^[.]" ]
+        }
+    }
+]
 ```
 
 #### `importOrderTypeScriptVersion`
