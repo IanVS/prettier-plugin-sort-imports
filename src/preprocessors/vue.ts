@@ -1,4 +1,4 @@
-import type { parse as Parse, SFCDescriptor } from '@vue/compiler-sfc';
+import type { SFCDescriptor } from '@vue/compiler-sfc';
 
 import { ImportOrderParserPlugin } from '../../types';
 import { PrettierOptions } from '../types';
@@ -7,12 +7,11 @@ import { preprocessor } from './preprocessor';
 
 export function vuePreprocessor(code: string, options: PrettierOptions) {
     try {
-        const { parse, transformRef } = require('@vue/compiler-sfc');
-        const descriptor: SFCDescriptor = transformRef
-            ? // @vue/compiler-sfc 3.x
-              parse(code).descriptor
-            : // @vue/compiler-sfc 2.7.x
-              parse({ source: code });
+        const { parse } = require('@vue/compiler-sfc');
+        const version =
+            require('@vue/compiler-sfc/package.json').version?.split('.')[0];
+        const descriptor: SFCDescriptor =
+            version === '2' ? parse({ source: code }) : parse(code).descriptor;
 
         // 1. Filter valid blocks.
         const blocks = [descriptor.script, descriptor.scriptSetup].filter(
