@@ -39,6 +39,11 @@ export function preprocessor(code: string, options: PrettierOptions): string {
         return code;
     }
 
+    // short-circuit if importOrder is an empty array (can be used to disable plugin)
+    if (!remainingOptions.importOrder.length) {
+        return code;
+    }
+
     const nodesToOutput = getSortedNodes(
         allOriginalImportNodes,
         remainingOptions,

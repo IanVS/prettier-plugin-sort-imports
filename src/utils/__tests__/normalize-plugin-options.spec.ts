@@ -3,6 +3,7 @@ import { describe, expect, test } from 'vitest';
 import {
     BUILTIN_MODULES_REGEX_STR,
     BUILTIN_MODULES_SPECIAL_WORD,
+    DEFAULT_IMPORT_ORDER,
     THIRD_PARTY_MODULES_SPECIAL_WORD,
 } from '../../constants';
 import { NormalizableOptions } from '../../types';
@@ -12,11 +13,11 @@ import {
 } from '../normalize-plugin-options';
 
 describe('normalizeImportOrderOption', () => {
+    test('it should not inject defaults if [] is passed explicitly', () => {
+        expect(testingOnly.normalizeImportOrderOption([])).toEqual([]);
+    });
+
     test('it should inject required modules if not present', () => {
-        expect(testingOnly.normalizeImportOrderOption([])).toEqual([
-            BUILTIN_MODULES_REGEX_STR,
-            THIRD_PARTY_MODULES_SPECIAL_WORD,
-        ]);
         expect(testingOnly.normalizeImportOrderOption(['^[.]'])).toEqual([
             BUILTIN_MODULES_REGEX_STR,
             THIRD_PARTY_MODULES_SPECIAL_WORD,
@@ -93,7 +94,7 @@ describe('examineAndNormalizePluginOptions', () => {
     test('it should set most defaults', () => {
         expect(
             examineAndNormalizePluginOptions({
-                importOrder: [],
+                importOrder: DEFAULT_IMPORT_ORDER,
                 importOrderParserPlugins: [],
                 importOrderTypeScriptVersion: '1.0.0',
                 filepath: __filename,
@@ -103,6 +104,7 @@ describe('examineAndNormalizePluginOptions', () => {
             importOrder: [
                 BUILTIN_MODULES_REGEX_STR,
                 THIRD_PARTY_MODULES_SPECIAL_WORD,
+                '^[.]',
             ],
             importOrderCombineTypeAndValueImports: true,
             plugins: [],
@@ -158,7 +160,7 @@ describe('examineAndNormalizePluginOptions', () => {
     test('it should detect typescript-version-dependent-flags', () => {
         expect(
             examineAndNormalizePluginOptions({
-                importOrder: [],
+                importOrder: DEFAULT_IMPORT_ORDER,
                 importOrderParserPlugins: ['typescript'],
                 importOrderTypeScriptVersion: '5.0.0',
                 filepath: __filename,
@@ -168,6 +170,7 @@ describe('examineAndNormalizePluginOptions', () => {
             importOrder: [
                 BUILTIN_MODULES_REGEX_STR,
                 THIRD_PARTY_MODULES_SPECIAL_WORD,
+                '^[.]',
             ],
             importOrderCombineTypeAndValueImports: true,
             plugins: ['typescript'],
@@ -178,7 +181,7 @@ describe('examineAndNormalizePluginOptions', () => {
         // full tests for getExperimentalParserPlugins is in its own spec file
         expect(
             examineAndNormalizePluginOptions({
-                importOrder: [],
+                importOrder: DEFAULT_IMPORT_ORDER,
                 importOrderParserPlugins: ['typescript', 'jsx'],
                 importOrderTypeScriptVersion: '5.0.0',
                 filepath: __filename,
@@ -188,6 +191,7 @@ describe('examineAndNormalizePluginOptions', () => {
             importOrder: [
                 BUILTIN_MODULES_REGEX_STR,
                 THIRD_PARTY_MODULES_SPECIAL_WORD,
+                '^[.]',
             ],
             importOrderCombineTypeAndValueImports: true,
             plugins: ['typescript'],
@@ -197,7 +201,7 @@ describe('examineAndNormalizePluginOptions', () => {
     test('it should not have a problem with a missing filepath', () => {
         expect(
             examineAndNormalizePluginOptions({
-                importOrder: [],
+                importOrder: DEFAULT_IMPORT_ORDER,
                 importOrderParserPlugins: [],
                 importOrderTypeScriptVersion: '1.0.0',
                 filepath: undefined,
@@ -207,7 +211,25 @@ describe('examineAndNormalizePluginOptions', () => {
             importOrder: [
                 BUILTIN_MODULES_REGEX_STR,
                 THIRD_PARTY_MODULES_SPECIAL_WORD,
+                '^[.]',
             ],
+            importOrderCombineTypeAndValueImports: true,
+            plugins: [],
+            provideGapAfterTopOfFileComments: false,
+        });
+    });
+
+    test('it should be disabled if importOrder is empty array', () => {
+        expect(
+            examineAndNormalizePluginOptions({
+                importOrder: [],
+                importOrderParserPlugins: [],
+                importOrderTypeScriptVersion: '1.0.0',
+                filepath: __filename,
+            } as NormalizableOptions),
+        ).toEqual({
+            hasAnyCustomGroupSeparatorsInImportOrder: false,
+            importOrder: [],
             importOrderCombineTypeAndValueImports: true,
             plugins: [],
             provideGapAfterTopOfFileComments: false,

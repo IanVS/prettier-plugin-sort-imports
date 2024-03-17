@@ -54,3 +54,10 @@ export const forceANewlineUsingACommentStatement = () => ({
 
 export const injectNewlinesRegex =
     /("PRETTIER_PLUGIN_SORT_IMPORTS_NEW_LINE";|\/\/PRETTIER_PLUGIN_SORT_IMPORTS_NEWLINE_COMMENT)/gi;
+
+// This default is set by prettier itself by including it in our config in index.ts
+export const DEFAULT_IMPORT_ORDER = [
+    BUILTIN_MODULES_SPECIAL_WORD,
+    THIRD_PARTY_MODULES_SPECIAL_WORD, // Everything not matching relative imports
+    '^[.]', // relative imports
+];

@@ -6,6 +6,7 @@ import { parsers as typescriptParsers } from 'prettier/parser-typescript';
 
 import {
     BUILTIN_MODULES_SPECIAL_WORD,
+    DEFAULT_IMPORT_ORDER,
     THIRD_PARTY_MODULES_SPECIAL_WORD,
 } from './constants';
 import { defaultPreprocessor } from './preprocessors/default';
@@ -29,15 +30,7 @@ export const options: Record<
         type: 'path',
         category: 'Global',
         array: true,
-        default: [
-            {
-                value: [
-                    BUILTIN_MODULES_SPECIAL_WORD,
-                    THIRD_PARTY_MODULES_SPECIAL_WORD, // Everything not matching relative imports
-                    '^[.]', // relative imports
-                ],
-            },
-        ],
+        default: [{ value: DEFAULT_IMPORT_ORDER }],
         description:
             'Provide an order to sort imports. [node.js built-ins are always first]',
     },

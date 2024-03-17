@@ -1,0 +1,20 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`mess.ts - typescript-verify > mess.ts 1`] = `
+import z from 'z';
+import { isEmpty } from "lodash-es";
+import threeLevelRelativePath from "../../../threeLevelRelativePath";
+import sameLevelRelativePath from "./sameLevelRelativePath";
+import thirdParty from "third-party";
+import oneLevelRelativePath from "../oneLevelRelativePath";
+import path from "path";
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import z from "z";
+import { isEmpty } from "lodash-es";
+import threeLevelRelativePath from "../../../threeLevelRelativePath";
+import sameLevelRelativePath from "./sameLevelRelativePath";
+import thirdParty from "third-party";
+import oneLevelRelativePath from "../oneLevelRelativePath";
+import path from "path";
+
+`;

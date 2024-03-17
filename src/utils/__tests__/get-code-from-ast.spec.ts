@@ -1,12 +1,14 @@
 import { format } from 'prettier';
 import { expect, test } from 'vitest';
 
+import { DEFAULT_IMPORT_ORDER } from '../../constants';
 import { getCodeFromAst } from '../get-code-from-ast';
 import { getImportNodes } from '../get-import-nodes';
 import { getSortedNodes } from '../get-sorted-nodes';
 import { testingOnly } from '../normalize-plugin-options';
 
-const emptyImportOrder = testingOnly.normalizeImportOrderOption([]);
+const defaultImportOrder =
+    testingOnly.normalizeImportOrderOption(DEFAULT_IMPORT_ORDER);
 
 test('sorts imports correctly', async () => {
     const code = `import z from 'z';
@@ -18,7 +20,7 @@ import a from 'a';
 `;
     const importNodes = getImportNodes(code);
     const sortedNodes = getSortedNodes(importNodes, {
-        importOrder: emptyImportOrder,
+        importOrder: defaultImportOrder,
         importOrderCombineTypeAndValueImports: true,
     });
     const formatted = getCodeFromAst({
@@ -50,7 +52,7 @@ import type {See} from 'c';
 `;
     const importNodes = getImportNodes(code, { plugins: ['typescript'] });
     const sortedNodes = getSortedNodes(importNodes, {
-        importOrder: emptyImportOrder,
+        importOrder: defaultImportOrder,
         importOrderCombineTypeAndValueImports: true,
     });
     const formatted = getCodeFromAst({
