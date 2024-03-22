@@ -31,7 +31,7 @@ This project is based on [@trivago/prettier-plugin-sort-imports](https://github.
       - [4. Group type imports separately from values](#4-group-type-imports-separately-from-values)
       - [5. Group aliases with local imports](#5-group-aliases-with-local-imports)
       - [6. Enforce a blank line after top of file comments](#6-enforce-a-blank-line-after-top-of-file-comments)
-      - [7. Enforce sort order only in certain folders or files](#7-enforce-sort-order-only-in-certain-folders-or-files)
+      - [7. Enable/disable plugin or use different order in certain folders or files](#7-enabledisable-plugin-or-use-different-order-in-certain-folders-or-files)
     - [`importOrderTypeScriptVersion`](#importordertypescriptversion)
     - [`importOrderParserPlugins`](#importorderparserplugins)
   - [Prevent imports from being sorted](#prevent-imports-from-being-sorted)
@@ -333,7 +333,7 @@ import icon from '@assets/icon';
 import App from './App';
 ```
 
-##### 7. Enforce sort order only in certain folders or files
+##### 7. Enable/disable plugin or use different order in certain folders or files
 
 If you'd like to sort the imports only in a specific set of files or directories, you can disable the plugin by setting `importOrder` to an empty array, and then use Prettier's [Configuration Overrides](https://prettier.io/docs/en/configuration#configuration-overrides) to set the order for files matching a glob pattern.
 
@@ -350,6 +350,8 @@ This can also be beneficial for large projects wishing to gradually adopt a sort
     }
 ]
 ```
+
+You can also do this in reverse, where the plugin is enabled globally, but disabled for a set of files or directories in the overrides configuration. It is also useful for setting a different sort order to use in certain files or directories instead of the global sort order.
 
 #### `importOrderTypeScriptVersion`
 
