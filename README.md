@@ -128,7 +128,7 @@ Add your preferred settings in your prettier config file.
 ```ts
 // @ts-check
 
-/** @type {import("@ianvs/prettier-plugin-sort-imports").PrettierConfig} */
+/** @type {import("prettier").Config} */
 module.exports = {
     // Standard prettier options
     singleQuote: true,

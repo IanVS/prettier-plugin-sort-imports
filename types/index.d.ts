@@ -72,3 +72,7 @@ export interface PluginConfig {
 }
 
 export type PrettierConfig = PluginConfig & Config;
+
+declare module 'prettier' {
+    interface Options extends PluginConfig {}
+}
