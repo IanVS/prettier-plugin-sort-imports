@@ -34,10 +34,16 @@ export function vuePreprocessor(code: string, options: PrettierOptions) {
             // https://github.com/vuejs/core/blob/b8fc18c0b23be9a77b05dc41ed452a87a0becf82/packages/compiler-core/src/ast.ts#L74-L80
             // The node's range. The `start` is inclusive and `end` is exclusive.
             // [start, end)
-            const { start, end } = block.loc;
+
+            // @ts-expect-error Some vue versions have a `block.loc`, others have start and end directly on the block
+            let { start, end } = block;
+            if ('loc' in block) {
+                start = block.loc.start.offset;
+                end = block.loc.end.offset;
+            }
             const preprocessedBlockCode = sortScript(block, options);
-            result += code.slice(offset, start.offset) + preprocessedBlockCode;
-            offset = end.offset;
+            result += code.slice(offset, start) + preprocessedBlockCode;
+            offset = end;
         }
 
         // 4. Append the rest.
@@ -48,8 +54,8 @@ export function vuePreprocessor(code: string, options: PrettierOptions) {
             console.warn(
                 '[@ianvs/prettier-plugin-sort-imports]: Could not process .vue file.  Please be sure that "@vue/compiler-sfc" is installed in your project.',
             );
-            throw err;
         }
+        throw err;
     }
 }
 
