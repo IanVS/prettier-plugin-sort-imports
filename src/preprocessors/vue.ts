@@ -36,8 +36,8 @@ export function vuePreprocessor(code: string, options: PrettierOptions) {
             // [start, end)
 
             // @ts-expect-error Some vue versions have a `block.loc`, others have start and end directly on the block
-            let {start, end} = block;
-            if ("loc" in block) {
+            let { start, end } = block;
+            if ('loc' in block) {
                 start = block.loc.start.offset;
                 end = block.loc.end.offset;
             }
