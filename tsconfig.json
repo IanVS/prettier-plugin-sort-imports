@@ -1,10 +1,12 @@
-// Based on node 16 config: https://github.com/tsconfig/bases/blob/main/bases/node16.json
+// Based on node 18 config: https://github.com/tsconfig/bases/blob/main/bases/node18.json
 {
     "$schema": "https://json.schemastore.org/tsconfig",
-    "display": "Node 16",
+    "display": "Node 18",
     "compilerOptions": {
-        "target": "es2021",
-        "module": "NodeNext",
+        "lib": ["es2023"],
+        "module": "node16",
+        "moduleResolution": "node16",
+        "target": "es2022",
         "allowJs": true,
         "outDir": "./lib",
         "rootDir": "./",
