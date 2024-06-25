@@ -105,6 +105,19 @@ export class AppComponent extends BaseComponent {
 
 `;
 
+exports[`imports-with-assertions.ts - typescript-verify > imports-with-assertions.ts 1`] = `
+import z from 'z-assert' assert { type: 'json' };
+import x from 'x-with' with { type: 'json' };
+
+// import y from 'y-legacy' with type: "json" // <-- this format is from a very old proposal, and is not supported
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import x from "x-with" with { type: "json" };
+import z from "z-assert" with { type: "json" };
+
+// import y from 'y-legacy' with type: "json" // <-- this format is from a very old proposal, and is not supported
+
+`;
+
 exports[`imports-with-comments.ts - typescript-verify > imports-with-comments.ts 1`] = `
 import z from 'z';
 import { isEmpty } from "lodash-es";

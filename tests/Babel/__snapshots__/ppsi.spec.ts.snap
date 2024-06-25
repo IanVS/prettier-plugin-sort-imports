@@ -1,5 +1,18 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`imports-with-assertions.ts - babel-verify > imports-with-assertions.ts 1`] = `
+import z from 'z-assert' assert { type: 'json' };
+import x from 'x-with' with { type: 'json' };
+
+// import y from 'y-legacy' with type: "json" // <-- this format is from a very old proposal, and is not supported
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import x from "x-with" with { type: "json" };
+import z from "z-assert" with { type: "json" };
+
+// import y from 'y-legacy' with type: "json" // <-- this format is from a very old proposal, and is not supported
+
+`;
+
 exports[`imports-with-comments.js - babel-verify > imports-with-comments.js 1`] = `
 // I am top level comment in this file.
 
