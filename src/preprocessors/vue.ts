@@ -1,11 +1,11 @@
 import type { SFCDescriptor } from '@vue/compiler-sfc';
 
 import { ImportOrderParserPlugin } from '../../types';
-import { PrettierOptions } from '../types';
+import { PreprocessorOptions } from '../types';
 import { hasPlugin } from '../utils/get-experimental-parser-plugins';
 import { preprocessor } from './preprocessor';
 
-export function vuePreprocessor(code: string, options: PrettierOptions) {
+export function vuePreprocessor(code: string, options: PreprocessorOptions) {
     try {
         const { parse } = require('@vue/compiler-sfc');
         const version =
@@ -75,7 +75,7 @@ function isTS(lang?: string) {
  */
 function sortScript(
     { content, lang }: { content: string; lang?: string },
-    options: PrettierOptions,
+    options: PreprocessorOptions,
 ) {
     const { importOrderParserPlugins = [] } = options;
     let pluginClone = [...importOrderParserPlugins];

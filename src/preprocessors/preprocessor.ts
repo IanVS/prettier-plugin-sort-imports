@@ -2,12 +2,15 @@ import { parse as babelParser, ParserOptions } from '@babel/parser';
 import traverse, { NodePath } from '@babel/traverse';
 import { ImportDeclaration, isTSModuleDeclaration } from '@babel/types';
 
-import { PrettierOptions } from '../types';
+import { PreprocessorOptions } from '../types';
 import { getCodeFromAst } from '../utils/get-code-from-ast';
 import { getSortedNodes } from '../utils/get-sorted-nodes';
 import { examineAndNormalizePluginOptions } from '../utils/normalize-plugin-options';
 
-export function preprocessor(code: string, options: PrettierOptions): string {
+export function preprocessor(
+    code: string,
+    options: PreprocessorOptions,
+): string {
     const { plugins, ...remainingOptions } =
         examineAndNormalizePluginOptions(options);
 

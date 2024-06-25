@@ -7,7 +7,7 @@ import {
     type ImportNamespaceSpecifier,
     type ImportSpecifier,
 } from '@babel/types';
-import { RequiredOptions } from 'prettier';
+import { ParserOptions, RequiredOptions } from 'prettier';
 
 import { PluginConfig } from '../types';
 import {
@@ -22,6 +22,10 @@ import {
 export interface PrettierOptions
     extends Required<PluginConfig>,
         RequiredOptions {}
+
+export interface PreprocessorOptions
+    extends Required<PluginConfig>,
+        ParserOptions {}
 
 /** Subset of options that need to be normalized, or affect normalization */
 export type NormalizableOptions = Pick<

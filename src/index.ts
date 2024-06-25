@@ -1,4 +1,9 @@
-import type { RequiredOptions as PrettierRequiredOptions } from 'prettier';
+import type {
+    Parser,
+    ParserOptions,
+    Plugin,
+    RequiredOptions as PrettierRequiredOptions,
+} from 'prettier';
 import { parsers as babelParsers } from 'prettier/parser-babel';
 import { parsers as flowParsers } from 'prettier/parser-flow';
 import { parsers as htmlParsers } from 'prettier/parser-html';
@@ -11,7 +16,12 @@ import {
 } from './constants';
 import { defaultPreprocessor } from './preprocessors/default';
 import { vuePreprocessor } from './preprocessors/vue';
-import type { PrettierOptions } from './types';
+import type { PreprocessorOptions, PrettierOptions } from './types';
+
+type ImportOrderPreprocessor = (
+    code: string,
+    options: PreprocessorOptions,
+) => string;
 
 // Not sure what the type from Prettier should be, but this is a good enough start.
 interface PrettierOptionSchema {
@@ -53,24 +63,76 @@ export const options: Record<
 };
 
 export const parsers = {
-    babel: {
-        ...babelParsers.babel,
-        preprocess: defaultPreprocessor,
-    },
-    'babel-ts': {
-        ...babelParsers['babel-ts'],
-        preprocess: defaultPreprocessor,
-    },
-    flow: {
-        ...flowParsers.flow,
-        preprocess: defaultPreprocessor,
-    },
-    typescript: {
-        ...typescriptParsers.typescript,
-        preprocess: defaultPreprocessor,
-    },
-    vue: {
-        ...htmlParsers.vue,
-        preprocess: vuePreprocessor,
-    },
+    babel: mergePreprocessors(babelParsers.babel, defaultPreprocessor, 'babel'),
+    'babel-ts': mergePreprocessors(
+        babelParsers['babel-ts'],
+        defaultPreprocessor,
+        'babel-ts',
+    ),
+    flow: mergePreprocessors(flowParsers.flow, defaultPreprocessor, 'flow'),
+    typescript: mergePreprocessors(
+        typescriptParsers.typescript,
+        defaultPreprocessor,
+        'typescript',
+    ),
+    vue: mergePreprocessors(htmlParsers.vue, vuePreprocessor, 'vue'),
+};
+
+// Not officially part of prettier plugin interface, but it's helpful to sort out ourselves in `findPluginByParser`
+export const name = '@ianvs/prettier-plugin-sort-imports';
+
+function mergePreprocessors(
+    prettierParser: Parser,
+    customPreprocessor: ImportOrderPreprocessor,
+    parserName: string,
+) {
+    // Find preprocessors in other plugins and apply them.
+    const importOrderPreprocess = (
+        text: string,
+        options: PreprocessorOptions,
+    ) => {
+        const otherParser = findPluginByParser(parserName, options);
+        if (!otherParser) {
+            return customPreprocessor(text, options);
+        }
+        const otherProcessedText = otherParser.preprocess
+            ? otherParser.preprocess(text, options)
+            : text;
+
+        Object.assign(parser, {
+            ...parser,
+            ...otherParser,
+            preprocess: importOrderPreprocess,
+        });
+
+        return customPreprocessor(otherProcessedText, options);
+    };
+
+    const parser = {
+        ...prettierParser,
+        preprocess: importOrderPreprocess,
+    };
+
+    return parser;
+}
+
+// Given a particular parser name, look through the options and see if any of the plugins specified
+// contain a parser for that name.  If so, use that, otherwise, return undefined.
+const findPluginByParser = (
+    parserName: string,
+    options: PreprocessorOptions,
+) => {
+    // Iterate backwards so we don't get the default parsers
+    const otherPlugin = options.plugins.findLast((plugin): plugin is Plugin => {
+        return (
+            typeof plugin === 'object' &&
+            (!('name' in plugin) ||
+                plugin.name !== '@ianvs/prettier-plugin-sort-imports') &&
+            'parsers' in plugin &&
+            typeof plugin.parsers === 'object' &&
+            parserName in plugin.parsers
+        );
+    });
+
+    return otherPlugin?.parsers?.[parserName];
 };
