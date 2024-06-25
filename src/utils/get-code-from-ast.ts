@@ -73,7 +73,7 @@ export const getCodeFromAst = ({
         },
     });
 
-    const { code } = generate(newAST, {importAttributesKeyword: 'with'});
+    const { code } = generate(newAST, { importAttributesKeyword: 'with' });
 
     const replacedCode = code.replace(injectNewlinesRegex, newLineCharacters);
 

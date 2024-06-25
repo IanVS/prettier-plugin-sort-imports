@@ -77,7 +77,9 @@ test('handles import attributes and assertions, converting to attributes when ne
     import g from 'g' with { type: 'json' };
 import c from 'c' assert { type: 'json' };
 `;
-    const importNodes = getImportNodes(code, { plugins: [['importAttributes', {deprecatedAssertSyntax: true}]] });
+    const importNodes = getImportNodes(code, {
+        plugins: [['importAttributes', { deprecatedAssertSyntax: true }]],
+    });
     const sortedNodes = getSortedNodes(importNodes, {
         importOrder: defaultImportOrder,
         importOrderCombineTypeAndValueImports: true,
