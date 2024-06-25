@@ -54,8 +54,8 @@ export function vuePreprocessor(code: string, options: PrettierOptions) {
             console.warn(
                 '[@ianvs/prettier-plugin-sort-imports]: Could not process .vue file.  Please be sure that "@vue/compiler-sfc" is installed in your project.',
             );
-            throw err;
         }
+        throw err;
     }
 }
 
