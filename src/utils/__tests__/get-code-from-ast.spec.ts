@@ -71,3 +71,26 @@ import z from "z";
 `,
     );
 });
+
+test('handles import attributes and assertions, converting to attributes when necessary', async () => {
+    const code = `import z from 'z';
+    import g from 'g' with { type: 'json' };
+import c from 'c' assert { type: 'json' };
+`;
+    const importNodes = getImportNodes(code, { plugins: [['importAttributes', {deprecatedAssertSyntax: true}]] });
+    const sortedNodes = getSortedNodes(importNodes, {
+        importOrder: defaultImportOrder,
+        importOrderCombineTypeAndValueImports: true,
+    });
+    const formatted = getCodeFromAst({
+        nodesToOutput: sortedNodes,
+        originalCode: code,
+        directives: [],
+    });
+    expect(await format(formatted, { parser: 'babel' })).toEqual(
+        `import c from "c" with { type: "json" };
+import g from "g" with { type: "json" };
+import z from "z";
+`,
+    );
+});
