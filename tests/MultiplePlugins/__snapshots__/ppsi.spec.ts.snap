@@ -1,0 +1,81 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`imports-with-jsdoc.tsx - typescript-verify > imports-with-jsdoc.tsx 1`] = `
+import z from 'z';
+import threeLevelRelativePath from "../../../threeLevelRelativePath";
+import sameLevelRelativePath from "./sameLevelRelativePath";
+import thirdParty from "third-party";
+import oneLevelRelativePath from "../oneLevelRelativePath";
+import otherthing from "@core/otherthing";
+import abc from "@core/abc";
+import twoLevelRelativePath from "../../twoLevelRelativePath";
+
+
+/**
+* function example description that was wrapped by hand
+* so it have more then one line and don't end with a dot
+* REPEATED TWO TIMES BECAUSE IT WAS EASIER to copy
+* function example description that was wrapped by hand
+* so it have more then one line.
+* @return {Boolean} Description for @returns with s
+* @param {String|Number} text - some text description that is very long and needs to be wrapped
+* @param {String} [defaultValue="defaultTest"] TODO
+* @arg {Number|Null} [optionalNumber]
+* @private
+*@memberof test
+@async
+* @examples
+*   var one = 5
+*   var two = 10
+*
+*   if(one > 2) { two += one }
+* @undefiendTag\${" "}
+* @undefiendTag {number} name des
+*/
+const TestFunction = (text: string | number, defaultValue: string, optionalNumber: number | Null): boolean => (
+    <div className="text-white px-4 sm:px-8 py-2 sm:py-3 bg-sky-700 hover:bg-sky-800"></div>
+)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import thirdParty from "third-party";
+import z from "z";
+import abc from "@core/abc";
+import otherthing from "@core/otherthing";
+import threeLevelRelativePath from "../../../threeLevelRelativePath";
+import twoLevelRelativePath from "../../twoLevelRelativePath";
+import oneLevelRelativePath from "../oneLevelRelativePath";
+import sameLevelRelativePath from "./sameLevelRelativePath";
+
+/**
+ * Function example description that was wrapped by hand so it have more then
+ * one line and don't end with a dot REPEATED TWO TIMES BECAUSE IT WAS EASIER to
+ * copy function example description that was wrapped by hand so it have more
+ * then one line.
+ *
+ * @async
+ * @private
+ * @memberof test
+ * @example
+ *     var one = 5;
+ *     var two = 10;
+ *
+ *     if (one > 2) {
+ *         two += one;
+ *     }
+ *
+ * @param {String | Number} text - Some text description that is very long and
+ *   needs to be wrapped
+ * @param {String} [defaultValue="defaultTest"] TODO. Default is \`"defaultTest"\`
+ * @param {Number | Null} [optionalNumber]
+ * @returns {Boolean} Description for @returns with s
+ * @undefiendTag\${" "}
+ * @undefiendTag {number} name des
+ */
+const TestFunction = (
+    text: string | number,
+    defaultValue: string,
+    optionalNumber: number | Null,
+): boolean => (
+    <div className="bg-sky-700 px-4 py-2 text-white hover:bg-sky-800 sm:px-8 sm:py-3"></div>
+);
+
+`;

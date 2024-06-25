@@ -11,7 +11,7 @@ import * as plugin from '../src';
 export async function run_spec(dirname, parsers, options) {
     options = Object.assign(
         {
-            plugins: [plugin],
+            plugins: options.plugins ?? [plugin],
             tabWidth: 4,
         },
         options,
