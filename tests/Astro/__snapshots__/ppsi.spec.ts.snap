@@ -1,0 +1,29 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`return-outside-function.astro - astro-verify > return-outside-function.astro 1`] = `
+---
+import Layout from '../layouts/Layout.astro';
+import type {LayoutType} from '../layouts.ts'
+import x from 'y';
+
+return new Response('This is 404', { status: 404 });
+---
+
+<Layout title="Hello, world!">
+  <main>
+    Hello, world!</main>
+</Layout>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+---
+import type { LayoutType } from "../layouts.ts";
+import x from "y";
+import Layout from "../layouts/Layout.astro";
+
+return new Response("This is 404", { status: 404 });
+---
+
+<Layout title="Hello, world!">
+    <main>Hello, world!</main>
+</Layout>
+
+`;

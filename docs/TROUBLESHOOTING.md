@@ -78,24 +78,6 @@ SyntaxError: This experimental syntax requires enabling one of the following par
 To solve this issue, you can use the new option `importOrderParserPlugins` in your `.prettierrc` (prettier config) and pass
 an array of plugin names to be used.
 
-#### Q. Why does the plugin remove the inline comments of the import declaration ?
-
-Due to the comment handling in Babel, the plugin removes the inline comment of the
-import declaration.
-
-**input:**
-
-```js
-import a from 'a';
-
-// comment
-```
-
-**output:**
-
-```js
-import a from 'a';
-```
 
 #### Q. Why the plugin does not work with [pnpm](https://pnpm.io/) ? or Why do I see the `[warn] Ignored unknown option` ?
 
