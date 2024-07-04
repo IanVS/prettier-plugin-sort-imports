@@ -250,7 +250,7 @@ import styles from './global.css';
 If you want to group your imports into "chunks" with blank lines between, you can add empty strings like this:
 
 ```json
-"importOrder": ["<BUILT_IN_MODULES>", "", "<THIRD_PARTY_MODULES>", "", "^[.]"]
+"importOrder": ["<BUILTIN_MODULES>", "", "<THIRD_PARTY_MODULES>", "", "^[.]"]
 ```
 
 e.g.:
@@ -272,7 +272,7 @@ If you're using Flow or TypeScript, you might want to separate out your type imp
     "<TYPES>^(node:)",
     "<TYPES>",
     "<TYPES>^[.]",
-    "<BUILT_IN_MODULES>",
+    "<BUILTIN_MODULES>",
     "<THIRD_PARTY_MODULES>",
     "^[.]"
 ]
