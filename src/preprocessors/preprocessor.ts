@@ -17,6 +17,11 @@ export function preprocessor(code: string, options: PrettierOptions): string {
         plugins,
     };
 
+    // Astro component scripts allow returning a response
+    if (options.parentParser === 'astro') {
+        parserOptions.allowReturnOutsideFunction = true;
+    }
+
     const ast = babelParser(code, parserOptions);
 
     const directives = ast.program.directives;

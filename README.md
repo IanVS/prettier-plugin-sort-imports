@@ -424,16 +424,19 @@ Having some trouble or an issue? You can check [FAQ / Troubleshooting section](.
 
 ## Compatibility
 
-| Framework              | Supported     | Note                                                       |
-| ---------------------- | ------------- | ---------------------------------------------------------- |
-| JS with ES Modules     | ✅ Everything | -                                                          |
-| NodeJS with ES Modules | ✅ Everything | -                                                          |
-| React                  | ✅ Everything | -                                                          |
-| Angular                | ✅ Everything | Supported through `importOrderParserPlugins` API           |
-| Vue                    | ✅ Everything | SFCs only, peer dependency `@vue/compiler-sfc` is required |
-| Svelte                 | ⚠️ Not yet    | Contributions are welcome                                  |
+| Framework              | Supported       | Note                                                       |
+| ---------------------- | --------------- | ---------------------------------------------------------- |
+| JS with ES Modules     | ✅ Everything   | -                                                          |
+| NodeJS with ES Modules | ✅ Everything   | -                                                          |
+| React                  | ✅ Everything   | -                                                          |
+| Svelte                 | ✅ Everything   | -                                                          |
+| Angular                | ✅ Everything   | Supported through `importOrderParserPlugins` API           |
+| Vue                    | ✅ Everything   | SFCs only, peer dependency `@vue/compiler-sfc` is required |
+| Astro                  | 🧪 Experimental | Some Astro syntax may cause trouble, please open an issue  |
 
 ## Contribution
+
+Share your favorite config in the [show-and-tell](https://github.com/IanVS/prettier-plugin-sort-imports/discussions/categories/show-and-tell).
 
 For more information regarding contribution, please check the [Contributing Guidelines](./CONTRIBUTING.md). If you are trying to
 debug some code in the plugin, check [Debugging Guidelines](./docs/DEBUG.md)
