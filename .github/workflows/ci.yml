@@ -17,12 +17,11 @@ jobs:
             - uses: actions/setup-node@v3
               with:
                   node-version: ${{ matrix.node }}
-                  cache: 'yarn'
-                  cache-dependency-path: 'yarn.lock'
-            - run: yarn install --frozen-lockfile --non-interactive
+                  cache: 'pnpm'
+            - run: pnpm install
             - name: Build
-              run: yarn compile
+              run: pnpm compile
             - name: Test
-              run: yarn test
+              run: pnpm test
             - name: Check formatting
-              run: yarn format:check
+              run: pnpm format:check
