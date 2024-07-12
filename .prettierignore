@@ -1,6 +1,8 @@
 tests/
 lib/
 
+pnpm-lock.yaml
+
 # Until we can find a way to ignore codeblocks (we need before/after)
 README.md
 docs/TROUBLESHOOTING.md
