@@ -14,6 +14,9 @@ jobs:
         runs-on: ${{ matrix.platform }}
         steps:
             - uses: actions/checkout@v3
+            # Pulls version from packageManager key in package.json
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v3
             - uses: actions/setup-node@v3
               with:
                   node-version: ${{ matrix.node }}
