@@ -6,7 +6,7 @@
     "main": "lib/src/index.js",
     "types": "types/index.d.ts",
     "repository": {
-        "url": "https://github.com/ianvs/prettier-plugin-sort-imports",
+        "url": "git+https://github.com/ianvs/prettier-plugin-sort-imports.git",
         "type": "git"
     },
     "homepage": "https://github.com/ianvs/prettier-plugin-sort-imports#readme",
