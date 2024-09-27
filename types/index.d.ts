@@ -46,6 +46,30 @@ export interface PluginConfig {
     importOrderTypeScriptVersion?: string;
 
     /**
+     * A boolean value to enable case-sensitivity in the sorting algorithm
+     * used to order imports within each match group.
+     *
+     * For example, when false (or not specified):
+     *
+     * ```js
+     * import ExampleComponent from './ExampleComponent';
+     * import ExamplesList from './ExamplesList';
+     * import ExampleWidget from './ExampleWidget';
+     * ```
+     *
+     * compared with `"importOrderCaseSensitive": true`:
+     *
+     * ```js
+     * import ExampleComponent from './ExampleComponent';
+     * import ExampleWidget from './ExampleWidget';
+     * import ExamplesList from './ExamplesList';
+     * ```
+     *
+     * @default false
+     */
+    importOrderCaseSensitive?: boolean;
+
+    /**
      * A collection of plugins for babel parser. The plugin passes this list to babel parser, so it can understand the syntaxes
      * used in the file being formatted. The plugin uses prettier itself to figure out the parser it needs to use but if that fails,
      * you can use this field to enforce the usage of the plugins' babel parser needs.

@@ -70,3 +70,20 @@ test('should group type imports after value imports - flow', () => {
         'TypeB',
     ]);
 });
+
+test('should sort case-sensitively', () => {
+    const code = `import { ExampleComponent, ExamplesList, ExampleWidget } from '@components/e';`;
+    const [importNode] = getImportNodes(code);
+    const sortedImportSpecifiers = getSortedImportSpecifiers(importNode, {
+        importOrderCaseSensitive: true,
+    });
+    const specifiersList = getSortedNodesModulesNames(
+        sortedImportSpecifiers.specifiers,
+    );
+
+    expect(specifiersList).toEqual([
+        'ExampleComponent',
+        'ExampleWidget',
+        'ExamplesList',
+    ]);
+});

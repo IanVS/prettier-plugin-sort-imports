@@ -79,7 +79,9 @@ export type GetSortedNodes = (
 
 export type GetSortedNodesByImportOrder = (
     nodes: ImportDeclaration[],
-    options: Pick<ExtendedOptions, 'importOrder'>,
+    options: Pick<ExtendedOptions, 'importOrder'> & {
+        importOrderCaseSensitive?: boolean;
+    },
 ) => ImportOrLine[];
 
 export type GetChunkTypeOfNode = (node: ImportDeclaration) => ChunkType;
