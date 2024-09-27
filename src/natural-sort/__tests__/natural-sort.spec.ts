@@ -20,8 +20,9 @@ describe('naturalSort', () => {
     });
 
     test('should sort things numerically', () => {
-        expect(['a2', 'a3', 'a10', 'a1', 'a11', 'a9'].sort(naturalSort)).toEqual([
+        expect(['a2', 'a3', 'a10', 'a1', 'a11', 'a9', 'a1b'].sort(naturalSort)).toEqual([
             'a1',
+            'a1b',
             'a2',
             'a3',
             'a9',
@@ -48,6 +49,9 @@ describe('naturalSortCaseSensitive', () => {
                 'AbA',
                 'file10',
                 'files10',
+                'file1z',
+                'file10ab',
+                'file2ab',
                 'a',
                 'Ab',
                 'file20',
@@ -71,8 +75,11 @@ describe('naturalSortCaseSensitive', () => {
             'aaa',
             'bBb',
             'file1',
+            'file1z',
             'file2',
+            'file2ab',
             'file10',
+            'file10ab',
             'file11',
             'file20',
             'file22',
