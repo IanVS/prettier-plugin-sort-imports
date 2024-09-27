@@ -1,12 +1,12 @@
-import { expect, test, describe } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
 import { naturalSort, naturalSortCaseSensitive } from '..';
 
 describe('naturalSort', () => {
     test('should sort normal things alphabetically', () => {
         expect(
-            ['a', 'h', 'b', 'i', 'c', 'd', 'j', 'e', 'k', 'f', 'g'].sort((a, b) =>
-                naturalSort(a, b),
+            ['a', 'h', 'b', 'i', 'c', 'd', 'j', 'e', 'k', 'f', 'g'].sort(
+                (a, b) => naturalSort(a, b),
             ),
         ).toEqual(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k']);
     });
@@ -20,7 +20,21 @@ describe('naturalSort', () => {
     });
 
     test('should sort things numerically', () => {
-        expect(['a2', 'a3', 'a10', 'a1', 'a11', 'a9', 'a1b'].sort(naturalSort)).toEqual([
+        expect(
+            [
+                'a2',
+                'a3',
+                'a10',
+                'a1',
+                'a11',
+                'a9',
+                'a1b',
+                'file000b',
+                'file000a',
+                'file00a',
+                'file00z',
+            ].sort(naturalSort),
+        ).toEqual([
             'a1',
             'a1b',
             'a2',
@@ -28,9 +42,13 @@ describe('naturalSort', () => {
             'a9',
             'a10',
             'a11',
+            'file000a',
+            'file00a',
+            'file000b',
+            'file00z',
         ]);
     });
-})
+});
 
 describe('naturalSortCaseSensitive', () => {
     test('should not ignore capitalization differences', () => {
@@ -51,7 +69,7 @@ describe('naturalSortCaseSensitive', () => {
                 'files10',
                 'file1z',
                 'file10ab',
-                'file2ab',
+                'file2s',
                 'a',
                 'Ab',
                 'file20',
@@ -59,6 +77,10 @@ describe('naturalSortCaseSensitive', () => {
                 'file11',
                 'file2',
                 'File20',
+                'file000b',
+                'file000a',
+                'file00a',
+                'file00z',
                 'aaa',
                 'AAA',
                 'bBb',
@@ -74,10 +96,14 @@ describe('naturalSortCaseSensitive', () => {
             'a',
             'aaa',
             'bBb',
+            'file000a',
+            'file00a',
+            'file000b',
+            'file00z',
             'file1',
             'file1z',
             'file2',
-            'file2ab',
+            'file2s',
             'file10',
             'file10ab',
             'file11',
