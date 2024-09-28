@@ -26,7 +26,7 @@ export interface PrettierOptions
 /** Subset of options that need to be normalized, or affect normalization */
 export type NormalizableOptions = Pick<
     PrettierOptions,
-    'importOrder' | 'importOrderParserPlugins' | 'importOrderTypeScriptVersion'
+    'importOrder' | 'importOrderParserPlugins' | 'importOrderTypeScriptVersion' | 'importOrderCaseSensitive'
 > &
     // filepath can be undefined when running prettier via the api on text input
     Pick<Partial<PrettierOptions>, 'filepath'>;
@@ -63,6 +63,7 @@ export type ImportRelated = ImportOrLine | SomeSpecifier;
 export interface ExtendedOptions {
     importOrder: PrettierOptions['importOrder'];
     importOrderCombineTypeAndValueImports: boolean;
+    importOrderCaseSensitive: boolean;
     hasAnyCustomGroupSeparatorsInImportOrder: boolean;
     provideGapAfterTopOfFileComments: boolean;
     plugins: ParserPlugin[];

@@ -107,6 +107,7 @@ export function examineAndNormalizePluginOptions(
     return {
         importOrder,
         importOrderCombineTypeAndValueImports,
+        importOrderCaseSensitive: !!options.importOrderCaseSensitive,
         hasAnyCustomGroupSeparatorsInImportOrder: importOrder.some(
             isCustomGroupSeparator,
         ),

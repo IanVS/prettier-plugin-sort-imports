@@ -10,11 +10,11 @@ import {cat, Dog} from "C";
 import B from "B";
 import A from "A";
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-import a from "a";
 import A from "A";
-import b from "b";
 import B from "B";
+import { Dog, cat } from "C";
+import a from "a";
+import b from "b";
 import c from "c";
-import { cat, Dog } from "C";
 
 `;
