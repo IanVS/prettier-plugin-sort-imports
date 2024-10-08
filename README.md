@@ -407,6 +407,7 @@ used to order imports within each match group.
 For example, when false (or not specified):
 
 ```javascript
+import {CatComponent, catFilter, DogComponent, dogFilter} from './animals';
 import ExampleComponent from './ExampleComponent';
 import ExamplesList from './ExamplesList';
 import ExampleWidget from './ExampleWidget';
@@ -418,6 +419,7 @@ compared with `"importOrderCaseSensitive": true`:
 import ExampleComponent from './ExampleComponent';
 import ExampleWidget from './ExampleWidget';
 import ExamplesList from './ExamplesList';
+import {CatComponent, DogComponent, catFilter, dogFilter} from './animals';
 ```
 
 ### Prevent imports from being sorted
