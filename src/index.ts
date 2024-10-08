@@ -50,6 +50,12 @@ export const options: Record<
         description:
             'Version of TypeScript in use in the project.  Determines some output syntax when using TypeScript.',
     },
+    importOrderCaseSensitive: {
+        type: 'boolean',
+        category: 'Global',
+        default: false,
+        description: 'Provide a case sensitivity boolean flag',
+    },
 };
 
 export const parsers = {

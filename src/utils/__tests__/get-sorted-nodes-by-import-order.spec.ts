@@ -274,3 +274,28 @@ test('it does not add multiple custom import separators', () => {
         './local',
     ]);
 });
+
+test('it should sort nodes case-sensitively', () => {
+    const result = getImportNodes(code);
+    const sorted = getSortedNodesByImportOrder(result, {
+        importOrder: testingOnly.normalizeImportOrderOption(['^[./]']),
+        importOrderCaseSensitive: true,
+    }) as ImportDeclaration[];
+    expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
+        'node:fs/promises',
+        'node:url',
+        'path',
+        'BY',
+        'Ba',
+        'XY',
+        'Xa',
+        'a',
+        'c',
+        'g',
+        'k',
+        't',
+        'x',
+        'z',
+        './local',
+    ]);
+});

@@ -34,6 +34,7 @@ This project is based on [@trivago/prettier-plugin-sort-imports](https://github.
       - [7. Enable/disable plugin or use different order in certain folders or files](#7-enabledisable-plugin-or-use-different-order-in-certain-folders-or-files)
     - [`importOrderTypeScriptVersion`](#importordertypescriptversion)
     - [`importOrderParserPlugins`](#importorderparserplugins)
+    - [`importOrderCaseSensitive`](#importordercasesensitive)
   - [Prevent imports from being sorted](#prevent-imports-from-being-sorted)
   - [Comments](#comments)
 - [FAQ / Troubleshooting](#faq--troubleshooting)
@@ -139,6 +140,7 @@ module.exports = {
     importOrder: ['^@core/(.*)$', '', '^@server/(.*)$', '', '^@ui/(.*)$', '', '^[./]'],
     importOrderParserPlugins: ['typescript', 'jsx', 'decorators-legacy'],
     importOrderTypeScriptVersion: '5.0.0',
+    importOrderCaseSensitive: false,
 };
 ```
 
@@ -391,6 +393,33 @@ with options as a JSON string of the plugin array:
 
 ```json
 "importOrderParserPlugins": []
+```
+
+#### `importOrderCaseSensitive`
+
+**type**: `boolean`
+
+**default value**: `false`
+
+A boolean value to enable case-sensitivity in the sorting algorithm
+used to order imports within each match group.
+
+For example, when false (or not specified):
+
+```javascript
+import {CatComponent, catFilter, DogComponent, dogFilter} from './animals';
+import ExampleComponent from './ExampleComponent';
+import ExamplesList from './ExamplesList';
+import ExampleWidget from './ExampleWidget';
+```
+
+compared with `"importOrderCaseSensitive": true`:
+
+```javascript
+import ExampleComponent from './ExampleComponent';
+import ExampleWidget from './ExampleWidget';
+import ExamplesList from './ExamplesList';
+import {CatComponent, DogComponent, catFilter, dogFilter} from './animals';
 ```
 
 ### Prevent imports from being sorted

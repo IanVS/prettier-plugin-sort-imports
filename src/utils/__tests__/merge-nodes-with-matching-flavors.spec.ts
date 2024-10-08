@@ -13,6 +13,7 @@ const defaultOptions = examineAndNormalizePluginOptions({
     // First separator for top-of-file comments, second to separate side-effect and ignored chunks, for easier test readability
     importOrder: testingOnly.normalizeImportOrderOption(['', '']),
     importOrderTypeScriptVersion: '5.0.0',
+    importOrderCaseSensitive: false,
     importOrderParserPlugins: [],
     filepath: __filename,
 });

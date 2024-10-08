@@ -96,6 +96,7 @@ describe('examineAndNormalizePluginOptions', () => {
             examineAndNormalizePluginOptions({
                 importOrder: DEFAULT_IMPORT_ORDER,
                 importOrderParserPlugins: [],
+                importOrderCaseSensitive: false,
                 importOrderTypeScriptVersion: '1.0.0',
                 filepath: __filename,
             } as NormalizableOptions),
@@ -107,6 +108,7 @@ describe('examineAndNormalizePluginOptions', () => {
                 '^[.]',
             ],
             importOrderCombineTypeAndValueImports: true,
+            importOrderCaseSensitive: false,
             plugins: [],
             provideGapAfterTopOfFileComments: false,
         });
@@ -121,6 +123,7 @@ describe('examineAndNormalizePluginOptions', () => {
                     '^[./]',
                 ],
                 importOrderParserPlugins: [],
+                importOrderCaseSensitive: false,
                 importOrderTypeScriptVersion: '1.0.0',
                 filepath: __filename,
             } as NormalizableOptions),
@@ -133,6 +136,7 @@ describe('examineAndNormalizePluginOptions', () => {
                 '^[./]',
             ],
             importOrderCombineTypeAndValueImports: true,
+            importOrderCaseSensitive: false,
             plugins: [],
             provideGapAfterTopOfFileComments: false,
         });
@@ -142,6 +146,7 @@ describe('examineAndNormalizePluginOptions', () => {
             examineAndNormalizePluginOptions({
                 importOrder: [''],
                 importOrderParserPlugins: [],
+                importOrderCaseSensitive: false,
                 importOrderTypeScriptVersion: '1.0.0',
                 filepath: __filename,
             } as NormalizableOptions),
@@ -153,6 +158,7 @@ describe('examineAndNormalizePluginOptions', () => {
                 THIRD_PARTY_MODULES_SPECIAL_WORD,
             ],
             importOrderCombineTypeAndValueImports: true,
+            importOrderCaseSensitive: false,
             plugins: [],
             provideGapAfterTopOfFileComments: true,
         });
@@ -173,6 +179,7 @@ describe('examineAndNormalizePluginOptions', () => {
                 '^[.]',
             ],
             importOrderCombineTypeAndValueImports: true,
+            importOrderCaseSensitive: false,
             plugins: ['typescript'],
             provideGapAfterTopOfFileComments: false,
         });
@@ -184,6 +191,7 @@ describe('examineAndNormalizePluginOptions', () => {
                 importOrder: DEFAULT_IMPORT_ORDER,
                 importOrderParserPlugins: ['typescript', 'jsx'],
                 importOrderTypeScriptVersion: '5.0.0',
+                importOrderCaseSensitive: false,
                 filepath: __filename,
             } as NormalizableOptions),
         ).toEqual({
@@ -194,6 +202,7 @@ describe('examineAndNormalizePluginOptions', () => {
                 '^[.]',
             ],
             importOrderCombineTypeAndValueImports: true,
+            importOrderCaseSensitive: false,
             plugins: ['typescript'],
             provideGapAfterTopOfFileComments: false,
         });
@@ -203,6 +212,7 @@ describe('examineAndNormalizePluginOptions', () => {
             examineAndNormalizePluginOptions({
                 importOrder: DEFAULT_IMPORT_ORDER,
                 importOrderParserPlugins: [],
+                importOrderCaseSensitive: false,
                 importOrderTypeScriptVersion: '1.0.0',
                 filepath: undefined,
             } as NormalizableOptions),
@@ -214,6 +224,7 @@ describe('examineAndNormalizePluginOptions', () => {
                 '^[.]',
             ],
             importOrderCombineTypeAndValueImports: true,
+            importOrderCaseSensitive: false,
             plugins: [],
             provideGapAfterTopOfFileComments: false,
         });
@@ -224,6 +235,7 @@ describe('examineAndNormalizePluginOptions', () => {
             examineAndNormalizePluginOptions({
                 importOrder: [],
                 importOrderParserPlugins: [],
+                importOrderCaseSensitive: false,
                 importOrderTypeScriptVersion: '1.0.0',
                 filepath: __filename,
             } as NormalizableOptions),
@@ -231,6 +243,7 @@ describe('examineAndNormalizePluginOptions', () => {
             hasAnyCustomGroupSeparatorsInImportOrder: false,
             importOrder: [],
             importOrderCombineTypeAndValueImports: true,
+            importOrderCaseSensitive: false,
             plugins: [],
             provideGapAfterTopOfFileComments: false,
         });

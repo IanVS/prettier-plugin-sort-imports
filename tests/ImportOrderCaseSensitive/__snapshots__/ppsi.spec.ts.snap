@@ -1,0 +1,20 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`mixed-case.ts - typescript-verify > mixed-case.ts 1`] = `
+
+import c from "c";
+import b from "b";
+import a from "a";
+
+import {cat, Dog} from "C";
+import B from "B";
+import A from "A";
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import A from "A";
+import B from "B";
+import { Dog, cat } from "C";
+import a from "a";
+import b from "b";
+import c from "c";
+
+`;
