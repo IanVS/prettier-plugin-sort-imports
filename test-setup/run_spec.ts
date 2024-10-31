@@ -64,6 +64,42 @@ export async function run_spec(dirname, parsers, options) {
     }
 }
 
+export async function expectError(dirname: string, parser: string, expectedError: string | Error | RegExp, options) {
+    options = Object.assign(
+        {
+            plugins: options.plugins ?? [plugin],
+            tabWidth: 4,
+        },
+        options,
+    );
+
+    /* instabul ignore if */
+    if (!parser) {
+        throw new Error(`No parser was specified for ${dirname}`);
+    }
+
+    for (const filename of fs.readdirSync(dirname)) {
+        const path = dirname + '/' + filename;
+        if (
+            extname(filename) !== '.snap' &&
+            fs.lstatSync(path).isFile() &&
+            filename[0] !== '.' &&
+            filename !== 'ppsi.spec.ts'
+        ) {
+            const source = read(path).replace(/\r\n/g, '\n');
+
+            const mergedOptions = Object.assign({}, options, {
+                parser
+            });
+            test(`${filename} - verify-error`, async () => {
+                expect(
+                   () => prettyprint(source, path, mergedOptions)
+                ).rejects.toThrowError(expectedError);
+            });
+        }
+    }
+}
+
 async function prettyprint(src, filename, options) {
     return await format(
         src,
