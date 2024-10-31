@@ -64,7 +64,12 @@ export async function run_spec(dirname, parsers, options) {
     }
 }
 
-export async function expectError(dirname: string, parser: string, expectedError: string | Error | RegExp, options) {
+export async function expectError(
+    dirname: string,
+    parser: string,
+    expectedError: string | Error | RegExp,
+    options,
+) {
     options = Object.assign(
         {
             plugins: options.plugins ?? [plugin],
@@ -89,11 +94,11 @@ export async function expectError(dirname: string, parser: string, expectedError
             const source = read(path).replace(/\r\n/g, '\n');
 
             const mergedOptions = Object.assign({}, options, {
-                parser
+                parser,
             });
             test(`${filename} - verify-error`, async () => {
-                expect(
-                   () => prettyprint(source, path, mergedOptions)
+                expect(() =>
+                    prettyprint(source, path, mergedOptions),
                 ).rejects.toThrowError(expectedError);
             });
         }
