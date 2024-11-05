@@ -53,11 +53,10 @@
     ],
     "license": "Apache-2.0",
     "dependencies": {
-        "@babel/core": "^7.24.0",
-        "@babel/generator": "^7.23.6",
-        "@babel/parser": "^7.24.0",
-        "@babel/traverse": "^7.24.0",
-        "@babel/types": "^7.24.0",
+        "@babel/generator": "^7.26.2",
+        "@babel/parser": "^7.26.2",
+        "@babel/traverse": "^7.25.9",
+        "@babel/types": "^7.26.0",
         "semver": "^7.5.2"
     },
     "devDependencies": {
