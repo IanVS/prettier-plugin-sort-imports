@@ -56,11 +56,18 @@ export const getSortedNodesByImportOrder: GetSortedNodesByImportOrder = (
 
     // Assign import nodes into import order groups
     for (const node of originalNodes) {
-        const matchedGroup = getImportNodesMatchedGroup(
+        const matchedGroupName = getImportNodesMatchedGroup(
             node,
             sanitizedImportOrder,
         );
-        importOrderGroups[matchedGroup].push(node);
+        const matchedGroup = importOrderGroups[matchedGroupName];
+        if (matchedGroup) {
+            matchedGroup.push(node);
+        } else {
+            throw new Error(
+                `Could not find a matching group in importOrder for: "${node.source.value}" on line ${node.source.loc?.start.line}.${node.importKind === 'type' ? ' Did you forget to include "<TYPES>"?' : ''}`,
+            );
+        }
     }
 
     for (const group of importOrder) {
