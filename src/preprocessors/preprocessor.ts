@@ -22,7 +22,13 @@ export function preprocessor(code: string, options: PrettierOptions): string {
         parserOptions.allowReturnOutsideFunction = true;
     }
 
-    const ast = babelParser(code, parserOptions);
+    let ast;
+    try {
+        ast = babelParser(code, parserOptions);
+    } catch (_) {
+        console.error(' [error] [prettier-plugin-sort-imports]: import sorting aborted due to babel parsing error.');
+        return code;
+    }
 
     const directives = ast.program.directives;
     const interpreter = ast.program.interpreter;
