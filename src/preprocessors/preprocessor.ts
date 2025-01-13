@@ -22,7 +22,7 @@ export function preprocessor(code: string, options: PrettierOptions): string {
         parserOptions.allowReturnOutsideFunction = true;
     }
 
-    let ast;
+    let ast: ReturnType<typeof babelParser>;
     try {
         ast = babelParser(code, parserOptions);
     } catch (_) {
