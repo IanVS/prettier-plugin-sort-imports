@@ -16,10 +16,10 @@ assignees:
 
 **Your Environment**
 
--   **Prettier version**: 2.x.x
--   **node version**:
--   **package manager**: [npm@7, pnpm@6, yarn@2]
--   **IDE**: [VScode, Webstorm, CLI]
+- **Prettier version**: 2.x.x
+- **node version**:
+- **package manager**: [npm@7, pnpm@6, yarn@2]
+- **IDE**: [VScode, Webstorm, CLI]
 
 **Describe the bug**
 
@@ -50,4 +50,4 @@ assignees:
 
 **Contribute to @ianvs/prettier-plugin-sort-imports**
 
--   [ ] I'm willing to fix this bug 🥇
+- [ ] I'm willing to fix this bug 🥇
