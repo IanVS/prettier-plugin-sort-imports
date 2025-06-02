@@ -93,6 +93,12 @@ export interface PluginConfig {
      * @default ["typescript", "jsx"]
      */
     importOrderParserPlugins?: ImportOrderParserPlugin[];
+
+    /**
+     * If true, imports are sorted by line count (from fewest to most lines) instead of alphabetically.
+     * @default false
+     */
+    importOrderSortByLength?: boolean;
 }
 
 export type PrettierConfig = PluginConfig & Config;
