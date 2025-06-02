@@ -14,6 +14,7 @@ const defaultOptions = examineAndNormalizePluginOptions({
     importOrder: testingOnly.normalizeImportOrderOption(['', '']),
     importOrderTypeScriptVersion: '5.0.0',
     importOrderCaseSensitive: false,
+    importOrderSortByLength: false,
     importOrderParserPlugins: [],
     filepath: __filename,
 });

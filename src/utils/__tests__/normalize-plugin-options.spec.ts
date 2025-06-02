@@ -96,6 +96,7 @@ describe('examineAndNormalizePluginOptions', () => {
             examineAndNormalizePluginOptions({
                 importOrder: DEFAULT_IMPORT_ORDER,
                 importOrderParserPlugins: [],
+                importOrderSortByLength: false,
                 importOrderCaseSensitive: false,
                 importOrderTypeScriptVersion: '1.0.0',
                 filepath: __filename,
@@ -123,6 +124,7 @@ describe('examineAndNormalizePluginOptions', () => {
                     '^[./]',
                 ],
                 importOrderParserPlugins: [],
+                importOrderSortByLength: false,
                 importOrderCaseSensitive: false,
                 importOrderTypeScriptVersion: '1.0.0',
                 filepath: __filename,
@@ -146,6 +148,7 @@ describe('examineAndNormalizePluginOptions', () => {
             examineAndNormalizePluginOptions({
                 importOrder: [''],
                 importOrderParserPlugins: [],
+                importOrderSortByLength: false,
                 importOrderCaseSensitive: false,
                 importOrderTypeScriptVersion: '1.0.0',
                 filepath: __filename,
@@ -212,6 +215,7 @@ describe('examineAndNormalizePluginOptions', () => {
             examineAndNormalizePluginOptions({
                 importOrder: DEFAULT_IMPORT_ORDER,
                 importOrderParserPlugins: [],
+                importOrderSortByLength: false,
                 importOrderCaseSensitive: false,
                 importOrderTypeScriptVersion: '1.0.0',
                 filepath: undefined,
@@ -235,6 +239,7 @@ describe('examineAndNormalizePluginOptions', () => {
             examineAndNormalizePluginOptions({
                 importOrder: [],
                 importOrderParserPlugins: [],
+                importOrderSortByLength: false,
                 importOrderCaseSensitive: false,
                 importOrderTypeScriptVersion: '1.0.0',
                 filepath: __filename,

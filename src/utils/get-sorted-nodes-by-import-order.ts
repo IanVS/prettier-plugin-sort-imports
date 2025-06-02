@@ -21,7 +21,7 @@ import {
  */
 export const getSortedNodesByImportOrder: GetSortedNodesByImportOrder = (
     originalNodes,
-    { importOrder, importOrderCaseSensitive },
+    { importOrder, importOrderCaseSensitive, importOrderSortByLength },
 ) => {
     if (
         process.env.NODE_ENV === 'test' &&
@@ -92,6 +92,7 @@ export const getSortedNodesByImportOrder: GetSortedNodesByImportOrder = (
 
         const sortedInsideGroup = getSortedNodesGroup(groupNodes, {
             importOrderCaseSensitive,
+            importOrderSortByLength,
         });
 
         // Sort the import specifiers

@@ -1,6 +1,6 @@
-import { parse as babelParser, type ParserOptions } from '@babel/parser';
 import traverse, { type NodePath } from '@babel/traverse';
 import { ImportDeclaration, isTSModuleDeclaration } from '@babel/types';
+import { parse as babelParser, type ParserOptions } from '@babel/parser';
 
 export const getImportNodes = (
     code: string,

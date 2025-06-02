@@ -35,6 +35,7 @@ This project is based on [@trivago/prettier-plugin-sort-imports](https://github.
     - [`importOrderTypeScriptVersion`](#importordertypescriptversion)
     - [`importOrderParserPlugins`](#importorderparserplugins)
     - [`importOrderCaseSensitive`](#importordercasesensitive)
+    - [`importOrderSortByLineCount`](#importordersortbylinecount)
   - [Prevent imports from being sorted](#prevent-imports-from-being-sorted)
   - [Comments](#comments)
 - [FAQ / Troubleshooting](#faq--troubleshooting)
@@ -420,6 +421,38 @@ import ExampleComponent from './ExampleComponent';
 import ExampleWidget from './ExampleWidget';
 import ExamplesList from './ExamplesList';
 import {CatComponent, DogComponent, catFilter, dogFilter} from './animals';
+```
+
+#### `importOrderSortByLineCount`
+
+**type**: `boolean`
+
+**default value**: `false`
+
+If set to `true`, imports within each group will be sorted by the number of lines they occupy (from fewest to most lines), instead of alphabetically. This can be useful if you want to keep shorter import statements at the top and longer, multi-line imports at the bottom of each group.
+
+**Example:**
+
+```json
+{
+  "importOrderSortByLineCount": true
+}
+```
+
+**Before:**
+```js
+import a from 'a';
+import { b1, b2 } from 'b';
+import c from 'c';
+import { d1, d2, d3 } from 'd';
+```
+
+**After formatting:**
+```js
+import a from 'a';
+import c from 'c';
+import { b1, b2 } from 'b';
+import { d1, d2, d3 } from 'd';
 ```
 
 ### Prevent imports from being sorted

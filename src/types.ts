@@ -30,6 +30,7 @@ export type NormalizableOptions = Pick<
     | 'importOrderParserPlugins'
     | 'importOrderTypeScriptVersion'
     | 'importOrderCaseSensitive'
+    | 'importOrderSortByLength'
 > &
     // filepath can be undefined when running prettier via the api on text input
     Pick<Partial<PrettierOptions>, 'filepath'>;
@@ -70,6 +71,7 @@ export interface ExtendedOptions {
     hasAnyCustomGroupSeparatorsInImportOrder: boolean;
     provideGapAfterTopOfFileComments: boolean;
     plugins: ParserPlugin[];
+    importOrderSortByLength?: boolean;
 }
 
 export type GetSortedNodes = (
@@ -85,6 +87,7 @@ export type GetSortedNodesByImportOrder = (
     nodes: ImportDeclaration[],
     options: Pick<ExtendedOptions, 'importOrder'> & {
         importOrderCaseSensitive?: boolean;
+        importOrderSortByLength?: boolean;
     },
 ) => ImportOrLine[];
 
