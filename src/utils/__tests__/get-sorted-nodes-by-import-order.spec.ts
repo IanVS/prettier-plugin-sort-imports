@@ -304,20 +304,33 @@ test('it sorts imports by line count when importOrderSortByLength is true', () =
     const code = `
 import { adjustCommentsOnSortedNodes } from 'adjust-comments-on-sorted-nodes';
 import { explodeTypeAndValueSpecifiers } from 'explode-type-and-value-specifiers';
+import {
+	Pressable,
+	PressableProps as RNPressableProps,
+	TargetedEvent,
+	type GestureResponderEvent,
+	type MouseEvent,
+	type NativeSyntheticEvent
+} from "react-native";
 import { getChunkTypeOfNode } from 'get-chunk-type-of-node';
 import { getSortedNodesByImportOrder } from 'get-sorted-nodes-by-import-order';
 import { mergeNodesWithMatchingImportFlavors } from 'merge-nodes-with-matching-flavors';
+import React, { ReactNode, useCallback, useMemo, useState } from "react";
 `;
-    const result = getImportNodes(code);
+    const result = getImportNodes(code, {
+        plugins: ['typescript'],
+    });
     const sorted = getSortedNodesByImportOrder(result, {
         importOrder: testingOnly.normalizeImportOrderOption(['^[a-z]']),
         importOrderSortByLength: true,
     }) as ImportDeclaration[];
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
         'get-chunk-type-of-node',
+        'react',
         'adjust-comments-on-sorted-nodes',
         'get-sorted-nodes-by-import-order',
         'explode-type-and-value-specifiers',
         'merge-nodes-with-matching-flavors',
+        'react-native',
     ]);
 });

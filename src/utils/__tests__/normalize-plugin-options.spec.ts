@@ -110,6 +110,7 @@ describe('examineAndNormalizePluginOptions', () => {
             ],
             importOrderCombineTypeAndValueImports: true,
             importOrderCaseSensitive: false,
+            importOrderSortByLength: false,
             plugins: [],
             provideGapAfterTopOfFileComments: false,
         });
@@ -139,6 +140,7 @@ describe('examineAndNormalizePluginOptions', () => {
             ],
             importOrderCombineTypeAndValueImports: true,
             importOrderCaseSensitive: false,
+            importOrderSortByLength: false,
             plugins: [],
             provideGapAfterTopOfFileComments: false,
         });
@@ -162,6 +164,7 @@ describe('examineAndNormalizePluginOptions', () => {
             ],
             importOrderCombineTypeAndValueImports: true,
             importOrderCaseSensitive: false,
+            importOrderSortByLength: false,
             plugins: [],
             provideGapAfterTopOfFileComments: true,
         });
@@ -183,6 +186,7 @@ describe('examineAndNormalizePluginOptions', () => {
             ],
             importOrderCombineTypeAndValueImports: true,
             importOrderCaseSensitive: false,
+            importOrderSortByLength: false,
             plugins: ['typescript'],
             provideGapAfterTopOfFileComments: false,
         });
@@ -206,6 +210,7 @@ describe('examineAndNormalizePluginOptions', () => {
             ],
             importOrderCombineTypeAndValueImports: true,
             importOrderCaseSensitive: false,
+            importOrderSortByLength: false,
             plugins: ['typescript'],
             provideGapAfterTopOfFileComments: false,
         });
@@ -229,6 +234,7 @@ describe('examineAndNormalizePluginOptions', () => {
             ],
             importOrderCombineTypeAndValueImports: true,
             importOrderCaseSensitive: false,
+            importOrderSortByLength: false,
             plugins: [],
             provideGapAfterTopOfFileComments: false,
         });
@@ -249,6 +255,7 @@ describe('examineAndNormalizePluginOptions', () => {
             importOrder: [],
             importOrderCombineTypeAndValueImports: true,
             importOrderCaseSensitive: false,
+            importOrderSortByLength: false,
             plugins: [],
             provideGapAfterTopOfFileComments: false,
         });
