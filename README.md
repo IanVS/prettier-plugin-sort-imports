@@ -35,7 +35,7 @@ This project is based on [@trivago/prettier-plugin-sort-imports](https://github.
     - [`importOrderTypeScriptVersion`](#importordertypescriptversion)
     - [`importOrderParserPlugins`](#importorderparserplugins)
     - [`importOrderCaseSensitive`](#importordercasesensitive)
-    - [`importOrderSortByLineCount`](#importordersortbylinecount)
+    - [`importOrderSortByLength`](#importordersortbylength)
   - [Prevent imports from being sorted](#prevent-imports-from-being-sorted)
   - [Comments](#comments)
 - [FAQ / Troubleshooting](#faq--troubleshooting)
@@ -423,7 +423,7 @@ import ExamplesList from './ExamplesList';
 import {CatComponent, DogComponent, catFilter, dogFilter} from './animals';
 ```
 
-#### `importOrderSortByLineCount`
+#### `importOrderSortByLength`
 
 **type**: `boolean`
 
@@ -435,7 +435,7 @@ If set to `true`, imports within each group will be sorted by the number of line
 
 ```json
 {
-  "importOrderSortByLineCount": true
+  "importOrderSortByLength": true
 }
 ```
 
