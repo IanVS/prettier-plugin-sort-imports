@@ -56,6 +56,12 @@ export const options: Record<
         default: false,
         description: 'Provide a case sensitivity boolean flag',
     },
+    importOrderSortByLength: {
+        type: 'boolean',
+        category: 'Global',
+        default: false,
+        description: 'Provide a boolean flag to sort imports by length',
+    },
 };
 
 export const parsers = {
