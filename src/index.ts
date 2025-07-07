@@ -1,8 +1,3 @@
-import {
-    parsers as oxcParsers,
-    // @ts-expect-error This is exported but not declared by the upstream plugin
-    printers as oxcPrinters,
-} from '@prettier/plugin-oxc';
 import type { RequiredOptions as PrettierRequiredOptions } from 'prettier';
 import { parsers as babelParsers } from 'prettier/parser-babel';
 import { parsers as flowParsers } from 'prettier/parser-flow';
@@ -63,6 +58,16 @@ export const options: Record<
     },
 };
 
+const getOxcPlugin = () => {
+    try {
+        const oxcPlugin = require('@prettier/plugin-oxc');
+
+        return oxcPlugin;
+    } catch {
+        throw new Error('@prettier/plugin-oxc is not installed');
+    }
+};
+
 export const parsers = {
     babel: {
         ...babelParsers.babel,
@@ -76,13 +81,21 @@ export const parsers = {
         ...flowParsers.flow,
         preprocess: defaultPreprocessor,
     },
-    oxc: {
-        ...oxcParsers.oxc,
-        preprocess: defaultPreprocessor,
+    get oxc() {
+        const oxcPlugin = getOxcPlugin();
+
+        return {
+            ...oxcPlugin.parsers.oxc,
+            preprocess: defaultPreprocessor,
+        };
     },
-    'oxc-ts': {
-        ...oxcParsers['oxc-ts'],
-        preprocess: defaultPreprocessor,
+    get 'oxc-ts'() {
+        const oxcPlugin = getOxcPlugin();
+
+        return {
+            ...oxcPlugin.parsers['oxc-ts'],
+            preprocess: defaultPreprocessor,
+        };
     },
     typescript: {
         ...typescriptParsers.typescript,
@@ -95,5 +108,9 @@ export const parsers = {
 };
 
 export const printers = {
-    ...oxcPrinters,
+    get 'estree-oxc'() {
+        const oxcPlugin = getOxcPlugin();
+
+        return oxcPlugin.printers['estree-oxc'];
+    },
 };
