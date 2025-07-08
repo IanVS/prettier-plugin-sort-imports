@@ -59,8 +59,10 @@ const getOxcPlugin = () => {
         const oxcPlugin = require('@prettier/plugin-oxc');
 
         return oxcPlugin;
-    } catch (e) {
-        throw new Error('@prettier/plugin-oxc could not be loaded:\n%s', e);
+    } catch {
+        throw new Error(
+            '@prettier/plugin-oxc could not be loaded.  Is it installed?',
+        );
     }
 };
 
