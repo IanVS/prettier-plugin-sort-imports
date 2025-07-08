@@ -72,17 +72,18 @@
         "typescript": "5.2.2",
         "vitest": "^0.34.5"
     },
-    "optionalDependencies": {
-        "@prettier/plugin-oxc": "^0.0.4"
-    },
     "resolutions": {
         "vite": "^4.0.0"
     },
     "peerDependencies": {
+        "@prettier/plugin-oxc": "^0.0.4",
         "@vue/compiler-sfc": "2.7.x || 3.x",
         "prettier": "2 || 3 || ^4.0.0-0"
     },
     "peerDependenciesMeta": {
+        "@prettier/plugin-oxc": {
+            "optional": true
+        },
         "@vue/compiler-sfc": {
             "optional": true
         }
