@@ -4,11 +4,7 @@ import { parsers as flowParsers } from 'prettier/parser-flow';
 import { parsers as htmlParsers } from 'prettier/parser-html';
 import { parsers as typescriptParsers } from 'prettier/parser-typescript';
 
-import {
-    BUILTIN_MODULES_SPECIAL_WORD,
-    DEFAULT_IMPORT_ORDER,
-    THIRD_PARTY_MODULES_SPECIAL_WORD,
-} from './constants';
+import { DEFAULT_IMPORT_ORDER } from './constants';
 import { defaultPreprocessor } from './preprocessors/default';
 import { vuePreprocessor } from './preprocessors/vue';
 import type { PrettierOptions } from './types';
@@ -63,8 +59,8 @@ const getOxcPlugin = () => {
         const oxcPlugin = require('@prettier/plugin-oxc');
 
         return oxcPlugin;
-    } catch {
-        throw new Error('@prettier/plugin-oxc is not installed');
+    } catch (e) {
+        throw new Error('@prettier/plugin-oxc could not be loaded:\n%s', e);
     }
 };
 

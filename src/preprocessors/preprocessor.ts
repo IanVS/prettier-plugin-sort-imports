@@ -25,9 +25,10 @@ export function preprocessor(code: string, options: PrettierOptions): string {
     let ast: ReturnType<typeof babelParser>;
     try {
         ast = babelParser(code, parserOptions);
-    } catch (_) {
+    } catch (err) {
         console.error(
-            ' [error] [prettier-plugin-sort-imports]: import sorting aborted due to babel parsing error.',
+            ' [error] [prettier-plugin-sort-imports]: import sorting aborted due to parsing error:\n%s',
+            err,
         );
         return code;
     }
