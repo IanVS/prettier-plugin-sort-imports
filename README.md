@@ -22,6 +22,7 @@ This project is based on [@trivago/prettier-plugin-sort-imports](https://github.
   - [Output](#output)
 - [Install](#install)
 - [Usage](#usage)
+  - [Usage with @prettier/plugin-oxc](#usage-with-prettierplugin-oxc)
   - [How does import sort work?](#how-does-import-sort-work)
   - [Options](#options)
     - [`importOrder`](#importorder)
@@ -143,6 +144,10 @@ module.exports = {
     importOrderCaseSensitive: false,
 };
 ```
+
+### Usage with @prettier/plugin-oxc
+
+This plugin is compatible with the new '@prettier/plugin-oxc' plugin available for Prettier 3.6+, but must be specified _after_ that plugin in the `plugins` configuration array (i.e. `plugins: ['@prettier/plugin-oxc', '@ianvs/prettier-plugin-sort-imports'],`).
 
 ### How does import sort work?
 

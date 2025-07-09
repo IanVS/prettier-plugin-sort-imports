@@ -4,11 +4,7 @@ import { parsers as flowParsers } from 'prettier/parser-flow';
 import { parsers as htmlParsers } from 'prettier/parser-html';
 import { parsers as typescriptParsers } from 'prettier/parser-typescript';
 
-import {
-    BUILTIN_MODULES_SPECIAL_WORD,
-    DEFAULT_IMPORT_ORDER,
-    THIRD_PARTY_MODULES_SPECIAL_WORD,
-} from './constants';
+import { DEFAULT_IMPORT_ORDER } from './constants';
 import { defaultPreprocessor } from './preprocessors/default';
 import { vuePreprocessor } from './preprocessors/vue';
 import type { PrettierOptions } from './types';
@@ -58,6 +54,18 @@ export const options: Record<
     },
 };
 
+const getOxcPlugin = () => {
+    try {
+        const oxcPlugin = require('@prettier/plugin-oxc');
+
+        return oxcPlugin;
+    } catch {
+        throw new Error(
+            '@prettier/plugin-oxc could not be loaded.  Is it installed?',
+        );
+    }
+};
+
 export const parsers = {
     babel: {
         ...babelParsers.babel,
@@ -71,6 +79,22 @@ export const parsers = {
         ...flowParsers.flow,
         preprocess: defaultPreprocessor,
     },
+    get oxc() {
+        const oxcPlugin = getOxcPlugin();
+
+        return {
+            ...oxcPlugin.parsers.oxc,
+            preprocess: defaultPreprocessor,
+        };
+    },
+    get 'oxc-ts'() {
+        const oxcPlugin = getOxcPlugin();
+
+        return {
+            ...oxcPlugin.parsers['oxc-ts'],
+            preprocess: defaultPreprocessor,
+        };
+    },
     typescript: {
         ...typescriptParsers.typescript,
         preprocess: defaultPreprocessor,
@@ -78,5 +102,13 @@ export const parsers = {
     vue: {
         ...htmlParsers.vue,
         preprocess: vuePreprocessor,
+    },
+};
+
+export const printers = {
+    get 'estree-oxc'() {
+        const oxcPlugin = getOxcPlugin();
+
+        return oxcPlugin.printers['estree-oxc'];
     },
 };

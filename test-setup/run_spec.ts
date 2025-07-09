@@ -97,7 +97,7 @@ export async function expectError(
                 parser,
             });
             test(`${filename} - verify-error`, async () => {
-                expect(() =>
+                await expect(() =>
                     prettyprint(source, path, mergedOptions),
                 ).rejects.toThrowError(expectedError);
             });
