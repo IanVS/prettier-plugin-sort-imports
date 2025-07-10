@@ -17,6 +17,11 @@ export function preprocessor(code: string, options: PrettierOptions): string {
         plugins,
     };
 
+    // short-circuit if importOrder is an empty array (can be used to disable plugin)
+    if (!remainingOptions.importOrder.length) {
+        return code;
+    }
+
     // Astro component scripts allow returning a response
     if (options.parentParser === 'astro') {
         parserOptions.allowReturnOutsideFunction = true;
@@ -50,11 +55,6 @@ export function preprocessor(code: string, options: PrettierOptions): string {
 
     // short-circuit if there are no import declarations
     if (allOriginalImportNodes.length === 0) {
-        return code;
-    }
-
-    // short-circuit if importOrder is an empty array (can be used to disable plugin)
-    if (!remainingOptions.importOrder.length) {
         return code;
     }
 
