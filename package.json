@@ -22,8 +22,8 @@
         "preexample": "pnpm run compile",
         "test": "cross-env NODE_OPTIONS=--experimental-vm-modules vitest --run",
         "test:watch": "vitest",
-        "format": "prettier . --write",
-        "format:check": "prettier . --check",
+        "format": "prettier . --write --experimental-cli",
+        "format:check": "prettier . --check --experimental-cli",
         "type-check": "tsc --noEmit",
         "prepublishOnly": "npm run compile && npm run test"
     },
@@ -67,7 +67,7 @@
         "@types/semver": "^7.5.3",
         "@vue/compiler-sfc": "3.4.21",
         "cross-env": "^7.0.3",
-        "prettier": "^4.0.0-0",
+        "prettier": "^3.6.2",
         "prettier-plugin-astro": "^0.14.0",
         "typescript": "5.2.2",
         "vitest": "^3.2.4"
