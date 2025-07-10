@@ -5,7 +5,7 @@ export default {
     singleQuote: true,
     bracketSameLine: true,
     semi: true,
-    plugins: ['./lib/src/index.js'],
+    plugins: ['@prettier/plugin-oxc', './lib/src/index.js'],
     importOrder: [
         '',
         '<BUILTIN_MODULES>',

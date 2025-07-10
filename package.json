@@ -22,8 +22,8 @@
         "preexample": "pnpm run compile",
         "test": "cross-env NODE_OPTIONS=--experimental-vm-modules vitest --run",
         "test:watch": "vitest",
-        "format": "prettier . --write",
-        "format:check": "prettier . --check",
+        "format": "prettier . --write --experimental-cli",
+        "format:check": "prettier . --check --experimental-cli",
         "type-check": "tsc --noEmit",
         "prepublishOnly": "npm run compile && npm run test"
     },
@@ -61,19 +61,16 @@
     },
     "devDependencies": {
         "@prettier/plugin-oxc": "^0.0.4",
-        "@types/babel__generator": "^7.6.8",
-        "@types/babel__traverse": "^7.20.5",
-        "@types/node": "^18.15.13",
-        "@types/semver": "^7.5.3",
-        "@vue/compiler-sfc": "3.4.21",
+        "@types/babel__generator": "^7.20.7",
+        "@types/babel__traverse": "^7.20.7",
+        "@types/node": "^24.0.12",
+        "@types/semver": "^7.7.0",
+        "@vue/compiler-sfc": "3.5.17",
         "cross-env": "^7.0.3",
-        "prettier": "^4.0.0-0",
+        "prettier": "^3.6.2",
         "prettier-plugin-astro": "^0.14.0",
-        "typescript": "5.2.2",
-        "vitest": "^0.34.5"
-    },
-    "resolutions": {
-        "vite": "^4.0.0"
+        "typescript": "5.8.3",
+        "vitest": "^3.2.4"
     },
     "peerDependencies": {
         "@prettier/plugin-oxc": "^0.0.4",
