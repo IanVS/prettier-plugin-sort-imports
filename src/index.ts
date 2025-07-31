@@ -6,6 +6,7 @@ import { parsers as typescriptParsers } from 'prettier/parser-typescript';
 
 import { DEFAULT_IMPORT_ORDER } from './constants';
 import { defaultPreprocessor } from './preprocessors/default';
+import { emberPreprocessor } from './preprocessors/ember';
 import { vuePreprocessor } from './preprocessors/vue';
 import type { PrettierOptions } from './types';
 
@@ -54,6 +55,18 @@ export const options: Record<
     },
 };
 
+const getEmberPlugin = () => {
+    try {
+        const emberPlugin = require('prettier-plugin-ember-template-tag');
+
+        return emberPlugin;
+    } catch {
+        throw new Error(
+            'prettier-plugin-ember-template-tag could not be loaded.  Is it installed?',
+        );
+    }
+};
+
 const getOxcPlugin = () => {
     try {
         const oxcPlugin = require('@prettier/plugin-oxc');
@@ -74,6 +87,14 @@ export const parsers = {
     'babel-ts': {
         ...babelParsers['babel-ts'],
         preprocess: defaultPreprocessor,
+    },
+    get 'ember-template-tag'() {
+        const emberPlugin = getEmberPlugin();
+
+        return {
+            ...emberPlugin.parsers['ember-template-tag'],
+            preprocess: emberPreprocessor,
+        };
     },
     flow: {
         ...flowParsers.flow,
