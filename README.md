@@ -467,7 +467,7 @@ Having some trouble or an issue? You can check [FAQ / Troubleshooting section](.
 | Angular                | ✅ Everything   | Supported through `importOrderParserPlugins` API                                            |
 | Vue                    | ✅ Everything   | SFCs only, peer dependency `@vue/compiler-sfc` is required                                  |
 | Astro                  | 🧪 Experimental | Some Astro syntax may cause trouble, please open an issue                                   |
-| Ember                  | 🧪 Experimental | peer dependencies `prettier-plugin-ember-template-tag` and `parse-imports-exports` required |
+| Ember template tags    | 🧪 Experimental | peer dependency `prettier-plugin-ember-template-tag` required                               |
 
 ## Contribution
 
