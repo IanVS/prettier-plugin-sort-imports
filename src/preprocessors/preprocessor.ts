@@ -1,8 +1,7 @@
 import { parse as babelParser, ParserOptions } from '@babel/parser';
-import traverse, { NodePath } from '@babel/traverse';
-import { ImportDeclaration, isTSModuleDeclaration } from '@babel/types';
 
 import { PrettierOptions } from '../types';
+import { extractASTNodes } from '../utils/extract-ast-nodes';
 import { getCodeFromAst } from '../utils/get-code-from-ast';
 import { getSortedNodes } from '../utils/get-sorted-nodes';
 import { examineAndNormalizePluginOptions } from '../utils/normalize-plugin-options';
@@ -41,19 +40,7 @@ export function preprocessor(code: string, options: PrettierOptions): string {
     const directives = ast.program.directives;
     const interpreter = ast.program.interpreter;
 
-    const allOriginalImportNodes: ImportDeclaration[] = [];
-    traverse(ast, {
-        noScope: true, // This is required in order to avoid traverse errors if a variable is redefined (https://github.com/babel/babel/issues/12950#issuecomment-788974837)
-        ImportDeclaration(path: NodePath<ImportDeclaration>) {
-            const tsModuleParent = path.findParent((p) =>
-                isTSModuleDeclaration(p.node),
-            );
-            // Do not sort imports inside of typescript module declarations.  See `import-inside-ts-declare.ts` test.
-            if (!tsModuleParent) {
-                allOriginalImportNodes.push(path.node);
-            }
-        },
-    });
+    const { importDeclarations: allOriginalImportNodes } = extractASTNodes(ast);
 
     // short-circuit if there are no import declarations
     if (allOriginalImportNodes.length === 0) {
