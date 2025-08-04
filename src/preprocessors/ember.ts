@@ -5,104 +5,13 @@ import { extractASTNodes } from '../utils/extract-ast-nodes';
 import { getCodeFromAst } from '../utils/get-code-from-ast';
 import { getSortedNodes } from '../utils/get-sorted-nodes';
 import {
-    getBuffer,
-    parse,
-    replaceContents,
-    sliceByteRange,
-    type Range,
+    extractTemplates,
+    preprocessTemplateRange,
 } from '../utils/glimmer-content-tag';
 import { examineAndNormalizePluginOptions } from '../utils/normalize-plugin-options';
 
-interface Template {
-    contentRange: Range;
-    contents: string;
-    range: Range;
-    type: 'class-member' | 'expression';
-    utf16Range: {
-        end: number;
-        start: number;
-    };
-}
-
-const PLACEHOLDER = '~';
-
-/**
- * Replace the template with a parsable placeholder that takes up the same
- * range.
- */
-export function preprocessTemplateRange(
-    template: Template,
-    code: string,
-): string {
-    let prefix: string;
-    let suffix: string;
-
-    if (template.type === 'class-member') {
-        // Replace with StaticBlock
-        prefix = 'static{/*';
-        suffix = '*/}';
-    } else {
-        // Replace with BlockStatement or ObjectExpression
-        prefix = '{/*';
-        suffix = '*/}';
-
-        const nextToken = sliceByteRange(code, template.range.endByte).match(
-            /\S+/,
-        );
-
-        if (
-            nextToken &&
-            (nextToken[0] === 'as' || nextToken[0] === 'satisfies')
-        ) {
-            // Replace with parenthesized ObjectExpression
-            prefix = '(' + prefix;
-            suffix = suffix + ')';
-        }
-    }
-
-    // We need to replace forward slash with _something else_, because
-    // forward slash breaks the parsed templates.
-    const contents = template.contents.replaceAll('/', PLACEHOLDER);
-
-    const templateLength = template.range.endByte - template.range.startByte;
-    const spaces =
-        templateLength -
-        getBuffer(contents).length -
-        prefix.length -
-        suffix.length;
-
-    return replaceContents(code, {
-        contents: [prefix, contents, ' '.repeat(spaces), suffix].join(''),
-        range: template.range,
-    });
-}
-
-/** Pre-processes the template info, parsing the template content to Glimmer AST. */
-export function codeToGlimmerAst(code: string): Template[] {
-    const contentTags = parse(code);
-
-    const templates: Template[] = contentTags.map((contentTag) => {
-        const { contentRange, contents, range, type } = contentTag;
-
-        const utf16Range = {
-            end: sliceByteRange(code, 0, range.endByte).length,
-            start: sliceByteRange(code, 0, range.startByte).length,
-        };
-
-        return {
-            contentRange,
-            contents,
-            range,
-            type,
-            utf16Range,
-        };
-    });
-
-    return templates;
-}
-
-export function sortCode(
-    code: string,
+export function sortImports(
+    parseableCode: string,
     originalCode: string,
     options: PrettierOptions,
 ): string {
@@ -122,18 +31,18 @@ export function sortCode(
 
     // short-circuit if importOrder is an empty array (can be used to disable plugin)
     if (!remainingOptions.importOrder.length) {
-        return code;
+        return originalCode;
     }
 
     let ast: ReturnType<typeof babelParser>;
     try {
-        ast = babelParser(code, parserOptions);
+        ast = babelParser(parseableCode, parserOptions);
     } catch (err) {
         console.error(
             ' [error] [prettier-plugin-sort-imports]: import sorting aborted due to parsing error:\n%s',
             err,
         );
-        return code;
+        return originalCode;
     }
 
     const directives = ast.program.directives;
@@ -143,7 +52,7 @@ export function sortCode(
 
     // short-circuit if there are no import declarations
     if (allOriginalImportNodes.length === 0) {
-        return code;
+        return originalCode;
     }
 
     const nodesToOutput = getSortedNodes(
@@ -162,13 +71,14 @@ export function sortCode(
 
 export function emberPreprocessor(code: string, options: PrettierOptions) {
     const originalCode = code;
-    const templates = codeToGlimmerAst(code);
+    let processedCode = code;
+    const templates = extractTemplates(code);
 
     for (const template of templates) {
-        code = preprocessTemplateRange(template, code);
+        processedCode = preprocessTemplateRange(template, processedCode);
     }
 
-    const sorted = sortCode(code, originalCode, options);
+    const sorted = sortImports(processedCode, originalCode, options);
 
     return sorted;
 }
