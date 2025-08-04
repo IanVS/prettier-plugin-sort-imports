@@ -7,7 +7,13 @@ import sameLevelRelativePath from './sameLevelRelativePath';
 import thirdParty from 'third-party';
 import oneLevelRelativePath from '../oneLevelRelativePath';
 
-const what = <template>Used as an expression</template>;
+const what = <template>
+    <div>
+        <span>Used as an expression</span>
+    </div>
+    With multiple lines
+    To make sure we're processing correctly.
+</template>;
 
 /* Comment associated with an import line */
 import otherthing from '@core/otherthing';
