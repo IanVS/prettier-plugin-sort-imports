@@ -6,7 +6,18 @@ import { getCodeFromAst } from '../utils/get-code-from-ast';
 import { getSortedNodes } from '../utils/get-sorted-nodes';
 import { examineAndNormalizePluginOptions } from '../utils/normalize-plugin-options';
 
-export function preprocessor(code: string, options: PrettierOptions): string {
+/**
+ *
+ * @param originalCode The raw source code from the file being processed
+ * @param parseableCode This is code that has been transformed (if necessary) so that babel can parse it, but is the same size as the original code
+ * @param options PrettierOptions
+ * @returns
+ */
+export function preprocessor(
+    originalCode: string,
+    parseableCode: string,
+    options: PrettierOptions,
+): string {
     const { plugins, ...remainingOptions } =
         examineAndNormalizePluginOptions(options);
 
@@ -23,18 +34,18 @@ export function preprocessor(code: string, options: PrettierOptions): string {
 
     // short-circuit if importOrder is an empty array (can be used to disable plugin)
     if (!remainingOptions.importOrder.length) {
-        return code;
+        return originalCode;
     }
 
     let ast: ReturnType<typeof babelParser>;
     try {
-        ast = babelParser(code, parserOptions);
+        ast = babelParser(parseableCode, parserOptions);
     } catch (err) {
         console.error(
             ' [error] [prettier-plugin-sort-imports]: import sorting aborted due to parsing error:\n%s',
             err,
         );
-        return code;
+        return originalCode;
     }
 
     const directives = ast.program.directives;
@@ -44,7 +55,7 @@ export function preprocessor(code: string, options: PrettierOptions): string {
 
     // short-circuit if there are no import declarations
     if (allOriginalImportNodes.length === 0) {
-        return code;
+        return originalCode;
     }
 
     const nodesToOutput = getSortedNodes(
@@ -55,7 +66,7 @@ export function preprocessor(code: string, options: PrettierOptions): string {
     return getCodeFromAst({
         nodesToOutput,
         allOriginalImportNodes,
-        originalCode: code,
+        originalCode,
         directives,
         interpreter,
     });
