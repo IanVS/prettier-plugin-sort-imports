@@ -14,17 +14,17 @@ export function preprocessor(code: string, options: PrettierOptions): string {
     const parserOptions: ParserOptions = {
         sourceType: 'module',
         attachComment: true,
+        errorRecovery: true,
+        allowReturnOutsideFunction: true,
+        allowNewTargetOutsideFunction: true,
+        allowSuperOutsideMethod: true,
+        allowUndeclaredExports: true,
         plugins,
     };
 
     // short-circuit if importOrder is an empty array (can be used to disable plugin)
     if (!remainingOptions.importOrder.length) {
         return code;
-    }
-
-    // Astro component scripts allow returning a response
-    if (options.parentParser === 'astro') {
-        parserOptions.allowReturnOutsideFunction = true;
     }
 
     let ast: ReturnType<typeof babelParser>;
@@ -43,10 +43,12 @@ export function preprocessor(code: string, options: PrettierOptions): string {
 
     const allOriginalImportNodes: ImportDeclaration[] = [];
     traverse(ast, {
+        noScope: true, // This is required in order to avoid traverse errors if a variable is redefined (https://github.com/babel/babel/issues/12950#issuecomment-788974837)
         ImportDeclaration(path: NodePath<ImportDeclaration>) {
             const tsModuleParent = path.findParent((p) =>
                 isTSModuleDeclaration(p.node),
             );
+            // Do not sort imports inside of typescript module declarations.  See `import-inside-ts-declare.ts` test.
             if (!tsModuleParent) {
                 allOriginalImportNodes.push(path.node);
             }

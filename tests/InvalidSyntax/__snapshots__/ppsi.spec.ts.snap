@@ -1,0 +1,61 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`invalidSet.ts - typescript-verify > invalidSet.ts 1`] = `
+import b from './b';
+import a from './a';
+
+const c = {set name(){}}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import a from "./a";
+import b from "./b";
+
+const c = { set name() {} };
+
+`;
+
+exports[`redeclare.js - typescript-verify > redeclare.js 1`] = `
+import b from './b';
+import a from './a';
+
+// Here's an invalid example of redeclaring a variable
+let   name    =     "error"   ;
+let name = "error";
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import a from "./a";
+import b from "./b";
+
+// Here's an invalid example of redeclaring a variable
+let name = "error";
+let name = "error";
+
+`;
+
+exports[`returnOutsideFunction.ts - typescript-verify > returnOutsideFunction.ts 1`] = `
+import b from './b';
+import a from './a';
+
+// Can't return outside of a function
+return 123;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import a from "./a";
+import b from "./b";
+
+// Can't return outside of a function
+return 123;
+
+`;
+
+exports[`superOutsideMethod.ts - typescript-verify > superOutsideMethod.ts 1`] = `
+import b from './b';
+import a from './a';
+
+function F() { super(); }
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import a from "./a";
+import b from "./b";
+
+function F() {
+    super();
+}
+
+`;
