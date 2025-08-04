@@ -68,7 +68,6 @@
         "@types/semver": "^7.7.0",
         "@vue/compiler-sfc": "3.5.17",
         "cross-env": "^7.0.3",
-        "parse-imports-exports": "^0.2.4",
         "prettier": "^3.6.2",
         "prettier-plugin-astro": "^0.14.0",
         "prettier-plugin-ember-template-tag": "^2.1.0",
@@ -78,7 +77,6 @@
     "peerDependencies": {
         "@prettier/plugin-oxc": "^0.0.4",
         "@vue/compiler-sfc": "2.7.x || 3.x",
-        "parse-imports-exports": "^0.2.4",
         "prettier": "2 || 3 || ^4.0.0-0",
         "prettier-plugin-ember-template-tag": "^2.1.0"
     },
@@ -87,9 +85,6 @@
             "optional": true
         },
         "@vue/compiler-sfc": {
-            "optional": true
-        },
-        "parse-imports-exports": {
             "optional": true
         },
         "prettier-plugin-ember-template-tag": {
