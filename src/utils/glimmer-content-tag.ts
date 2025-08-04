@@ -11,23 +11,12 @@
 
 import {
     Preprocessor,
-    type Parsed as ContentTag,
+    type Parsed,
     type PreprocessorOptions,
     type Range,
 } from 'content-tag';
 
 const BufferMap = new Map<string, Buffer>();
-
-interface Template {
-    contentRange: Range;
-    contents: string;
-    range: Range;
-    type: 'class-member' | 'expression';
-    utf16Range: {
-        end: number;
-        start: number;
-    };
-}
 
 function getBuffer(string_: string): Buffer {
     let buffer = BufferMap.get(string_);
@@ -40,7 +29,7 @@ function getBuffer(string_: string): Buffer {
     return buffer;
 }
 
-function parse(file: string, options?: PreprocessorOptions): ContentTag[] {
+function parse(file: string, options?: PreprocessorOptions): Parsed[] {
     const preprocessor = new Preprocessor();
 
     return preprocessor.parse(file, options);
@@ -72,38 +61,18 @@ function sliceByteRange(
     return buffer.slice(indexStart, indexEnd).toString();
 }
 
-/** Pre-processes the template info, parsing the template content to Glimmer AST. */
-export function extractTemplates(code: string): Template[] {
-    const contentTags = parse(code);
-
-    const templates: Template[] = contentTags.map((contentTag) => {
-        const { contentRange, contents, range, type } = contentTag;
-
-        const utf16Range = {
-            end: sliceByteRange(code, 0, range.endByte).length,
-            start: sliceByteRange(code, 0, range.startByte).length,
-        };
-
-        return {
-            contentRange,
-            contents,
-            range,
-            type,
-            utf16Range,
-        };
-    });
-
-    return templates;
+/** Parse templates out of source code */
+export function extractTemplates(code: string): Parsed[] {
+    return parse(code);
 }
 
-const PLACEHOLDER = '~';
-
 /**
- * Replace the template with a parsable placeholder that takes up the same
- * range.
+ * Replace the template with a comment that takes up the same range.
+ * We don't care about the contents or parsing this back out, because we will
+ * use the original source code instead.
  */
 export function preprocessTemplateRange(
-    template: Template,
+    template: Parsed,
     code: string,
 ): string {
     let prefix: string;
@@ -132,21 +101,11 @@ export function preprocessTemplateRange(
         }
     }
 
-    // We need to replace forward slash with _something else_, because
-    // forward slash breaks the parsed templates.
-    const contents = template.contents.replaceAll('/', PLACEHOLDER);
-
     const templateLength = template.range.endByte - template.range.startByte;
-    const spaces =
-        templateLength -
-        getBuffer(contents).length -
-        prefix.length -
-        suffix.length;
+    const spaces = templateLength - prefix.length - suffix.length;
 
     return replaceContents(code, {
-        contents: [prefix, contents, ' '.repeat(spaces), suffix].join(''),
+        contents: [prefix, ' '.repeat(spaces), suffix].join(''),
         range: template.range,
     });
 }
-
-export type { ContentTag, Range };
