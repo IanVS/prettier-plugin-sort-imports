@@ -13,5 +13,6 @@ run_spec(__dirname, ['ember-template-tag'], {
         '',
         '^[./]',
     ],
+    importOrderParserPlugins : ['typescript', 'jsx', 'decorators'],
     plugins: ['prettier-plugin-ember-template-tag', plugin],
 });
