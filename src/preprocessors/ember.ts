@@ -6,15 +6,14 @@ import {
 import { preprocessor } from './preprocessor';
 
 export function emberPreprocessor(code: string, options: PrettierOptions) {
-    const originalCode = code;
-    let processedCode = code;
+    let parseableCode = code;
     const templates = extractTemplates(code);
 
     for (const template of templates) {
-        processedCode = preprocessTemplateRange(template, processedCode);
+        parseableCode = preprocessTemplateRange(template, parseableCode);
     }
 
-    const sorted = preprocessor(originalCode, processedCode, options);
+    const sorted = preprocessor(code, { parseableCode, options });
 
     return sorted;
 }

@@ -15,8 +15,10 @@ import { examineAndNormalizePluginOptions } from '../utils/normalize-plugin-opti
  */
 export function preprocessor(
     originalCode: string,
-    parseableCode: string,
-    options: PrettierOptions,
+    {
+        options,
+        parseableCode,
+    }: { options: PrettierOptions; parseableCode?: string },
 ): string {
     const { plugins, ...remainingOptions } =
         examineAndNormalizePluginOptions(options);
@@ -39,7 +41,7 @@ export function preprocessor(
 
     let ast: ReturnType<typeof babelParser>;
     try {
-        ast = babelParser(parseableCode, parserOptions);
+        ast = babelParser(parseableCode ?? originalCode, parserOptions);
     } catch (err) {
         console.error(
             ' [error] [prettier-plugin-sort-imports]: import sorting aborted due to parsing error:\n%s',

@@ -101,5 +101,5 @@ function sortScript(
         importOrderParserPlugins: newPlugins,
     };
 
-    return `\n${preprocessor(content, content, adjustedOptions)}\n`;
+    return `\n${preprocessor(content, { options: adjustedOptions })}\n`;
 }
