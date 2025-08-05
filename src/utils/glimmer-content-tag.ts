@@ -9,12 +9,7 @@
  * in order to parse the code with babel and extract import nodes as we require.
  */
 
-import {
-    Preprocessor,
-    type Parsed,
-    type PreprocessorOptions,
-    type Range,
-} from 'content-tag';
+import type { Parsed, PreprocessorOptions, Range } from 'content-tag';
 
 const BufferMap = new Map<string, Buffer>();
 
@@ -30,6 +25,14 @@ function getBuffer(string_: string): Buffer {
 }
 
 function parse(file: string, options?: PreprocessorOptions): Parsed[] {
+    let Preprocessor;
+    try {
+        Preprocessor = require('content-tag').Preprocessor;
+    } catch {
+        throw new Error(
+            ' [error] [prettier-plugin-sort-imports]: Please install content-tag@^4.0.0 to use this plugin with Ember template tags.',
+        );
+    }
     const preprocessor = new Preprocessor();
 
     return preprocessor.parse(file, options);
@@ -75,6 +78,15 @@ export function preprocessTemplateRange(
     template: Parsed,
     code: string,
 ): string {
+    // Older versions of content-tag used "start/end" in range, and since we
+    // specify it as an optional peer dependency, we aren't guaranteed to get the
+    // correct version unless the user installs it explicitly
+    if (!template.range.hasOwnProperty('startByte')) {
+        throw new Error(
+            ' [error] [prettier-plugin-sort-imports]: Please install content-tag@^4.0.0 to use this plugin with Ember template tags.',
+        );
+    }
+
     let prefix: string;
     let suffix: string;
 
