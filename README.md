@@ -458,15 +458,16 @@ Having some trouble or an issue? You can check [FAQ / Troubleshooting section](.
 
 ## Compatibility
 
-| Framework              | Supported       | Note                                                       |
-| ---------------------- | --------------- | ---------------------------------------------------------- |
-| JS with ES Modules     | ✅ Everything   | -                                                          |
-| NodeJS with ES Modules | ✅ Everything   | -                                                          |
-| React                  | ✅ Everything   | -                                                          |
-| Svelte                 | ✅ Everything   | -                                                          |
-| Angular                | ✅ Everything   | Supported through `importOrderParserPlugins` API           |
-| Vue                    | ✅ Everything   | SFCs only, peer dependency `@vue/compiler-sfc` is required |
-| Astro                  | 🧪 Experimental | Some Astro syntax may cause trouble, please open an issue  |
+| Framework              | Supported       | Note                                                                                        |
+| ---------------------- | --------------- | ------------------------------------------------------------------------------------------- |
+| JS with ES Modules     | ✅ Everything   | -                                                                                           |
+| NodeJS with ES Modules | ✅ Everything   | -                                                                                           |
+| React                  | ✅ Everything   | -                                                                                           |
+| Svelte                 | ✅ Everything   | -                                                                                           |
+| Angular                | ✅ Everything   | Supported through `importOrderParserPlugins` API                                            |
+| Vue                    | ✅ Everything   | SFCs only, peer dependency `@vue/compiler-sfc` is required                                  |
+| Astro                  | 🧪 Experimental | Some Astro syntax may cause trouble, please open an issue                                   |
+| Ember template tags    | 🧪 Experimental | peer dependencies `prettier-plugin-ember-template-tag` and `content-tag` required           |
 
 ## Contribution
 
