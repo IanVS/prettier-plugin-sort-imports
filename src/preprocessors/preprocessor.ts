@@ -43,10 +43,16 @@ export function preprocessor(
     try {
         ast = babelParser(parseableCode ?? originalCode, parserOptions);
     } catch (err) {
-        console.error(
-            ' [error] [prettier-plugin-sort-imports]: import sorting aborted due to parsing error:\n%s',
-            err,
-        );
+        // Don't throw warning messages if this is a codeblock in markdown.  (Prettier doesn't either)
+        if (
+            options.parentParser !== 'markdown' &&
+            options.parentParser !== 'mdx'
+        ) {
+            console.error(
+                ' [error] [prettier-plugin-sort-imports]: import sorting aborted due to parsing error:\n%s',
+                err,
+            );
+        }
         return originalCode;
     }
 
