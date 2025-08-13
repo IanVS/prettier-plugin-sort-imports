@@ -67,6 +67,15 @@ const getEmberPlugin = () => {
     }
 };
 
+const isEmberPluginAvailable = () => {
+    try {
+        getEmberPlugin();
+        return true;
+    } catch {
+        return false;
+    }
+};
+
 const getOxcPlugin = () => {
     try {
         const oxcPlugin = require('@prettier/plugin-oxc');
@@ -79,6 +88,15 @@ const getOxcPlugin = () => {
     }
 };
 
+const isOxcPluginAvailable = () => {
+    try {
+        getOxcPlugin();
+        return true;
+    } catch {
+        return false;
+    }
+};
+
 export const parsers = {
     babel: {
         ...babelParsers.babel,
@@ -88,34 +106,26 @@ export const parsers = {
         ...babelParsers['babel-ts'],
         preprocess: defaultPreprocessor,
     },
-    get 'ember-template-tag'() {
-        const emberPlugin = getEmberPlugin();
-
-        return {
-            ...emberPlugin.parsers['ember-template-tag'],
+    ...(isEmberPluginAvailable() && {
+        'ember-template-tag': {
+            ...getEmberPlugin().parsers['ember-template-tag'],
             preprocess: emberPreprocessor,
-        };
-    },
+        },
+    }),
     flow: {
         ...flowParsers.flow,
         preprocess: defaultPreprocessor,
     },
-    get oxc() {
-        const oxcPlugin = getOxcPlugin();
-
-        return {
-            ...oxcPlugin.parsers.oxc,
+    ...(isOxcPluginAvailable() && {
+        oxc: {
+            ...getOxcPlugin().parsers.oxc,
             preprocess: defaultPreprocessor,
-        };
-    },
-    get 'oxc-ts'() {
-        const oxcPlugin = getOxcPlugin();
-
-        return {
-            ...oxcPlugin.parsers['oxc-ts'],
+        },
+        'oxc-ts': {
+            ...getOxcPlugin().parsers['oxc-ts'],
             preprocess: defaultPreprocessor,
-        };
-    },
+        },
+    }),
     typescript: {
         ...typescriptParsers.typescript,
         preprocess: defaultPreprocessor,
@@ -127,9 +137,7 @@ export const parsers = {
 };
 
 export const printers = {
-    get 'estree-oxc'() {
-        const oxcPlugin = getOxcPlugin();
-
-        return oxcPlugin.printers['estree-oxc'];
-    },
+    ...(isOxcPluginAvailable() && {
+        'estree-oxc': getOxcPlugin().printers['estree-oxc'],
+    }),
 };
