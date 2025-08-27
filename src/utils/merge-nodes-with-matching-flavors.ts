@@ -12,7 +12,7 @@ import {
     importFlavorValue,
     mergeableImportFlavors,
 } from '../constants';
-import type { MergeNodesWithMatchingImportFlavors } from '../types';
+import { ExtendedOptions } from '../types';
 import { getImportFlavorOfNode } from './get-import-flavor-of-node';
 
 type MergeableFlavor = (typeof mergeableImportFlavors)[number];
@@ -227,27 +227,31 @@ function mutateContextAndMerge({
  *
  * `import type {Foo}` expressions won't be converted into `import {type Foo}` or vice versa
  */
-export const mergeNodesWithMatchingImportFlavors: MergeNodesWithMatchingImportFlavors =
-    (input, { importOrderCombineTypeAndValueImports }) => {
-        const nodesToDelete: ImportDeclaration[] = [];
+export const mergeNodesWithMatchingImportFlavors = (
+    input: ImportDeclaration[],
+    {
+        importOrderCombineTypeAndValueImports,
+    }: Pick<ExtendedOptions, 'importOrderCombineTypeAndValueImports'>,
+) => {
+    const nodesToDelete: ImportDeclaration[] = [];
 
-        let context: Record<string, ImportDeclaration> = {};
-        const groups = selectMergeableNodesByImportFlavor(input);
-        for (const groupKey of mergeableImportFlavors) {
-            if (!importOrderCombineTypeAndValueImports) {
-                // Reset in loop to avoid unintended merge across variants
-                context = {};
-            }
-            const group = groups[groupKey as keyof typeof groups];
-
-            for (const insertableNode of group) {
-                mutateContextAndMerge({
-                    context,
-                    nodesToDelete,
-                    insertableNode,
-                });
-            }
+    let context: Record<string, ImportDeclaration> = {};
+    const groups = selectMergeableNodesByImportFlavor(input);
+    for (const groupKey of mergeableImportFlavors) {
+        if (!importOrderCombineTypeAndValueImports) {
+            // Reset in loop to avoid unintended merge across variants
+            context = {};
         }
+        const group = groups[groupKey as keyof typeof groups];
 
-        return input.filter((n) => !nodesToDelete.includes(n));
-    };
+        for (const insertableNode of group) {
+            mutateContextAndMerge({
+                context,
+                nodesToDelete,
+                insertableNode,
+            });
+        }
+    }
+
+    return input.filter((n) => !nodesToDelete.includes(n));
+};

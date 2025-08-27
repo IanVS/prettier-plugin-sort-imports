@@ -1,9 +1,7 @@
+import { ImportDeclaration } from '@babel/types';
+
 import { newLineNode, THIRD_PARTY_MODULES_SPECIAL_WORD } from '../constants';
-import type {
-    GetSortedNodesByImportOrder,
-    ImportGroups,
-    ImportOrLine,
-} from '../types';
+import type { ExtendedOptions, ImportGroups, ImportOrLine } from '../types';
 import { getImportNodesMatchedGroup } from './get-import-nodes-matched-group';
 import { getSortedImportSpecifiers } from './get-sorted-import-specifiers';
 import { getSortedNodesGroup } from './get-sorted-nodes-group';
@@ -19,9 +17,12 @@ import {
  * @param originalNodes A subset (of all import nodes) that should be sorted.
  * @param options Options to influence the behavior of the sorting algorithm.
  */
-export const getSortedNodesByImportOrder: GetSortedNodesByImportOrder = (
-    originalNodes,
-    { importOrder, importOrderCaseSensitive },
+export const getSortedNodesByImportOrder = (
+    originalNodes: ImportDeclaration[],
+    {
+        importOrder,
+        importOrderCaseSensitive,
+    }: Pick<ExtendedOptions, 'importOrder' | 'importOrderCaseSensitive'>,
 ) => {
     if (
         process.env.NODE_ENV === 'test' &&

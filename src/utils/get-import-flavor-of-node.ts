@@ -1,10 +1,11 @@
+import { ImportDeclaration } from '@babel/types';
+
 import {
     importFlavorIgnore,
     importFlavorSideEffect,
     importFlavorType,
     importFlavorValue,
 } from '../constants';
-import type { GetImportFlavorOfNode } from '../types';
 import { hasIgnoreNextNode } from './has-ignore-next-node';
 
 /**
@@ -13,7 +14,7 @@ import { hasIgnoreNextNode } from './has-ignore-next-node';
  * @param node
  * @returns the flavor of the import node
  */
-export const getImportFlavorOfNode: GetImportFlavorOfNode = (node) => {
+export const getImportFlavorOfNode = (node: ImportDeclaration) => {
     if (hasIgnoreNextNode(node.leadingComments)) {
         return importFlavorIgnore;
     }

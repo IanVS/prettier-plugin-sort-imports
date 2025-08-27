@@ -30,6 +30,7 @@ test('it returns all sorted nodes', () => {
     const result = getImportNodes(code);
     const sorted = getSortedNodesByImportOrder(result, {
         importOrder: testingOnly.normalizeImportOrderOption(['^[./]']),
+        importOrderCaseSensitive: false,
     }) as ImportDeclaration[];
 
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
@@ -84,6 +85,7 @@ test('it returns all sorted nodes with sort order', () => {
             '^B',
             '^[./]',
         ]),
+        importOrderCaseSensitive: false,
     }) as ImportDeclaration[];
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
         'node:fs/promises',
@@ -139,6 +141,7 @@ import {type B, A} from 'z';
     });
     const sorted = getSortedNodesByImportOrder(result, {
         importOrder: testingOnly.normalizeImportOrderOption(['^[./]']),
+        importOrderCaseSensitive: false,
     }) as ImportDeclaration[];
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual(['k', 't', 'z']);
     expect(
@@ -158,6 +161,7 @@ test('it returns all sorted nodes with builtin specifiers at the top', () => {
     const result = getImportNodes(code);
     const sorted = getSortedNodesByImportOrder(result, {
         importOrder: testingOnly.normalizeImportOrderOption(['^[./]']),
+        importOrderCaseSensitive: false,
     }) as ImportDeclaration[];
 
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
@@ -189,6 +193,7 @@ test('it returns all sorted nodes with custom third party modules and builtins a
             '^k$',
             '^[./]',
         ]),
+        importOrderCaseSensitive: false,
     }) as ImportDeclaration[];
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
         'node:fs/promises',
@@ -220,6 +225,7 @@ test('it returns all sorted nodes with custom separation', () => {
             '^k$',
             '^[./]',
         ]),
+        importOrderCaseSensitive: false,
     }) as ImportDeclaration[];
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
         'node:fs/promises',
@@ -254,6 +260,7 @@ test('it does not add multiple custom import separators', () => {
             '^k$',
             '^[./]',
         ]),
+        importOrderCaseSensitive: false,
     }) as ImportDeclaration[];
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
         'node:fs/promises',

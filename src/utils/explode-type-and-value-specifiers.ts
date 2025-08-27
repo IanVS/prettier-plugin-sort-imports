@@ -1,6 +1,8 @@
-import { importDeclaration, type ImportSpecifier } from '@babel/types';
-
-import { ExplodeTypeAndValueSpecifiers } from '../types';
+import {
+    importDeclaration,
+    type ImportDeclaration,
+    type ImportSpecifier,
+} from '@babel/types';
 
 /**
  * Breaks apart import declarations containing mixed type and value imports into separate declarations.
@@ -13,9 +15,7 @@ import { ExplodeTypeAndValueSpecifiers } from '../types';
  * + import type { Baz } from './source';
  * ```
  */
-export const explodeTypeAndValueSpecifiers: ExplodeTypeAndValueSpecifiers = (
-    nodes,
-) => {
+export const explodeTypeAndValueSpecifiers = (nodes: ImportDeclaration[]) => {
     const explodedNodes = [];
 
     for (const node of nodes) {

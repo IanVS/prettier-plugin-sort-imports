@@ -22,6 +22,9 @@ import a from 'a';
     const sortedNodes = getSortedNodes(importNodes, {
         importOrder: defaultImportOrder,
         importOrderCombineTypeAndValueImports: true,
+        importOrderCaseSensitive: false,
+        hasAnyCustomGroupSeparatorsInImportOrder: false,
+        provideGapAfterTopOfFileComments: false,
     });
     const formatted = getCodeFromAst({
         nodesToOutput: sortedNodes,
@@ -54,6 +57,9 @@ import type {See} from 'c';
     const sortedNodes = getSortedNodes(importNodes, {
         importOrder: defaultImportOrder,
         importOrderCombineTypeAndValueImports: true,
+        importOrderCaseSensitive: false,
+        hasAnyCustomGroupSeparatorsInImportOrder: false,
+        provideGapAfterTopOfFileComments: false,
     });
     const formatted = getCodeFromAst({
         nodesToOutput: sortedNodes,
@@ -83,6 +89,9 @@ import c from 'c' assert { type: 'json' };
     const sortedNodes = getSortedNodes(importNodes, {
         importOrder: defaultImportOrder,
         importOrderCombineTypeAndValueImports: true,
+        importOrderCaseSensitive: false,
+        hasAnyCustomGroupSeparatorsInImportOrder: false,
+        provideGapAfterTopOfFileComments: false,
     });
     const formatted = getCodeFromAst({
         nodesToOutput: sortedNodes,

@@ -6,7 +6,7 @@ import {
     THIRD_PARTY_MODULES_SPECIAL_WORD,
     TYPES_SPECIAL_WORD,
 } from '../constants';
-import { ExtendedOptions, NormalizableOptions } from '../types';
+import { NormalizableOptions } from '../types';
 import { getExperimentalParserPlugins } from './get-experimental-parser-plugins';
 
 // If importOrder is not set in the config, it will be pre-populated with the default before it hits this
@@ -68,9 +68,7 @@ export function isCustomGroupSeparator(pattern?: string) {
  *  - when to inject blank lines after top-of-file comments
  *  - when to inject blank lines around groups / side-effect nodes.
  */
-export function examineAndNormalizePluginOptions(
-    options: NormalizableOptions,
-): ExtendedOptions {
+export function examineAndNormalizePluginOptions(options: NormalizableOptions) {
     const { importOrderParserPlugins, filepath } = options;
     let { importOrderTypeScriptVersion } = options;
 

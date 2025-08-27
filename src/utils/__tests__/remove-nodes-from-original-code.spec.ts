@@ -28,6 +28,9 @@ test('it should remove nodes from the original code', async () => {
         importOrder:
             testingOnly.normalizeImportOrderOption(DEFAULT_IMPORT_ORDER),
         importOrderCombineTypeAndValueImports: true,
+        importOrderCaseSensitive: false,
+        hasAnyCustomGroupSeparatorsInImportOrder: false,
+        provideGapAfterTopOfFileComments: false,
     });
     const allCommentsFromImports = getAllCommentsFromNodes(sortedNodes);
 
