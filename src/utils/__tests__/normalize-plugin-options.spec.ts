@@ -6,7 +6,6 @@ import {
     DEFAULT_IMPORT_ORDER,
     THIRD_PARTY_MODULES_SPECIAL_WORD,
 } from '../../constants';
-import { NormalizableOptions } from '../../types';
 import {
     examineAndNormalizePluginOptions,
     testingOnly,
@@ -99,7 +98,7 @@ describe('examineAndNormalizePluginOptions', () => {
                 importOrderCaseSensitive: false,
                 importOrderTypeScriptVersion: '1.0.0',
                 filepath: __filename,
-            } as NormalizableOptions),
+            }),
         ).toEqual({
             hasAnyCustomGroupSeparatorsInImportOrder: false,
             importOrder: [
@@ -126,7 +125,7 @@ describe('examineAndNormalizePluginOptions', () => {
                 importOrderCaseSensitive: false,
                 importOrderTypeScriptVersion: '1.0.0',
                 filepath: __filename,
-            } as NormalizableOptions),
+            }),
         ).toEqual({
             hasAnyCustomGroupSeparatorsInImportOrder: true,
             importOrder: [
@@ -149,7 +148,7 @@ describe('examineAndNormalizePluginOptions', () => {
                 importOrderCaseSensitive: false,
                 importOrderTypeScriptVersion: '1.0.0',
                 filepath: __filename,
-            } as NormalizableOptions),
+            }),
         ).toEqual({
             hasAnyCustomGroupSeparatorsInImportOrder: true,
             importOrder: [
@@ -169,8 +168,9 @@ describe('examineAndNormalizePluginOptions', () => {
                 importOrder: DEFAULT_IMPORT_ORDER,
                 importOrderParserPlugins: ['typescript'],
                 importOrderTypeScriptVersion: '5.0.0',
+                importOrderCaseSensitive: false,
                 filepath: __filename,
-            } as NormalizableOptions),
+            }),
         ).toEqual({
             hasAnyCustomGroupSeparatorsInImportOrder: false,
             importOrder: [
@@ -193,7 +193,7 @@ describe('examineAndNormalizePluginOptions', () => {
                 importOrderTypeScriptVersion: '5.0.0',
                 importOrderCaseSensitive: false,
                 filepath: __filename,
-            } as NormalizableOptions),
+            }),
         ).toEqual({
             hasAnyCustomGroupSeparatorsInImportOrder: false,
             importOrder: [
@@ -215,7 +215,7 @@ describe('examineAndNormalizePluginOptions', () => {
                 importOrderCaseSensitive: false,
                 importOrderTypeScriptVersion: '1.0.0',
                 filepath: undefined,
-            } as NormalizableOptions),
+            }),
         ).toEqual({
             hasAnyCustomGroupSeparatorsInImportOrder: false,
             importOrder: [
@@ -238,7 +238,7 @@ describe('examineAndNormalizePluginOptions', () => {
                 importOrderCaseSensitive: false,
                 importOrderTypeScriptVersion: '1.0.0',
                 filepath: __filename,
-            } as NormalizableOptions),
+            }),
         ).toEqual({
             hasAnyCustomGroupSeparatorsInImportOrder: false,
             importOrder: [],
