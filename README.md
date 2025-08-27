@@ -33,6 +33,7 @@ This project is based on [@trivago/prettier-plugin-sort-imports](https://github.
       - [5. Group aliases with local imports](#5-group-aliases-with-local-imports)
       - [6. Enforce a blank line after top of file comments](#6-enforce-a-blank-line-after-top-of-file-comments)
       - [7. Enable/disable plugin or use different order in certain folders or files](#7-enabledisable-plugin-or-use-different-order-in-certain-folders-or-files)
+    - [`importOrderSafeSideEffects`](#importordersafesideeffects)
     - [`importOrderTypeScriptVersion`](#importordertypescriptversion)
     - [`importOrderParserPlugins`](#importorderparserplugins)
     - [`importOrderCaseSensitive`](#importordercasesensitive)
@@ -359,6 +360,18 @@ This can also be beneficial for large projects wishing to gradually adopt a sort
 ```
 
 You can also do this in reverse, where the plugin is enabled globally, but disabled for a set of files or directories in the overrides configuration. It is also useful for setting a different sort order to use in certain files or directories instead of the global sort order.
+
+#### `importOrderSafeSideEffects`
+
+**type**: `Array<string>`
+
+**default value:** `[]`
+
+In general, it is not safe to reorder imports that do not actually import anything (side-effect-only imports), because these imports are affecting the global scope, the order in which they occur can be important.
+
+However, in some cases, you may know that some of your side-effect imports can be sorted along with normal imports.  For example, `import "server-only"` can be used in some React applications to ensure some code only runs on the server.  For these cases, this option is an escape hatch.
+
+This option accepts an array of regex patterns which will be compared against side-effect-only imports to determine if they are safe to reorder along with the rest of your imports.  By default, no such imports are considered safe.  You can opt-in to sorting them by adding them to this option.  We recommend using `^` at the start and `$` at the end of your pattern, to be sure they match exactly.
 
 #### `importOrderTypeScriptVersion`
 

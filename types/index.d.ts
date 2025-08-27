@@ -94,6 +94,21 @@ export interface PluginConfig {
      */
     importOrderParserPlugins?: ImportOrderParserPlugin[];
 
+    /**
+     * This option accepts an array of regex patterns which will be compared against side-effect-only imports
+     * to determine if they are safe to reorder along with the rest of your imports.
+     * By default, no such imports are considered safe.
+     * You can opt-in to sorting them by adding them to this option.
+     * We recommend using `^` at the start and `$` at the end of your pattern, to be sure they match exactly.
+     *
+     * For example:
+     *
+     * ```json
+     * "importOrderSafeSideEffects": ["^server-only$"],
+     * ```
+     *
+     *  @default []
+     */
     importOrderSafeSideEffects?: string[];
 }
 
