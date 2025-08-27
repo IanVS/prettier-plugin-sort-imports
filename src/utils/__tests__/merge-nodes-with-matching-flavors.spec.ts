@@ -15,6 +15,7 @@ const defaultOptions = examineAndNormalizePluginOptions({
     importOrderTypeScriptVersion: '5.0.0',
     importOrderCaseSensitive: false,
     importOrderParserPlugins: [],
+    importOrderSafeSideEffects: [],
     filepath: __filename,
 });
 

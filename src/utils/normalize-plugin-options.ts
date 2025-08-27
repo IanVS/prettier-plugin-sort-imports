@@ -69,7 +69,8 @@ export function isCustomGroupSeparator(pattern?: string) {
  *  - when to inject blank lines around groups / side-effect nodes.
  */
 export function examineAndNormalizePluginOptions(options: NormalizableOptions) {
-    const { importOrderParserPlugins, filepath } = options;
+    const { importOrderParserPlugins, filepath, importOrderSafeSideEffects } =
+        options;
     let { importOrderTypeScriptVersion } = options;
 
     const isTSSemverValid = semver.valid(importOrderTypeScriptVersion);
@@ -106,6 +107,7 @@ export function examineAndNormalizePluginOptions(options: NormalizableOptions) {
         importOrder,
         importOrderCombineTypeAndValueImports,
         importOrderCaseSensitive: !!options.importOrderCaseSensitive,
+        importOrderSafeSideEffects: options.importOrderSafeSideEffects,
         hasAnyCustomGroupSeparatorsInImportOrder: importOrder.some(
             isCustomGroupSeparator,
         ),

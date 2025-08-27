@@ -93,6 +93,8 @@ export interface PluginConfig {
      * @default ["typescript", "jsx"]
      */
     importOrderParserPlugins?: ImportOrderParserPlugin[];
+
+    importOrderSafeSideEffects?: string[];
 }
 
 export type PrettierConfig = PluginConfig & Config;
