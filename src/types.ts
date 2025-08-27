@@ -1,4 +1,3 @@
-import type { ParserPlugin } from '@babel/parser';
 import {
     type EmptyStatement,
     type ExpressionStatement,
@@ -10,14 +9,8 @@ import {
 import { RequiredOptions } from 'prettier';
 
 import { PluginConfig } from '../types';
-import {
-    chunkTypeOther,
-    chunkTypeUnsortable,
-    importFlavorIgnore,
-    importFlavorSideEffect,
-    importFlavorType,
-    importFlavorValue,
-} from './constants';
+import { chunkTypeOther, chunkTypeUnsortable } from './constants';
+import { examineAndNormalizePluginOptions } from './utils/normalize-plugin-options';
 
 export interface PrettierOptions
     extends Required<PluginConfig>,
@@ -34,12 +27,7 @@ export type NormalizableOptions = Pick<
     // filepath can be undefined when running prettier via the api on text input
     Pick<Partial<PrettierOptions>, 'filepath'>;
 
-export type ChunkType = typeof chunkTypeOther | typeof chunkTypeUnsortable;
-export type FlavorType =
-    | typeof importFlavorIgnore
-    | typeof importFlavorSideEffect
-    | typeof importFlavorType
-    | typeof importFlavorValue;
+type ChunkType = typeof chunkTypeOther | typeof chunkTypeUnsortable;
 
 export interface ImportChunk {
     nodes: ImportDeclaration[];
@@ -63,43 +51,9 @@ export type ImportRelated = ImportOrLine | SomeSpecifier;
  * - behavior flags are derived from the base options
  * - plugins is dynamically modified by filepath
  */
-export interface ExtendedOptions {
-    importOrder: PrettierOptions['importOrder'];
-    importOrderCombineTypeAndValueImports: boolean;
-    importOrderCaseSensitive: boolean;
-    hasAnyCustomGroupSeparatorsInImportOrder: boolean;
-    provideGapAfterTopOfFileComments: boolean;
-    plugins: ParserPlugin[];
-}
-
-export type GetSortedNodes = (
-    nodes: ImportDeclaration[],
-    options: Pick<ExtendedOptions, 'importOrder'> & {
-        importOrderCombineTypeAndValueImports: boolean;
-        hasAnyCustomGroupSeparatorsInImportOrder?: boolean;
-        provideGapAfterTopOfFileComments?: boolean;
-    },
-) => ImportOrLine[];
-
-export type GetSortedNodesByImportOrder = (
-    nodes: ImportDeclaration[],
-    options: Pick<ExtendedOptions, 'importOrder'> & {
-        importOrderCaseSensitive?: boolean;
-    },
-) => ImportOrLine[];
-
-export type GetChunkTypeOfNode = (node: ImportDeclaration) => ChunkType;
-
-export type GetImportFlavorOfNode = (node: ImportDeclaration) => FlavorType;
-
-export type MergeNodesWithMatchingImportFlavors = (
-    nodes: ImportDeclaration[],
-    options: { importOrderCombineTypeAndValueImports: boolean },
-) => ImportDeclaration[];
-
-export type ExplodeTypeAndValueSpecifiers = (
-    nodes: ImportDeclaration[],
-) => ImportDeclaration[];
+export type ExtendedOptions = ReturnType<
+    typeof examineAndNormalizePluginOptions
+>;
 
 export interface CommentAttachmentOptions {
     provideGapAfterTopOfFileComments?: boolean;

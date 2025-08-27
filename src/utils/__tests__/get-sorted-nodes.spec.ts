@@ -33,6 +33,9 @@ test('it returns all sorted nodes, preserving the order side effect nodes', () =
         importOrder:
             testingOnly.normalizeImportOrderOption(DEFAULT_IMPORT_ORDER),
         importOrderCombineTypeAndValueImports: true,
+        importOrderCaseSensitive: false,
+        hasAnyCustomGroupSeparatorsInImportOrder: false,
+        provideGapAfterTopOfFileComments: false,
     }) as ImportDeclaration[];
     expect(getSortedNodesNamesAndNewlines(sorted)).toEqual([
         'se3',

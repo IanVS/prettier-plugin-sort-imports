@@ -19,6 +19,9 @@ const getSortedImportNodes = (code: string, options?: ParserOptions) => {
         importOrder:
             testingOnly.normalizeImportOrderOption(DEFAULT_IMPORT_ORDER),
         importOrderCombineTypeAndValueImports: true,
+        importOrderCaseSensitive: false,
+        hasAnyCustomGroupSeparatorsInImportOrder: false,
+        provideGapAfterTopOfFileComments: false,
     });
 };
 

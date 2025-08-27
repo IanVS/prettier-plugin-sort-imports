@@ -1,44 +1,35 @@
-import type { RequiredOptions as PrettierRequiredOptions } from 'prettier';
+import type {
+    BooleanSupportOption,
+    StringArraySupportOption,
+    StringSupportOption,
+} from 'prettier';
 import { parsers as babelParsers } from 'prettier/parser-babel';
 import { parsers as flowParsers } from 'prettier/parser-flow';
 import { parsers as htmlParsers } from 'prettier/parser-html';
 import { parsers as typescriptParsers } from 'prettier/parser-typescript';
 
+import { PluginConfig } from '../types';
 import { DEFAULT_IMPORT_ORDER } from './constants';
 import { defaultPreprocessor } from './preprocessors/default';
 import { emberPreprocessor } from './preprocessors/ember';
 import { vuePreprocessor } from './preprocessors/vue';
-import type { PrettierOptions } from './types';
 
-// Not sure what the type from Prettier should be, but this is a good enough start.
-interface PrettierOptionSchema {
-    type: string;
-    category: 'Global';
-    array?: boolean;
-    default: unknown;
-    description: string;
-}
-
-export const options: Record<
-    Exclude<keyof PrettierOptions, keyof PrettierRequiredOptions>,
-    PrettierOptionSchema
-> = {
+export const options = {
     importOrder: {
-        type: 'path',
+        type: 'string',
         category: 'Global',
         array: true,
         default: [{ value: DEFAULT_IMPORT_ORDER }],
-        description:
-            'Provide an order to sort imports. [node.js built-ins are always first]',
+        description: 'An array of regex strings for the import sort order.',
     },
     importOrderParserPlugins: {
-        type: 'path',
+        type: 'string',
         category: 'Global',
         array: true,
         // By default, we add ts and jsx as parsers but if users define something
         // we take that option
         default: [{ value: ['typescript', 'jsx'] }],
-        description: 'Provide a list of plugins for special syntax',
+        description: 'A list of babel parser plugins for special syntax.',
     },
     importOrderTypeScriptVersion: {
         type: 'string',
@@ -51,9 +42,13 @@ export const options: Record<
         type: 'boolean',
         category: 'Global',
         default: false,
-        description: 'Provide a case sensitivity boolean flag',
+        description:
+            'Should capitalization be considered when sorting imports?',
     },
-};
+} satisfies Record<
+    keyof PluginConfig,
+    StringArraySupportOption | BooleanSupportOption | StringSupportOption
+>;
 
 const getEmberPlugin = () => {
     try {

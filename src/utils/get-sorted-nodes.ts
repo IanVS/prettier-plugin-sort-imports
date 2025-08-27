@@ -1,9 +1,11 @@
+import { ImportDeclaration } from '@babel/types';
+
 import {
     chunkTypeUnsortable,
     newLineNode,
     TYPES_SPECIAL_WORD,
 } from '../constants';
-import type { GetSortedNodes, ImportChunk, ImportOrLine } from '../types';
+import type { ExtendedOptions, ImportChunk, ImportOrLine } from '../types';
 import { adjustCommentsOnSortedNodes } from './adjust-comments-on-sorted-nodes';
 import { explodeTypeAndValueSpecifiers } from './explode-type-and-value-specifiers';
 import { getChunkTypeOfNode } from './get-chunk-type-of-node';
@@ -25,7 +27,10 @@ import { mergeNodesWithMatchingImportFlavors } from './merge-nodes-with-matching
  *
  * @returns A sorted array of the remaining import nodes
  */
-export const getSortedNodes: GetSortedNodes = (nodes, options) => {
+export const getSortedNodes = (
+    nodes: ImportDeclaration[],
+    options: Omit<ExtendedOptions, 'plugins'>,
+) => {
     const {
         importOrder,
         importOrderCombineTypeAndValueImports,
