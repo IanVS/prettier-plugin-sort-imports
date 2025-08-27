@@ -36,13 +36,14 @@ export const getSortedNodes = (
         importOrderCombineTypeAndValueImports,
         hasAnyCustomGroupSeparatorsInImportOrder,
         provideGapAfterTopOfFileComments,
+        importOrderSafeSideEffects,
     } = options;
 
     // Split nodes at each boundary between a side-effect node and a
     // non-side-effect node, keeping both types of nodes together.
     const splitBySideEffectNodes = nodes.reduce<ImportChunk[]>(
         (chunks, node) => {
-            const type = getChunkTypeOfNode(node);
+            const type = getChunkTypeOfNode(node, importOrderSafeSideEffects);
             const last = chunks[chunks.length - 1];
             if (last === undefined || last.type !== type) {
                 chunks.push({ type, nodes: [node] });

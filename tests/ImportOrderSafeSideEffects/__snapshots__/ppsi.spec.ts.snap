@@ -1,0 +1,28 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`import-with-safe-side-effect-imports.ts - typescript-verify > import-with-safe-side-effect-imports.ts 1`] = `
+import React from "react";
+
+import styles from './foo.css';
+import "server-only";
+import "./b.css"
+import "./a.css"
+import a from './a';
+
+import 'unsafe'
+import bar from './bar'
+import "./xyz.css"
+import alpha from './alpha'
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import "server-only";
+import React from "react";
+import a from "./a";
+import "./a.css";
+import "./b.css";
+import styles from "./foo.css";
+import "unsafe";
+import alpha from "./alpha";
+import bar from "./bar";
+import "./xyz.css";
+
+`;
