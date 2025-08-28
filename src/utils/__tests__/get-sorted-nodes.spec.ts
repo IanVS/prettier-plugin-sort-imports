@@ -34,6 +34,7 @@ test('it returns all sorted nodes, preserving the order side effect nodes', () =
             testingOnly.normalizeImportOrderOption(DEFAULT_IMPORT_ORDER),
         importOrderCombineTypeAndValueImports: true,
         importOrderCaseSensitive: false,
+        importOrderSafeSideEffects: [],
         hasAnyCustomGroupSeparatorsInImportOrder: false,
         provideGapAfterTopOfFileComments: false,
     }) as ImportDeclaration[];

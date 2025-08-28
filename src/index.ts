@@ -45,6 +45,14 @@ export const options = {
         description:
             'Should capitalization be considered when sorting imports?',
     },
+    importOrderSafeSideEffects: {
+        type: 'string',
+        category: 'Global',
+        array: true,
+        default: [{ value: [] }],
+        description:
+            'Array of globs for side-effect-only imports that are considered safe to sort.',
+    },
 } satisfies Record<
     keyof PluginConfig,
     StringArraySupportOption | BooleanSupportOption | StringSupportOption

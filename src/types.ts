@@ -23,11 +23,12 @@ export type NormalizableOptions = Pick<
     | 'importOrderParserPlugins'
     | 'importOrderTypeScriptVersion'
     | 'importOrderCaseSensitive'
+    | 'importOrderSafeSideEffects'
 > &
     // filepath can be undefined when running prettier via the api on text input
     Pick<Partial<PrettierOptions>, 'filepath'>;
 
-type ChunkType = typeof chunkTypeOther | typeof chunkTypeUnsortable;
+export type ChunkType = typeof chunkTypeOther | typeof chunkTypeUnsortable;
 
 export interface ImportChunk {
     nodes: ImportDeclaration[];

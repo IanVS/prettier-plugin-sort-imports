@@ -29,6 +29,7 @@ test('it should remove nodes from the original code', async () => {
             testingOnly.normalizeImportOrderOption(DEFAULT_IMPORT_ORDER),
         importOrderCombineTypeAndValueImports: true,
         importOrderCaseSensitive: false,
+        importOrderSafeSideEffects: [],
         hasAnyCustomGroupSeparatorsInImportOrder: false,
         provideGapAfterTopOfFileComments: false,
     });

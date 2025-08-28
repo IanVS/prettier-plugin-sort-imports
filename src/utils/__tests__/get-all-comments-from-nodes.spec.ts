@@ -22,6 +22,7 @@ const getSortedImportNodes = (code: string, options?: ParserOptions) => {
         importOrderCaseSensitive: false,
         hasAnyCustomGroupSeparatorsInImportOrder: false,
         provideGapAfterTopOfFileComments: false,
+        importOrderSafeSideEffects: [],
     });
 };
 
