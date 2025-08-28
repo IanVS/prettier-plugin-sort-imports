@@ -4,7 +4,7 @@ A prettier plugin to sort import declarations by provided Regular Expression ord
 
 This project is based on [@trivago/prettier-plugin-sort-imports](https://github.com/trivago/prettier-plugin-sort-imports), but adds additional features:
 
-- Does not re-order across side-effect imports
+- Does not re-order across side-effect imports by default
 - Combines imports from the same source
 - Combines type and value imports (if `importOrderTypeScriptVersion` is set to `"4.5.0"` or higher)
 - Groups type imports with `<TYPES>` keyword
