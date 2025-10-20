@@ -317,6 +317,26 @@ import icon from '@assets/icon';
 import App from './App';
 ```
 
+##### 7. Group subpath import style local aliases
+
+If you define non-relative aliases to refer to local files without long chains of `"../../../"` via subpath imports, you can include those aliases in your `importOrder` to keep them grouped with your local code.
+
+```json
+"importOrder": [
+    "<THIRD_PARTY_MODULES>",
+    "^#.+",
+    "^[.]"]
+```
+
+e.g.:
+
+```ts
+import { debounce, reduce } from 'lodash';
+import { Users } from '#api';
+import icon from '#assets/icon';
+import App from './App';
+```
+
 ##### 6. Enforce a blank line after top of file comments
 
 If you have pragma-comments at the top of file, or you have boilerplate copyright announcements, you may be interested in separating that content from your code imports, you can add that separator first.
