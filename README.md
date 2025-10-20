@@ -297,7 +297,27 @@ import { createBrowserHistory } from 'history';
 import App from './App';
 ```
 
-##### 5. Group aliases with local imports
+##### 5. Group subpath import style local aliases
+
+If you define non-relative aliases to refer to local files without long chains of `"../../../"` via [subpath imports](https://nodejs.org/api/packages.html#subpath-imports), you can include those aliases in your `importOrder` to keep them grouped with your local code.
+
+```json
+"importOrder": [
+    "<THIRD_PARTY_MODULES>",
+    "^#.+",
+    "^[.]"]
+```
+
+e.g.:
+
+```ts
+import { debounce, reduce } from 'lodash';
+import { Users } from '#api';
+import icon from '#assets/icon';
+import App from './App';
+```
+
+##### 6. Group aliases with local imports
 
 If you define non-relative aliases to refer to local files without long chains of `"../../../"`, you can include those aliases in your `importOrder` to keep them grouped with your local code.
 
@@ -317,27 +337,7 @@ import icon from '@assets/icon';
 import App from './App';
 ```
 
-##### 7. Group subpath import style local aliases
-
-If you define non-relative aliases to refer to local files without long chains of `"../../../"` via subpath imports, you can include those aliases in your `importOrder` to keep them grouped with your local code.
-
-```json
-"importOrder": [
-    "<THIRD_PARTY_MODULES>",
-    "^#.+",
-    "^[.]"]
-```
-
-e.g.:
-
-```ts
-import { debounce, reduce } from 'lodash';
-import { Users } from '#api';
-import icon from '#assets/icon';
-import App from './App';
-```
-
-##### 6. Enforce a blank line after top of file comments
+##### 7. Enforce a blank line after top of file comments
 
 If you have pragma-comments at the top of file, or you have boilerplate copyright announcements, you may be interested in separating that content from your code imports, you can add that separator first.
 
@@ -361,7 +361,7 @@ import icon from '@assets/icon';
 import App from './App';
 ```
 
-##### 7. Enable/disable plugin or use different order in certain folders or files
+##### 8. Enable/disable plugin or use different order in certain folders or files
 
 If you'd like to sort the imports only in a specific set of files or directories, you can disable the plugin by setting `importOrder` to an empty array, and then use Prettier's [Configuration Overrides](https://prettier.io/docs/en/configuration#configuration-overrides) to set the order for files matching a glob pattern.
 
