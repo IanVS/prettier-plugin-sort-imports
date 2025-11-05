@@ -299,7 +299,7 @@ import App from './App';
 
 ##### 5. Group subpath import style local aliases
 
-If you define non-relative aliases to refer to local files without long chains of `"../../../"` via [subpath imports](https://nodejs.org/api/packages.html#subpath-imports), you can include those aliases in your `importOrder` to keep them grouped with your local code.
+If you are using [subpath imports](https://nodejs.org/api/packages.html#subpath-imports) (local imports starting with "#"), you can include those in your `importOrder` to keep them grouped with your local code, perhaps just above your relative imports, as shown below.
 
 ```json
 "importOrder": [
