@@ -319,7 +319,7 @@ import App from './App';
 
 ##### 6. Group aliases with local imports
 
-If you define non-relative aliases to refer to local files without long chains of `"../../../"`, you can include those aliases in your `importOrder` to keep them grouped with your local code.
+If you use some other method to define non-relative aliases to refer to local files without long chains of `"../../../"`, you can include those aliases in your `importOrder` to keep them grouped with your local code.  If you use the common `@` symbol for these aliases, you may want some way to group them separately from scoped npm packages, which can be done like this:
 
 ```json
 "importOrder": [
