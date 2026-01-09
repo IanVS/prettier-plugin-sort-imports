@@ -6,7 +6,7 @@ import { hasPlugin } from '../utils/get-experimental-parser-plugins';
 import { preprocessor } from './preprocessor';
 
 // Non-exhaustive, describes just the properties needed for type guarding
-type BaseBlock = { start: { offset: number }, end: { offset: number }};
+type BaseBlock = { start: { offset: number }; end: { offset: number } };
 type LocBlock = { loc: BaseBlock };
 type VueBlock = BaseBlock | LocBlock;
 
@@ -29,9 +29,9 @@ export function vuePreprocessor(code: string, options: PrettierOptions) {
 
         // 2. Sort blocks by start offset.
         blocks.sort((a: VueBlock, b: VueBlock) => {
-          const startA = isLocBlock(a) ? a.loc.start : a.start;
-          const startB = isLocBlock(b) ? b.loc.start : b.start;
-          return startA.offset - startB.offset;
+            const startA = isLocBlock(a) ? a.loc.start : a.start;
+            const startB = isLocBlock(b) ? b.loc.start : b.start;
+            return startA.offset - startB.offset;
         });
 
         // 3. Replace blocks.
@@ -44,8 +44,12 @@ export function vuePreprocessor(code: string, options: PrettierOptions) {
             // The node's range. The `start` is inclusive and `end` is exclusive.
             // [start, end)
 
-            const start = isLocBlock(block) ? block.loc.start.offset : (block as BaseBlock).start.offset;
-            const end = isLocBlock(block) ? block.loc.end.offset : (block as BaseBlock).end.offset;
+            const start = isLocBlock(block)
+                ? block.loc.start.offset
+                : (block as BaseBlock).start.offset;
+            const end = isLocBlock(block)
+                ? block.loc.end.offset
+                : (block as BaseBlock).end.offset;
             const preprocessedBlockCode = sortScript(block, options);
             result += code.slice(offset, start) + preprocessedBlockCode;
             offset = end;
