@@ -5,6 +5,11 @@ import { PrettierOptions } from '../types';
 import { hasPlugin } from '../utils/get-experimental-parser-plugins';
 import { preprocessor } from './preprocessor';
 
+// Non-exhaustive, describes just the properties needed for type guarding
+type BaseBlock = { start: { offset: number }; end: { offset: number } };
+type LocBlock = { loc: BaseBlock };
+type VueBlock = BaseBlock | LocBlock;
+
 export function vuePreprocessor(code: string, options: PrettierOptions) {
     try {
         const { parse } = require('@vue/compiler-sfc');
@@ -23,7 +28,11 @@ export function vuePreprocessor(code: string, options: PrettierOptions) {
         }
 
         // 2. Sort blocks by start offset.
-        blocks.sort((a, b) => a.loc.start.offset - b.loc.start.offset);
+        blocks.sort((a: VueBlock, b: VueBlock) => {
+            const startA = isLocBlock(a) ? a.loc.start : a.start;
+            const startB = isLocBlock(b) ? b.loc.start : b.start;
+            return startA.offset - startB.offset;
+        });
 
         // 3. Replace blocks.
         // Using offsets to avoid string replace catching the wrong place and improve efficiency
@@ -35,12 +44,12 @@ export function vuePreprocessor(code: string, options: PrettierOptions) {
             // The node's range. The `start` is inclusive and `end` is exclusive.
             // [start, end)
 
-            // @ts-expect-error Some vue versions have a `block.loc`, others have start and end directly on the block
-            let { start, end } = block;
-            if ('loc' in block) {
-                start = block.loc.start.offset;
-                end = block.loc.end.offset;
-            }
+            const start = isLocBlock(block)
+                ? block.loc.start.offset
+                : (block as BaseBlock).start.offset;
+            const end = isLocBlock(block)
+                ? block.loc.end.offset
+                : (block as BaseBlock).end.offset;
             const preprocessedBlockCode = sortScript(block, options);
             result += code.slice(offset, start) + preprocessedBlockCode;
             offset = end;
@@ -57,6 +66,13 @@ export function vuePreprocessor(code: string, options: PrettierOptions) {
         }
         throw err;
     }
+}
+
+/**
+ * Some Vue versions have the start/end offsets under a `block.loc`, others have them directly on the block
+ */
+function isLocBlock(b: VueBlock): b is LocBlock {
+    return 'loc' in b;
 }
 
 function isTS(lang?: string) {
