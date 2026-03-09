@@ -2,9 +2,11 @@ import { parse as babelParser, ParserOptions } from '@babel/parser';
 
 import { PrettierOptions } from '../types';
 import { extractASTNodes } from '../utils/extract-ast-nodes';
+import { getAllCommentsFromNodes } from '../utils/get-all-comments-from-nodes';
 import { getCodeFromAst } from '../utils/get-code-from-ast';
 import { getSortedNodes } from '../utils/get-sorted-nodes';
 import { examineAndNormalizePluginOptions } from '../utils/normalize-plugin-options';
+import { rangesOverlap, type FormatRange } from './format-range';
 
 /**
  *
@@ -18,7 +20,12 @@ export function preprocessor(
     {
         options,
         parseableCode,
-    }: { options: PrettierOptions; parseableCode?: string },
+        formatRange,
+    }: {
+        options: PrettierOptions;
+        parseableCode?: string;
+        formatRange?: FormatRange | null;
+    },
 ): string {
     const { plugins, ...remainingOptions } =
         examineAndNormalizePluginOptions(options);
@@ -66,6 +73,10 @@ export function preprocessor(
         return originalCode;
     }
 
+    if (!shouldSortImports(allOriginalImportNodes, formatRange)) {
+        return originalCode;
+    }
+
     const nodesToOutput = getSortedNodes(
         allOriginalImportNodes,
         remainingOptions,
@@ -79,3 +90,48 @@ export function preprocessor(
         interpreter,
     });
 }
+
+const shouldSortImports = (
+    allOriginalImportNodes: ReturnType<
+        typeof extractASTNodes
+    >['importDeclarations'],
+    formatRange?: FormatRange | null,
+) => {
+    if (!formatRange) {
+        return true;
+    }
+
+    const importBlockRange = getNodeRange([
+        ...allOriginalImportNodes,
+        ...getAllCommentsFromNodes(allOriginalImportNodes),
+    ]);
+
+    return importBlockRange
+        ? rangesOverlap(formatRange, importBlockRange)
+        : true;
+};
+
+const getNodeRange = (
+    nodes: Array<{ start?: number | null; end?: number | null }>,
+) => {
+    let start: number | null = null;
+    let end: number | null = null;
+
+    for (const node of nodes) {
+        if (typeof node.start !== 'number' || typeof node.end !== 'number') {
+            continue;
+        }
+
+        start = start === null ? node.start : Math.min(start, node.start);
+        end = end === null ? node.end : Math.max(end, node.end);
+    }
+
+    if (start === null || end === null) {
+        return null;
+    }
+
+    return {
+        start,
+        end,
+    };
+};

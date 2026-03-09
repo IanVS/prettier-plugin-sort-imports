@@ -13,7 +13,10 @@ import { chunkTypeOther, chunkTypeUnsortable } from './constants';
 import { examineAndNormalizePluginOptions } from './utils/normalize-plugin-options';
 
 export interface PrettierOptions
-    extends Required<PluginConfig>, RequiredOptions {}
+    extends Required<PluginConfig>, RequiredOptions {
+    ppsiVueOriginalRangeStart?: number;
+    ppsiVueOriginalRangeEnd?: number;
+}
 
 /** Subset of options that need to be normalized, or affect normalization */
 export type NormalizableOptions = Pick<

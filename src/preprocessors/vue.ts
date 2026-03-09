@@ -3,6 +3,11 @@ import type { SFCDescriptor } from '@vue/compiler-sfc';
 import { ImportOrderParserPlugin } from '../../types';
 import { PrettierOptions } from '../types';
 import { hasPlugin } from '../utils/get-experimental-parser-plugins';
+import {
+    getPartialFormatRange,
+    toLocalFormatRange,
+    type FormatRange,
+} from './format-range';
 import { preprocessor } from './preprocessor';
 
 // Non-exhaustive, describes just the properties needed for type guarding
@@ -12,6 +17,7 @@ type VueBlock = BaseBlock | LocBlock;
 
 export function vuePreprocessor(code: string, options: PrettierOptions) {
     try {
+        const fileFormatRange = getVueFormatRange(code, options);
         const { parse } = require('@vue/compiler-sfc');
         const version =
             require('@vue/compiler-sfc/package.json').version?.split('.')[0];
@@ -50,7 +56,16 @@ export function vuePreprocessor(code: string, options: PrettierOptions) {
             const end = isLocBlock(block)
                 ? block.loc.end.offset
                 : (block as BaseBlock).end.offset;
-            const preprocessedBlockCode = sortScript(block, options);
+            const preprocessedBlockCode = getPreprocessedBlockCode(
+                block,
+                options,
+                {
+                    start,
+                    end,
+                    fileFormatRange,
+                    originalCode: code,
+                },
+            );
             result += code.slice(offset, start) + preprocessedBlockCode;
             offset = end;
         }
@@ -66,6 +81,66 @@ export function vuePreprocessor(code: string, options: PrettierOptions) {
         }
         throw err;
     }
+}
+
+function getVueFormatRange(code: string, options: PrettierOptions) {
+    const currentFormatRange = getPartialFormatRange(code, options);
+
+    if (currentFormatRange) {
+        options.ppsiVueOriginalRangeStart = currentFormatRange.start;
+        options.ppsiVueOriginalRangeEnd = currentFormatRange.end;
+
+        return currentFormatRange;
+    }
+
+    if (
+        typeof options.ppsiVueOriginalRangeStart !== 'number' ||
+        typeof options.ppsiVueOriginalRangeEnd !== 'number'
+    ) {
+        return null;
+    }
+
+    return {
+        start: Math.max(
+            0,
+            Math.min(options.ppsiVueOriginalRangeStart, code.length),
+        ),
+        end: Math.max(
+            0,
+            Math.min(options.ppsiVueOriginalRangeEnd, code.length),
+        ),
+    };
+}
+
+function getPreprocessedBlockCode(
+    block: { content: string; lang?: string },
+    options: PrettierOptions,
+    {
+        start,
+        end,
+        fileFormatRange,
+        originalCode,
+    }: {
+        start: number;
+        end: number;
+        fileFormatRange: FormatRange | null;
+        originalCode: string;
+    },
+) {
+    if (!fileFormatRange) {
+        return sortScript(block, options);
+    }
+
+    const blockFormatRange = toLocalFormatRange(fileFormatRange, {
+        start,
+        end,
+    });
+
+    if (!blockFormatRange) {
+        return originalCode.slice(start, end);
+    }
+
+    return sortScript(block, options, blockFormatRange);
 }
 
 /**
@@ -92,6 +167,7 @@ function isTS(lang?: string) {
 function sortScript(
     { content, lang }: { content: string; lang?: string },
     options: PrettierOptions,
+    formatRange?: FormatRange | null,
 ) {
     const { importOrderParserPlugins = [] } = options;
     let pluginClone = [...importOrderParserPlugins];
@@ -117,5 +193,8 @@ function sortScript(
         importOrderParserPlugins: newPlugins,
     };
 
-    return `\n${preprocessor(content, { options: adjustedOptions })}\n`;
+    return `\n${preprocessor(content, {
+        options: adjustedOptions,
+        formatRange,
+    })}\n`;
 }
