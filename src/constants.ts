@@ -28,7 +28,7 @@ export const mergeableImportFlavors = [
 // Update: Started being included in node 24 after https://github.com/nodejs/node/pull/56185
 export const BUILTIN_MODULES_REGEX_STR = `^(?:${builtinModules
     .flatMap((m) => (m.startsWith('node:') ? m : [`node:${m}`, m]))
-    .join('|')}|node:test)$`;
+    .join('|')}|node:test|node:sqlite)$`;
 
 export const BUILTIN_MODULES_SPECIAL_WORD = '<BUILTIN_MODULES>';
 /**
